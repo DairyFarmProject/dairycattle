@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.senior.dairycattle">
    <application
-        android:label="dairycattle"
+        android:label="Dairy Cattle"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
