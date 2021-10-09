@@ -82,7 +82,7 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
               if (snapshot.data == null) {
                 return Container(
                   child: Center(
-                    child: Text('Loading...'),
+                    child: CircularProgressIndicator(color: Colors.green[400],),
                   ),
                 );
               } else

@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dairycattle/Screens/Cow/successrecord.dart';
+
 import '/models/User.dart';
 import '/providers/user_provider.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -16,6 +18,7 @@ import '../../models/StatusCows.dart';
 import '../../Screens/Cow/cow1.dart';
 import '../../models/TypeCows.dart';
 import '.././Farm/text_field_container.dart';
+import '../../models/AllChoose.dart';
 
 class AddCow extends StatefulWidget {
   @override
@@ -28,6 +31,13 @@ class _AddCowState extends State<AddCow> {
   String _uploadedFileURL = '';
   String? imageName;
 
+  int selectStatus = 1;
+  int selectType = 1;
+  int selectSpecie = 1;
+  int selectDadSpecie = 1;
+  int selectMomSpecie = 1;
+  int selectSex = 1;
+
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final nameCowController = TextEditingController();
@@ -35,12 +45,6 @@ class _AddCowState extends State<AddCow> {
   final noteCowController = TextEditingController();
   final idSemenController = TextEditingController();
   final idMomController = TextEditingController();
-  String? sex;
-  String? status;
-  String? type;
-  String? specie;
-  String? dadSpecie;
-  String? momSpecie;
   DateTime? _dateTime;
   final value_validator = RequiredValidator(errorText: "X Invalid");
 
@@ -69,33 +73,9 @@ class _AddCowState extends State<AddCow> {
     }
   }
 
-  Future<List<TypeCows>> getTypeCows() async {
-    final response = await http.get(Uri.http('127.0.0.1:3000', 'typecow'));
-
-    Map<String, dynamic> data = jsonDecode(response.body);
-    final List list = data['data']['typecow'];
-
-    List<TypeCows> typecows = list.map((e) => TypeCows.fromMap(e)).toList();
-
-    return typecows;
-  }
-
-  Future<List<Species>> getSpecies() async {
-    final response = await http.get(Uri.http('127.0.0.1:3000', 'species'));
-
-    Map<String, dynamic> data = jsonDecode(response.body);
-    final List list = data['data']['rows'];
-
-    List<Species> species = list.map((e) => Species.fromMap(e)).toList();
-
-    return species;
-  }
-
   @override
   void initState() {
     super.initState();
-    getTypeCows();
-    getSpecies();
     getImage();
   }
 
@@ -250,69 +230,49 @@ class _AddCowState extends State<AddCow> {
                     ),
                     hintText: "รายละเอียดอื่นๆ"),
                 Container(
-                    child: FutureBuilder<List<TypeCows>>(
-                        future: getTypeCows(),
-                        builder: (context, snapshot) {
-                          if (snapshot.data == null) {
-                            return Container(
-                              child: Center(
-                                child: Text('Loading...'),
-                              ),
-                            );
-                          } else
-                            return Container(
-                              child: DropdownSearch<String>(
-                                  mode: Mode.MENU,
-                                  showSelectedItems: true,
-                                  items: snapshot.data!
-                                      .map((data) => data.type_name)
-                                      .toList(),
-                                  label: "ประเภทวัว",
-                                  hint: "country in menu mode",
-                                  popupItemDisabled: (String s) =>
-                                      s.startsWith('I'),
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      type = newValue;
-                                    });
-                                  },
-                                  selectedItem:
-                                      '${snapshot.data?[0].type_name}'),
-                              padding: const EdgeInsets.all(20.0),
-                            );
-                        })),
+                  padding: const EdgeInsets.all(20.0),
+                  child: DropdownButton<Type>(
+                    hint: new Text("Select a type"),
+                    value: selectStatus == null ? null : types[selectType],
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectType = types.indexOf(newValue!);
+                        print(selectType);
+                      });
+                    },
+                    items: types.map((Type status) {
+                      return new DropdownMenuItem<Type>(
+                        value: status,
+                        child: new Text(
+                          status.name,
+                          style: new TextStyle(color: Colors.black),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
                 Container(
-                    child: FutureBuilder<List<Species>>(
-                        future: getSpecies(),
-                        builder: (context, snapshot) {
-                          if (snapshot.data == null) {
-                            return Container(
-                              child: Center(
-                                child: Text('Loading...'),
-                              ),
-                            );
-                          } else
-                            return Container(
-                              child: DropdownSearch<String>(
-                                  mode: Mode.MENU,
-                                  showSelectedItems: true,
-                                  items: snapshot.data!
-                                      .map((data) => data.specie_name_th)
-                                      .toList(),
-                                  label: "สายพันธ์วัว",
-                                  hint: "country in menu mode",
-                                  popupItemDisabled: (String s) =>
-                                      s.startsWith('I'),
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      specie = newValue;
-                                    });
-                                  },
-                                  selectedItem:
-                                      '${snapshot.data?[0].specie_name_th}'),
-                              padding: const EdgeInsets.all(20.0),
-                            );
-                        })),
+                  padding: const EdgeInsets.all(20.0),
+                  child: DropdownButton<Specie>(
+                    hint: new Text("Select a specie"),
+                    value: selectSpecie == null ? null : species[selectSpecie],
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectSpecie = species.indexOf(newValue!);
+                        print(selectSpecie);
+                      });
+                    },
+                    items: species.map((Specie status) {
+                      return new DropdownMenuItem<Specie>(
+                        value: status,
+                        child: new Text(
+                          status.name,
+                          style: new TextStyle(color: Colors.black),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
                 Container(
                   padding: EdgeInsets.all(20),
                   margin: EdgeInsets.fromLTRB(0, 15, 0, 20),
@@ -327,20 +287,26 @@ class _AddCowState extends State<AddCow> {
                           fontSize: 18)),
                 ),
                 Container(
-                  child: DropdownSearch<String>(
-                      mode: Mode.MENU,
-                      showSelectedItems: true,
-                      items: ["เพศผู้", "เพศเมีย"],
-                      label: "เพศ",
-                      hint: "country in menu mode",
-                      popupItemDisabled: (String s) => s.startsWith('I'),
-                      onChanged: (newValue) {
-                        setState(() {
-                          sex = newValue;
-                        });
-                      },
-                      selectedItem: "เพศผู้"),
                   padding: const EdgeInsets.all(20.0),
+                  child: DropdownButton<Sex>(
+                    hint: new Text("Select a sex"),
+                    value: selectSex == null ? null : sexs[selectSex],
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectSex = sexs.indexOf(newValue!);
+                        print(selectSex);
+                      });
+                    },
+                    items: sexs.map((Sex status) {
+                      return new DropdownMenuItem<Sex>(
+                        value: status,
+                        child: new Text(
+                          status.name,
+                          style: new TextStyle(color: Colors.black),
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ),
                 TextFieldContainer(
                     controller: idSemenController,
@@ -353,37 +319,29 @@ class _AddCowState extends State<AddCow> {
                     ),
                     hintText: "หมายเลขพ่อพันธุ์"),
                 Container(
-                    child: FutureBuilder<List<Species>>(
-                        future: getSpecies(),
-                        builder: (context, snapshot) {
-                          if (snapshot.data == null) {
-                            return Container(
-                              child: Center(
-                                child: Text('Loading...'),
-                              ),
-                            );
-                          } else
-                            return Container(
-                              child: DropdownSearch<String>(
-                                  mode: Mode.MENU,
-                                  showSelectedItems: true,
-                                  items: snapshot.data!
-                                      .map((data) => data.specie_name_th)
-                                      .toList(),
-                                  label: "สายพันธุ์พ่อวัว",
-                                  hint: "country in menu mode",
-                                  popupItemDisabled: (String s) =>
-                                      s.startsWith('I'),
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      dadSpecie = newValue;
-                                    });
-                                  },
-                                  selectedItem:
-                                      '${snapshot.data?[0].specie_name_th}'),
-                              padding: const EdgeInsets.all(20.0),
-                            );
-                        })),
+                  padding: const EdgeInsets.all(20.0),
+                  child: DropdownButton<DadSpecie>(
+                    hint: new Text("Select a specie"),
+                    value: selectDadSpecie == null
+                        ? null
+                        : semen_species[selectDadSpecie],
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectDadSpecie = semen_species.indexOf(newValue!);
+                        print(selectDadSpecie);
+                      });
+                    },
+                    items: semen_species.map((DadSpecie status) {
+                      return new DropdownMenuItem<DadSpecie>(
+                        value: status,
+                        child: new Text(
+                          status.name,
+                          style: new TextStyle(color: Colors.black),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
                 TextFieldContainer(
                     controller: idMomController,
                     keyboardType: TextInputType.text,
@@ -395,37 +353,29 @@ class _AddCowState extends State<AddCow> {
                     ),
                     hintText: "หมายเลขแม่พันธุ์"),
                 Container(
-                    child: FutureBuilder<List<Species>>(
-                        future: getSpecies(),
-                        builder: (context, snapshot) {
-                          if (snapshot.data == null) {
-                            return Container(
-                              child: Center(
-                                child: Text('Loading...'),
-                              ),
-                            );
-                          } else
-                            return Container(
-                              child: DropdownSearch<String>(
-                                  mode: Mode.MENU,
-                                  showSelectedItems: true,
-                                  items: snapshot.data!
-                                      .map((data) => data.specie_name_th)
-                                      .toList(),
-                                  label: "สายพันธ์แม่วัว",
-                                  hint: "country in menu mode",
-                                  popupItemDisabled: (String s) =>
-                                      s.startsWith('I'),
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      momSpecie = newValue;
-                                    });
-                                  },
-                                  selectedItem:
-                                      '${snapshot.data?[0].specie_name_th}'),
-                              padding: const EdgeInsets.all(20.0),
-                            );
-                        })),
+                  padding: const EdgeInsets.all(20.0),
+                  child: DropdownButton<MomSpecie>(
+                    hint: new Text("Select a specie"),
+                    value: selectMomSpecie == null
+                        ? null
+                        : mom_species[selectMomSpecie],
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectMomSpecie = mom_species.indexOf(newValue!);
+                        print(selectMomSpecie);
+                      });
+                    },
+                    items: mom_species.map((MomSpecie status) {
+                      return new DropdownMenuItem<MomSpecie>(
+                        value: status,
+                        child: new Text(
+                          status.name,
+                          style: new TextStyle(color: Colors.black),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -468,20 +418,20 @@ class _AddCowState extends State<AddCow> {
                               onPressed: () {
                                 saveImage();
                                 userAddCow(
+                                    user?.user_id,
                                     user?.farm_id,
                                     nameCowController.text,
                                     tagCowController.text,
                                     _dateTime,
-                                    status,
                                     _image,
                                     noteCowController.text,
-                                    type,
-                                    specie,
-                                    sex,
+                                    selectType,
+                                    selectSpecie,
+                                    selectSex,
                                     idSemenController.text,
                                     idMomController.text,
-                                    dadSpecie,
-                                    momSpecie);
+                                    selectDadSpecie,
+                                    selectMomSpecie);
                                 // Navigator.push(context,
                                 //     MaterialPageRoute(builder: (context) {
                                 //   return SuccessAddCow();
@@ -511,28 +461,31 @@ class _AddCowState extends State<AddCow> {
         ));
   }
 
-  userAddCow(farm_id, name, tag, date, status, image, note, type, specie, sex,
+  userAddCow(user_id, farm_id, name, tag, date, image, note, type, specie, sex,
       dad, mom, dadS, momS) async {
+    int status_id = 1;
+
     Map data = {
+      'user_id': user_id.toString(),
       'farm_id': farm_id.toString(),
       'cow_no': tag,
       'cow_name': name,
       'cow_birthday': date.toString(),
-      'cow_sex': sex,
+      'cow_sex': sex.toString(),
       'cow_image': image.toString(),
       'note': note,
-      'typecow_id': type,
-      'species_id': specie,
-      'statuscow_id': status,
-      'semen_id': dad,
-      'semen_specie': dadS,
+      'type_id': type.toString(),
+      'specie_id': specie.toString(),
+      'status_id': status_id.toString(),
+      'semen_id': dad.toString(),
+      'semen_specie': dadS.toString(),
       'mom_id': mom,
-      'mom_specie': momS
+      'mom_specie': momS.toString()
     };
 
     print(data);
 
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'createFarm'),
+    final response = await http.post(Uri.http('127.0.0.1:3000', 'cows/create'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
@@ -544,12 +497,12 @@ class _AddCowState extends State<AddCow> {
       Map<String, dynamic> resposne = jsonDecode(response.body);
       Map<String, dynamic> user = resposne['data'];
       print(user['message']);
-      // Navigator.push(
-      //   context,
-      //   new MaterialPageRoute(
-      //     builder: (context) => new SuccessRecord(),
-      //   ),
-      // );
+      Navigator.push(
+        context,
+        new MaterialPageRoute(
+          builder: (context) => new SuccessRecord(),
+        ),
+      );
     } else {
       _scaffoldKey.currentState
           ?.showSnackBar(SnackBar(content: Text("Please Try again")));

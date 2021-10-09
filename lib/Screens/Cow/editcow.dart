@@ -4,8 +4,6 @@ import '../../models/User.dart';
 import '../../providers/user_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:path/path.dart' as Path;
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -14,9 +12,6 @@ import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../../models/Cows.dart';
-import '../../models/TypeCows.dart';
-import '../../models/StatusCows.dart';
-import '../../models/Species.dart';
 import '../../models/AllChoose.dart';
 import 'successeditcow.dart';
 
@@ -65,10 +60,10 @@ class _EditCowState extends State<EditCow> {
     }
   }
 
-  int selectStatus = 0;
-  int selectType = 0;
-  int selectSpecie = 0;
-  int selectSex = 0;
+  int selectStatus = 1;
+  int selectType = 1;
+  int selectSpecie = 1;
+  int selectSex = 1;
 
   final myController = TextEditingController();
 

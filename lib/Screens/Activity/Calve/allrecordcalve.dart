@@ -19,36 +19,30 @@ class AllRecordCalve extends StatefulWidget {
 }
 
 class _AllRecordCalveState extends State<AllRecordCalve> {
-  // Future<List<Parturition>> getMilk() async {
-  //   User user = Provider.of<UserProvider>(context, listen: false).user;
-  //   late List<Parturition> milks;
-  //   Map data = {'farm_id': user.farm_id.toString()};
-  //   final response = await http.post(Uri.http('127.0.0.1:3000', 'parturition'),
-  //       headers: {
-  //         "Accept": "application/json",
-  //         "Content-Type": "application/x-www-form-urlencoded"
-  //       },
-  //       body: data,
-  //       encoding: Encoding.getByName("utf-8"));
-
-  //   if (response.statusCode == 200) {
-  //     Map<String, dynamic> db = jsonDecode(response.body);
-  //     final List list = db['data'];
-  //     milks = list.map((e) => Parturition.fromMap(e)).toList();
-  //   }
-  //   return milks;
-  // }
-
   Future<List<Parturition>> getParturition() async {
-    final response = await http.get(Uri.http('127.0.0.1:3000', 'parturition'));
+    User? user = Provider.of<UserProvider>(context, listen: false).user;
+    List<Parturition> milks = [];
+    Map data = {
+      'farm_id': user?.farm_id.toString(),
+      'user_id': user?.user_id.toString()
+    };
+    var body = json.encode(data);
+    print(data);
+    final response =
+        await http.post(Uri.http('127.0.0.1:3000', 'farms/parturition'),
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: data,
+            encoding: Encoding.getByName("utf-8"));
 
-    Map<String, dynamic> data = jsonDecode(response.body);
-    final List list = data['data']['rows'];
-
-    List<Parturition> typecows =
-        list.map((e) => Parturition.fromMap(e)).toList();
-
-    return typecows;
+    if (response.statusCode == 200) {
+      Map<String, dynamic> db = jsonDecode(response.body);
+      final List list = db['data']['rows'];
+      milks = list.map((e) => Parturition.fromMap(e)).toList();
+    }
+    return milks;
   }
 
   @override
@@ -87,7 +81,7 @@ class _AllRecordCalveState extends State<AllRecordCalve> {
               if (snapshot.data == null) {
                 return Container(
                   child: Center(
-                    child: Text('Loading...'),
+                    child: CircularProgressIndicator(color: Colors.green[400]),
                   ),
                 );
               } else
@@ -149,9 +143,11 @@ class _AllRecordCalveState extends State<AllRecordCalve> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text('${DateFormat('dd-MM-yyyy').format(DateTime.parse(snapshot.data![i].par_date))}'),
+                                            Text(
+                                                '${DateFormat('dd-MM-yyyy').format(DateTime.parse(snapshot.data![i].par_date))}'),
                                             Text('ปกติ'),
-                                            Text('${snapshot.data![i].calf_name}'),
+                                            Text(
+                                                '${snapshot.data![i].calf_name}'),
                                             Text('ไม่มีเลย')
                                           ],
                                         ),
