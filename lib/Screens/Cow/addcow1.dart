@@ -54,7 +54,6 @@ class _AddCowState extends State<AddCow> {
   }
 
   Future saveImage() async {
-
     if (_image != null) {
       setState(() {
         this.isLoading = true;
@@ -81,18 +80,6 @@ class _AddCowState extends State<AddCow> {
     return typecows;
   }
 
-  Future<List<StatusCows>> getStatusCows() async {
-    final response = await http.get(Uri.http('127.0.0.1:3000', 'statuscows'));
-
-    Map<String, dynamic> data = jsonDecode(response.body);
-    final List list = data['data']['status'];
-
-    List<StatusCows> statuscows =
-        list.map((e) => StatusCows.fromMap(e)).toList();
-
-    return statuscows;
-  }
-
   Future<List<Species>> getSpecies() async {
     final response = await http.get(Uri.http('127.0.0.1:3000', 'species'));
 
@@ -108,6 +95,8 @@ class _AddCowState extends State<AddCow> {
   void initState() {
     super.initState();
     getTypeCows();
+    getSpecies();
+    getImage();
   }
 
   int _selectIndex = 0;
@@ -250,38 +239,6 @@ class _AddCowState extends State<AddCow> {
                     ),
                   ],
                 ),
-                Container(
-                    child: FutureBuilder<List<StatusCows>>(
-                        future: getStatusCows(),
-                        builder: (context, snapshot) {
-                          if (snapshot.data == null) {
-                            return Container(
-                              child: Center(
-                                child: Text('Loading...'),
-                              ),
-                            );
-                          } else
-                            return Container(
-                              child: DropdownSearch<String>(
-                                  mode: Mode.MENU,
-                                  showSelectedItems: true,
-                                  items: snapshot.data!
-                                      .map((data) => data.status_name)
-                                      .toList(),
-                                  label: "สถานะวัว",
-                                  hint: "country in menu mode",
-                                  popupItemDisabled: (String s) =>
-                                      s.startsWith('I'),
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      status = newValue;
-                                    });
-                                  },
-                                  selectedItem:
-                                      '${snapshot.data?[0].status_name}'),
-                              padding: const EdgeInsets.all(20.0),
-                            );
-                        })),
                 TextFieldContainer(
                     controller: noteCowController,
                     keyboardType: TextInputType.text,
@@ -546,7 +503,6 @@ class _AddCowState extends State<AddCow> {
                             )
                           ],
                         )),
-                    
                   ],
                 ),
               ],

@@ -1,3 +1,5 @@
+import 'package:dairycattle/dashboard.dart';
+
 import '/Screens/Cow/cow1.dart';
 import 'package:flutter/material.dart';
 
@@ -52,7 +54,7 @@ class _SuccessCreateFarmState extends State<SuccessCreateFarm> {
                     onPressed: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return Cow();
+                        return Dashboard();
                       }));
                     },
                     color: Colors.blueGrey[50],

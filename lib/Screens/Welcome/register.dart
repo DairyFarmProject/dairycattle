@@ -359,7 +359,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                               lastnameController.text,
                                               '${DateFormat('yyyy-MM-dd').format(DateTime.parse(_dateTime.toString()))}',
                                               mobileController.text.toString(),
-                                              FileImage(_image!).toString(),
+                                              _image.toString(),
                                               args.email,
                                               args.password);
                                           loginStore.getCodeWithPhoneNumber(

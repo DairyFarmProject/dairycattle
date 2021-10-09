@@ -39,24 +39,6 @@ class _DeleteCowState extends State<DeleteCow> {
 
   final cowNoteController = TextEditingController();
 
-  Future<List<StatusCows>> getStatusCows() async {
-    final response = await http.get(Uri.http('127.0.0.1:3000', 'statuscows'));
-
-    Map<String, dynamic> data = jsonDecode(response.body);
-    final List list = data['data']['status'];
-
-    List<StatusCows> statuscows =
-        list.map((e) => StatusCows.fromMap(e)).toList();
-
-    return statuscows;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getStatusCows();
-  }
-
   int _selectIndex = 0;
 
   void _onItemTap(int index) {

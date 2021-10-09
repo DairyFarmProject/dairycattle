@@ -1,3 +1,4 @@
+import 'package:dairycattle/models/UserDairys.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -54,7 +55,7 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
 
   @override
   Widget build(BuildContext context) {
-    User? user = Provider.of<UserProvider>(context).user;
+    UserDairys? user = Provider.of<UserProvider>(context).userDairys;
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -226,21 +227,19 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
                             children: [
                               RaisedButton(
                                 onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    userCreateFarm(
-                                        user?.user_id,
-                                        args.farm_name,
-                                        args.farm_no,
-                                        args.farm_code,
-                                        args.address,
-                                        args.moo,
-                                        args.soi,
-                                        args.road,
-                                        args.sub_district,
-                                        args.district,
-                                        args.province,
-                                        args.postcode);
-                                  }
+                                  userCreateFarm(
+                                      user?.user_id,
+                                      args.farm_name,
+                                      args.farm_no,
+                                      args.farm_code,
+                                      args.address,
+                                      args.moo,
+                                      args.soi,
+                                      args.road,
+                                      args.sub_district,
+                                      args.district,
+                                      args.province,
+                                      args.postcode);
                                 },
                                 color: Color(0xff62b490),
                                 shape: RoundedRectangleBorder(
@@ -267,15 +266,13 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
         ));
   }
 
-  userCreateFarm(user_id, farm_name, farm_no, farm_code, address, moo, soi, road,
-      sub_district, district, province, postcode) async {
-
-      print(user_id);
-    String user = user_id.toString();
-    String farm_image = 'https://www.organicfarmthailand.com/wp-content/uploads/2016/09/Farm-from-a-Box-SMA.jpg';
+  userCreateFarm(user_id, farm_name, farm_no, farm_code, address, moo, soi,
+      road, sub_district, district, province, postcode) async {
+    String farm_image =
+        'https://www.organicfarmthailand.com/wp-content/uploads/2016/09/Farm-from-a-Box-SMA.jpg';
 
     Map data = {
-      'user_id': user,
+      'user_id': user_id.toString(),
       'farm_name': farm_name,
       'farm_no': farm_no,
       'farm_code': farm_code,
@@ -286,9 +283,11 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
       'sub_district': sub_district,
       'district': district,
       'province': province,
-      'postcode': postcode,
+      'postcode': postcode.toString(),
       'farm_image': farm_image
     };
+
+    print(data);
 
     final response = await http.post(Uri.http('127.0.0.1:3000', 'farms/create'),
         headers: {

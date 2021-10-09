@@ -5,6 +5,7 @@ import '../../providers/user_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:path/path.dart' as Path;
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -16,6 +17,8 @@ import '../../models/Cows.dart';
 import '../../models/TypeCows.dart';
 import '../../models/StatusCows.dart';
 import '../../models/Species.dart';
+import '../../models/AllChoose.dart';
+import 'successeditcow.dart';
 
 class EditCow extends StatefulWidget {
   final Cows cow;
@@ -24,16 +27,23 @@ class EditCow extends StatefulWidget {
   _EditCowState createState() => _EditCowState();
 }
 
+final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+void showInSnackBar(String value) {
+  _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text(value)));
+}
+
 class _EditCowState extends State<EditCow> {
   bool isLoading = false;
   File? _image;
   String _uploadedFileURL = '';
+  var image;
 
   Future getImage() async {
     final _picker = ImagePicker();
-    var image = await _picker.getImage(source: ImageSource.gallery);
+    image = await _picker.getImage(source: ImageSource.gallery);
 
     setState(() {
+      // _image = File(image!.path);
       _image = File(image!.path);
     });
   }
@@ -44,7 +54,8 @@ class _EditCowState extends State<EditCow> {
         this.isLoading = true;
       });
       Reference ref = FirebaseStorage.instance.ref();
-      TaskSnapshot addImg = await ref.child("Cow/$_image").putFile(_image!);
+      TaskSnapshot addImg =
+          await ref.child("Cow/$image").putFile(_image!);
       if (addImg.state == TaskState.success) {
         setState(() {
           this.isLoading = false;
@@ -54,49 +65,12 @@ class _EditCowState extends State<EditCow> {
     }
   }
 
-  Future<List<TypeCows>> getTypeCows() async {
-    final response = await http.get(Uri.http('127.0.0.1:3000', 'typecow'));
-
-    Map<String, dynamic> data = jsonDecode(response.body);
-    final List list = data['data']['typecow'];
-
-    List<TypeCows> typecows = list.map((e) => TypeCows.fromMap(e)).toList();
-
-    return typecows;
-  }
-
-  Future<List<StatusCows>> getStatusCows() async {
-    final response = await http.get(Uri.http('127.0.0.1:3000', 'statuscows'));
-
-    Map<String, dynamic> data = jsonDecode(response.body);
-    final List list = data['data']['status'];
-
-    List<StatusCows> statuscows =
-        list.map((e) => StatusCows.fromMap(e)).toList();
-
-    return statuscows;
-  }
-
-  Future<List<Species>> getSpecies() async {
-    final response = await http.get(Uri.http('127.0.0.1:3000', 'species'));
-
-    Map<String, dynamic> data = jsonDecode(response.body);
-    final List list = data['data']['rows'];
-
-    List<Species> species = list.map((e) => Species.fromMap(e)).toList();
-
-    return species;
-  }
+  int selectStatus = 0;
+  int selectType = 0;
+  int selectSpecie = 0;
+  int selectSex = 0;
 
   final myController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    getTypeCows();
-    getStatusCows();
-    getSpecies();
-  }
 
   @override
   void dispose() {
@@ -112,15 +86,18 @@ class _EditCowState extends State<EditCow> {
     });
   }
 
+  @override
+  _EditCowState createState() => _EditCowState();
+  void initState() {
+    super.initState();
+    getImage();
+  }
+
   DateTime? _dateTime;
   final _formKey = GlobalKey<FormState>();
   final nameCowController = TextEditingController();
   final cowNoController = TextEditingController();
   final cowNoteController = TextEditingController();
-  String? status;
-  String? type;
-  String? specie;
-  String? sex;
   final value_validator = RequiredValidator(errorText: "กรุณาใส่ข้อมูล");
 
   TextEditingController dateCtl = TextEditingController();
@@ -397,116 +374,71 @@ class _EditCowState extends State<EditCow> {
                     ),
                   ),
                   Container(
-                      child: FutureBuilder<List<StatusCows>>(
-                          future: getStatusCows(),
-                          builder: (context, snapshot) {
-                            if (snapshot.data == null) {
-                              return Container(
-                                child: Center(
-                                  child: Text('Loading...'),
-                                ),
-                              );
-                            } else
-                              return Container(
-                                  child: DropdownSearch<String>(
-                                      mode: Mode.MENU,
-                                      showSelectedItems: true,
-                                      items: snapshot.data!
-                                          .map((data) => data.status_name)
-                                          .toList(),
-                                      label: "สถานะวัว",
-                                      hint: "country in menu mode",
-                                      popupItemDisabled: (String s) =>
-                                          s.startsWith('I'),
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          status = newValue;
-                                        });
-                                      },
-                                      selectedItem:
-                                          '${snapshot.data?[0].status_name}'),
-                                  padding: const EdgeInsets.fromLTRB(
-                                      20, 20, 20, 20));
-                          })),
-                  Container(
-                      child: FutureBuilder<List<TypeCows>>(
-                          future: getTypeCows(),
-                          builder: (context, snapshot) {
-                            if (snapshot.data == null) {
-                              return Container(
-                                child: Center(
-                                  child: Text('Loading...'),
-                                ),
-                              );
-                            } else
-                              return Container(
-                                child: DropdownSearch<String>(
-                                    mode: Mode.MENU,
-                                    showSelectedItems: true,
-                                    items: snapshot.data!
-                                        .map((data) => data.type_name)
-                                        .toList(),
-                                    label: "ประเภทวัว",
-                                    hint: "country in menu mode",
-                                    popupItemDisabled: (String s) =>
-                                        s.startsWith('I'),
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        type = newValue;
-                                      });
-                                    },
-                                    selectedItem:
-                                        '${snapshot.data?[0].type_name}'),
-                                padding: const EdgeInsets.all(20.0),
-                              );
-                          })),
-                  Container(
-                      child: FutureBuilder<List<Species>>(
-                          future: getSpecies(),
-                          builder: (context, snapshot) {
-                            if (snapshot.data == null) {
-                              return Container(
-                                child: Center(
-                                  child: Text('Loading...'),
-                                ),
-                              );
-                            } else
-                              return Container(
-                                  child: DropdownSearch<String>(
-                                      mode: Mode.MENU,
-                                      showSelectedItems: true,
-                                      items: snapshot.data!
-                                          .map((data) => data.specie_name_th)
-                                          .toList(),
-                                      label: "สายพันธ์วัว",
-                                      hint: "country in menu mode",
-                                      popupItemDisabled: (String s) =>
-                                          s.startsWith('I'),
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          specie = newValue;
-                                        });
-                                      },
-                                      selectedItem:
-                                          '${snapshot.data?[0].specie_name_th}'),
-                                  padding: const EdgeInsets.fromLTRB(
-                                      20, 20, 20, 20));
-                          })),
-                  Container(
-                    child: DropdownSearch<String>(
-                        mode: Mode.MENU,
-                        showSelectedItems: true,
-                        items: ["เพศผู้", "เพศเมีย"],
-                        label: "เพศ",
-                        hint: "country in menu mode",
-                        popupItemDisabled: (String s) => s.startsWith('I'),
-                        onChanged: (newValue) {
-                          setState(() {
-                            sex = newValue;
-                          });
-                        },
-                        selectedItem: "เพศผู้"),
                     padding: const EdgeInsets.all(20.0),
+                    child: DropdownButton<Type>(
+                      hint: new Text("Select a type"),
+                      value: selectStatus == null ? null : types[selectType],
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectType = types.indexOf(newValue!);
+                          print(selectType);
+                        });
+                      },
+                      items: types.map((Type status) {
+                        return new DropdownMenuItem<Type>(
+                          value: status,
+                          child: new Text(
+                            status.name,
+                            style: new TextStyle(color: Colors.black),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(20.0),
+                    child: DropdownButton<Specie>(
+                      hint: new Text("Select a specie"),
+                      value:
+                          selectSpecie == null ? null : species[selectSpecie],
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectSpecie = species.indexOf(newValue!);
+                          print(selectSpecie);
+                        });
+                      },
+                      items: species.map((Specie status) {
+                        return new DropdownMenuItem<Specie>(
+                          value: status,
+                          child: new Text(
+                            status.name,
+                            style: new TextStyle(color: Colors.black),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(20.0),
+                    child: DropdownButton<Sex>(
+                      hint: new Text("Select a sex"),
+                      value: selectSex == null ? null : sexs[selectSex],
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectSex = sexs.indexOf(newValue!);
+                          print(selectSex);
+                        });
+                      },
+                      items: sexs.map((Sex status) {
+                        return new DropdownMenuItem<Sex>(
+                          value: status,
+                          child: new Text(
+                            status.name,
+                            style: new TextStyle(color: Colors.black),
+                          ),
+                        );
+                      }).toList(),
+                    ),
                   ),
                   Column(children: [
                     Container(
@@ -564,15 +496,25 @@ class _EditCowState extends State<EditCow> {
                             children: [
                               RaisedButton(
                                 onPressed: () {
-                                  // saveImage();
-                                  // userEditCow(
-                                  //   user.farm_id,
-                                  //   nameCowController.text,
-                                  // );
-                                  // Navigator.push(context,
-                                  //     MaterialPageRoute(builder: (context) {
-                                  //   return SuccessEditCow();
-                                  // }));
+                                  print('Edit cow');
+                                  saveImage();
+                                  userEditCow(
+                                    widget.cow.cow_id,
+                                    cowNoController.text,
+                                    nameCowController.text,
+                                    '${DateFormat('yyyy-MM-dd').format(DateTime.parse(date.toString()))}',
+                                    selectSex,
+                                    image.toString(),
+                                    cowNoteController.text,
+                                    selectSpecie,
+                                    selectType,
+                                    widget.cow.semen_id,
+                                    widget.cow.semen_specie,
+                                    widget.cow.mom_id,
+                                    widget.cow.mom_specie,
+                                    user?.user_id,
+                                    user?.farm_id,
+                                  );
                                 },
                                 color: Color(0xff62b490),
                                 shape: RoundedRectangleBorder(
@@ -595,5 +537,70 @@ class _EditCowState extends State<EditCow> {
                 ],
               ),
             ))));
+  }
+
+  userEditCow(
+      cow_id,
+      cow_no,
+      cow_name,
+      cow_birthday,
+      cow_sex,
+      cow_image,
+      note,
+      specie_id,
+      type_id,
+      semen_id,
+      semen_specie,
+      mom_id,
+      mom_specie,
+      user_id,
+      farm_id) async {
+    int status_id = 1;
+
+    Map data = {
+      'cow_id': cow_id.toString(),
+      'cow_no': cow_no,
+      'cow_name': cow_name,
+      'cow_birthday': cow_birthday,
+      'cow_sex': cow_sex.toString(),
+      'cow_image': cow_image,
+      'note': note,
+      'type_id': type_id.toString(),
+      'specie_id': specie_id.toString(),
+      'status_id': status_id.toString(),
+      'semen_id': semen_id,
+      'semen_specie': semen_specie.toString(),
+      'mom_id': mom_id,
+      'mom_specie': mom_specie.toString(),
+      'user_id': user_id.toString(),
+      'farm_id': farm_id.toString()
+    };
+
+    print(data);
+
+    final response = await http.put(Uri.http('127.0.0.1:3000', 'cows/edit'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        print("Edit Cow Success");
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return SuccessEditCow();
+        }));
+      } else {
+        print(" ${resposne['message']}");
+      }
+      _scaffoldKey.currentState
+          ?.showSnackBar(SnackBar(content: Text("${resposne['message']}")));
+    } else {
+      _scaffoldKey.currentState
+          ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+    }
   }
 }
