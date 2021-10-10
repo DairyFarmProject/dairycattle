@@ -1,0 +1,4 @@
+/build/
+.pub/
+.DS_Store
+/ios/build
