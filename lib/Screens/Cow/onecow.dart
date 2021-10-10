@@ -91,7 +91,7 @@ class _OneCowState extends State<OneCow> {
             color: Colors.white,
           ),
         ),
-        backgroundColor: Color(0xff62b490),
+        backgroundColor: Colors.brown[500],
       ),
       body: Container(
         child: SingleChildScrollView(
@@ -113,7 +113,7 @@ class _OneCowState extends State<OneCow> {
             ),
             Center(
               child: Text('ข้อมูลวัว',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(50, 0, 0, 0),
@@ -126,7 +126,7 @@ class _OneCowState extends State<OneCow> {
                       padding: EdgeInsets.fromLTRB(0, 30, 0, 10),
                       child: Text(
                         'ชื่อวัว : ${widget.cow.cow_name}',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.w500),
                       ),
                     )),
                   ),
@@ -138,7 +138,7 @@ class _OneCowState extends State<OneCow> {
                               child: Text(
                                   'วันเกิด : ${DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.cow.cow_birthday))}',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold))))),
+                                      fontWeight: FontWeight.w500))))),
                 ],
               ),
             ),
@@ -150,7 +150,7 @@ class _OneCowState extends State<OneCow> {
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                   child: Text(
                     'รหัสประจำตัว : ${widget.cow.cow_no}',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ),
               ),
@@ -166,7 +166,7 @@ class _OneCowState extends State<OneCow> {
                       padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                       child: Text(
                         'พ่อพันธ์ : ${widget.cow.semen_id}',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.w500),
                       ),
                     )),
                   ),
@@ -178,7 +178,7 @@ class _OneCowState extends State<OneCow> {
                               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                               child: Text('แม่พันธ์ : ${widget.cow.mom_id}',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold))))),
+                                      fontWeight: FontWeight.w500))))),
                 ],
               ),
             ),
@@ -190,7 +190,7 @@ class _OneCowState extends State<OneCow> {
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                   child: Text(
                     'สายพันธุ์ : ${widget.cow.specie_name_th}',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ),
               ),
@@ -203,7 +203,7 @@ class _OneCowState extends State<OneCow> {
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                   child: Text(
                     'รายละเอียดอื่นๆ : ${widget.cow.note}',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ),
               ),
@@ -215,7 +215,7 @@ class _OneCowState extends State<OneCow> {
                 'เหตุการณ์ที่กำลังจะเกิดขึ้น',
                 style: TextStyle(
                     color: Colors.black,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                     fontSize: 16),
               ),
               children: <Widget>[

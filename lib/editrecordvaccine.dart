@@ -18,8 +18,6 @@ class EditRecordVaccine extends StatefulWidget {
 }
 
 class _EditRecordVaccineState extends State<EditRecordVaccine> {
-
-
   Future<List<Vaccines>> getVaccines() async {
     final response = await http.get(Uri.http('127.0.0.1:3000', 'vaccines'));
 
@@ -55,6 +53,7 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
             onTap: () {
               Navigator.pop(context);
             },
+            // ignore: prefer_const_constructors
             child: Icon(
               Icons.arrow_back,
               color: Colors.white,

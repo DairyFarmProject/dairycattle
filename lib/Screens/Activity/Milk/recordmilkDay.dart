@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:dairycattle/Screens/Activity/Milk/recordmilktoday.dart';
+
 import '/Screens/Activity/Milk/recordmilk.dart';
 import '/Screens/Activity/Milk/recordmilkMonth.dart';
 import '/Screens/Activity/Milk/recordmilkYear.dart';
@@ -68,8 +70,10 @@ class _RecordMilkDayState extends State<RecordMilkDay> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("บันทึกน้ำนมวัว",
-              style: TextStyle(fontWeight: FontWeight.bold)),
+          title: Text(
+            "บันทึกน้ำนมวัว",
+            // style: TextStyle(fontWeight: FontWeight.bold)
+          ),
           leading: GestureDetector(
             onTap: () {
               Navigator.pop(context);
@@ -79,7 +83,7 @@ class _RecordMilkDayState extends State<RecordMilkDay> {
               color: Colors.white,
             ),
           ),
-          backgroundColor: Colors.amber[600],
+          backgroundColor: Color.fromRGBO(234, 177, 93, 5),
         ),
         body: FutureBuilder<List<Milks>>(
             future: getMilk(),
@@ -110,13 +114,15 @@ class _RecordMilkDayState extends State<RecordMilkDay> {
                                           margin:
                                               EdgeInsets.fromLTRB(0, 0, 0, 10),
                                           child: TabBar(
-                                            unselectedLabelColor: Colors.red,
+                                            unselectedLabelColor:
+                                                Color.fromRGBO(234, 177, 93, 5),
                                             indicatorSize:
                                                 TabBarIndicatorSize.label,
                                             indicator: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(50),
-                                                color: Colors.red),
+                                                color: Color.fromRGBO(
+                                                    234, 177, 93, 5)),
                                             tabs: [
                                               Tab(
                                                 child: Container(
@@ -125,11 +131,12 @@ class _RecordMilkDayState extends State<RecordMilkDay> {
                                                           BorderRadius.circular(
                                                               50),
                                                       border: Border.all(
-                                                          color: Colors.red,
+                                                          color: Color.fromRGBO(
+                                                              234, 177, 93, 5),
                                                           width: 1)),
                                                   child: Align(
                                                     alignment: Alignment.center,
-                                                    child: Text("วันนี้"),
+                                                    child: Text("วัน"),
                                                   ),
                                                 ),
                                               ),
@@ -140,11 +147,12 @@ class _RecordMilkDayState extends State<RecordMilkDay> {
                                                           BorderRadius.circular(
                                                               50),
                                                       border: Border.all(
-                                                          color: Colors.red,
+                                                          color: Color.fromRGBO(
+                                                              234, 177, 93, 5),
                                                           width: 1)),
                                                   child: Align(
                                                     alignment: Alignment.center,
-                                                    child: Text("เดือนนี้"),
+                                                    child: Text("เดือน"),
                                                   ),
                                                 ),
                                               ),
@@ -155,11 +163,12 @@ class _RecordMilkDayState extends State<RecordMilkDay> {
                                                           BorderRadius.circular(
                                                               50),
                                                       border: Border.all(
-                                                          color: Colors.red,
+                                                          color: Color.fromRGBO(
+                                                              234, 177, 93, 5),
                                                           width: 1)),
                                                   child: Align(
                                                     alignment: Alignment.center,
-                                                    child: Text("ปีนี้"),
+                                                    child: Text("ปี"),
                                                   ),
                                                 ),
                                               ),
@@ -174,130 +183,12 @@ class _RecordMilkDayState extends State<RecordMilkDay> {
                                                     top: BorderSide(
                                                         color: Colors.grey,
                                                         width: 0.5))),
-                                            child: TabBarView(
-                                                children: <Widget>[
-                                                  Container(
-                                                    child: Container(
-                                                        margin:
-                                                            EdgeInsets.fromLTRB(
-                                                                20, 15, 20, 5),
-                                                        child:
-                                                            SingleChildScrollView(
-                                                          child: Column(
-                                                            children: [
-                                                              Text(
-                                                                  "จำนวนน้ำนมรวมภายในวันนี้"),
-                                                              Text(
-                                                                  '${snapshot.data![270].total}'),
-                                                              Container(
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                          bottom:
-                                                                              20),
-                                                                  child: Text(
-                                                                      'กิโลกรัม')),
-                                                              ExpansionTile(
-                                                                initiallyExpanded:
-                                                                    true,
-                                                                collapsedBackgroundColor:
-                                                                    Color(
-                                                                        0xff59aca9),
-                                                                tilePadding:
-                                                                    const EdgeInsets
-                                                                            .fromLTRB(
-                                                                        5,
-                                                                        0,
-                                                                        5,
-                                                                        0),
-                                                                title: Text(
-                                                                  '${DateFormat.yMMMMd("th_TH").format(DateTime.parse(now.toString()))}',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      fontSize:
-                                                                          16),
-                                                                ),
-                                                                children: <
-                                                                    Widget>[
-                                                                  DataTable(
-                                                                    columns: <
-                                                                        DataColumn>[
-                                                                      DataColumn(
-                                                                          label:
-                                                                              Text(
-                                                                        'รอบ',
-                                                                      )),
-                                                                      DataColumn(
-                                                                          label:
-                                                                              Text(
-                                                                        'จำนวน',
-                                                                      )),
-                                                                    ],
-                                                                    rows: <
-                                                                        DataRow>[
-                                                                      DataRow(
-                                                                          cells: <
-                                                                              DataCell>[
-                                                                            DataCell(Text('รอบเช้า')),
-                                                                            DataCell(Text('${snapshot.data![270].milk_liter_morn}')),
-                                                                          ]),
-                                                                      DataRow(
-                                                                          cells: <
-                                                                              DataCell>[
-                                                                            DataCell(Text('รอบเย็น')),
-                                                                            DataCell(Text('${snapshot.data![270].milk_liter_even}')),
-                                                                          ]),
-                                                                      DataRow(
-                                                                          cells: <
-                                                                              DataCell>[
-                                                                            DataCell(Text('รวม',
-                                                                                style: TextStyle(fontWeight: FontWeight.bold))),
-                                                                            DataCell(Text('${snapshot.data![270].total}',
-                                                                                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red[700], fontSize: 18))),
-                                                                          ]),
-                                                                    ],
-                                                                  ),
-                                                                  Container(
-                                                                    margin: EdgeInsets
-                                                                        .fromLTRB(
-                                                                            20,
-                                                                            20,
-                                                                            20,
-                                                                            0),
-                                                                    child:
-                                                                        RaisedButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        Navigator.push(
-                                                                            context,
-                                                                            MaterialPageRoute(builder: (context) => EditRecordMilk(milk: snapshot.data![i])));
-                                                                      },
-                                                                      child:
-                                                                          Center(
-                                                                        child:
-                                                                            Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.center,
-                                                                          children: [
-                                                                            Icon(Icons.edit),
-                                                                            Text('แก้ไข')
-                                                                          ],
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )),
-                                                  ),
-                                                  RecordMilkMonth(),
-                                                  RecordMilkYear(),
-                                                ]))
+                                            child:
+                                                TabBarView(children: <Widget>[
+                                              RecordMilkToday(),
+                                              RecordMilkMonth(),
+                                              RecordMilkYear(),
+                                            ]))
                                       ])),
                             ]),
                       );
@@ -310,7 +201,7 @@ class _RecordMilkDayState extends State<RecordMilkDay> {
                 color: Colors.white, fontWeight: FontWeight.w200, fontSize: 14),
           ),
           icon: Icon(Icons.add),
-          backgroundColor: Color(0xff62b490),
+          backgroundColor: Colors.brown[500],
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return RecordMilk();

@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:dairycattle/Screens/Activity/Breeding/datebreeding.dart';
+import 'package:dairycattle/Screens/Activity/Milk/recordmilktoday.dart';
+
 import '/Screens/Activity/Breeding/editrecordbreed.dart';
 import '/Screens/Activity/Breeding/recordbreeding.dart';
 import '/models/Abdominal.dart';
@@ -53,63 +56,6 @@ class _AllRecordBreedingState extends State<AllRecordBreeding> {
     getAbdominal();
   }
 
-  getDate1(date) {
-    DateTime dateTime = DateTime.parse(date);
-    var newDate =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day + 21);
-    var date1 =
-        (DateFormat('dd/MM/yyyy').format(DateTime.parse(newDate.toString())));
-    return date1;
-  }
-
-  getDate2(date) {
-    DateTime dateTime = DateTime.parse(date);
-    var newDate =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day + 42);
-    var date2 =
-        (DateFormat('dd/MM/yyyy').format(DateTime.parse(newDate.toString())));
-    return date2;
-  }
-
-  getDate3(date) {
-    DateTime dateTime = DateTime.parse(date);
-    var newDate =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day + 63);
-    var date3 =
-        (DateFormat('dd/MM/yyyy').format(DateTime.parse(newDate.toString())));
-    return date3;
-  }
-
-  getDate4(date) {
-    DateTime dateTime = DateTime.parse(date);
-    var newDate =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day + 210);
-    var date4 =
-        (DateFormat('dd/MM/yyyy').format(DateTime.parse(newDate.toString())));
-    return date4;
-  }
-
-  getDate5(date) {
-    DateTime dateTime = DateTime.parse(date);
-    var newDate =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day + 282);
-    var date5 =
-        (DateFormat('dd/MM/yyyy').format(DateTime.parse(newDate.toString())));
-    return date5;
-  }
-
-  getDiff1(date) {
-    String hotfixYear(String _) =>
-        _.substring(0, _.length - 2) + (_.substring(_.length - 2, _.length));
-    DateFormat inputFormat = DateFormat('dd/MM/yyyy');
-    DateTime dateTime = inputFormat.parse(hotfixYear(date));
-    final now = inputFormat.parse(inputFormat.format(DateTime.now()));
-    print(now.toString());
-    print(dateTime.toString());
-    final difference = dateTime.difference(now).inDays;
-    return difference;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,7 +70,7 @@ class _AllRecordBreedingState extends State<AllRecordBreeding> {
               color: Colors.white,
             ),
           ),
-          backgroundColor: Color(0xffd6786e),
+          backgroundColor: Color.fromRGBO(185, 110, 110, 5),
         ),
         body: FutureBuilder<List<Abdominal>>(
             future: getAbdominal(),
@@ -140,194 +86,100 @@ class _AllRecordBreedingState extends State<AllRecordBreeding> {
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, i) {
                       return Container(
-                        margin: EdgeInsets.fromLTRB(20, 15, 20, 5),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: <Widget>[
-                              ExpansionTile(
-                                collapsedBackgroundColor: Color(0xff59aca9),
-                                tilePadding:
-                                    const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                title: Text(
-                                  '${snapshot.data![i].semen_name} - ${snapshot.data![i].semen_id} กับ ${snapshot.data?[i].cow_name} - ${snapshot.data![i].cow_no}',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16),
-                                ),
-                                children: <Widget>[
-                                  Text(
-                                    'วันที่เริ่มผสม ${DateFormat('dd/MM/yyyy').format(DateTime.parse('${snapshot.data![i].ab_date}'))}',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 18),
-                                  ),
-                                  DataTable(
-                                    columns: <DataColumn>[
-                                      DataColumn(
-                                          label: Text(
-                                        'ชื่อกิจกรรม',
-                                      )),
-                                      DataColumn(
-                                          label: Text(
-                                        'วันที่',
-                                      )),
-                                      DataColumn(
-                                          label: Text(
-                                        'อีกกี่วัน',
-                                      )),
-                                    ],
-                                    rows: <DataRow>[
-                                      DataRow(cells: <DataCell>[
-                                        DataCell(Text('กลับสัด 1')),
-                                        DataCell(Text(getDate1(
-                                      '${snapshot.data![i].ab_date}'))),
-                                        DataCell(
-                                          Container(
-                                            padding: EdgeInsets.fromLTRB(
-                                                10, 5, 10, 5),
-                                            decoration: BoxDecoration(
-                                                color: Colors.red[800],
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(2),
-                                                )),
-                                            child: Text(
-                                              getDiff1(getDate1('${snapshot.data![i].ab_date}'))
-                                                  .toString(),
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
+                          margin: EdgeInsets.only(top: 20, left: 10, right: 10),
+                          child: Material(
+                            // color: Colors.transparent,
+                            //elevation: 3,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.86,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                color: Color.fromRGBO(185, 110, 110, 5),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: InkWell(
+                                onTap: () async {
+                                  await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    context: context,
+                                    builder: (context) {
+                                      return Container(
+                                        height: 720,
+                                        width: 20,
+                                        child: DateBreeding(),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Expanded(
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  10, 0, 10, 0),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '${snapshot.data![i].semen_name} - ${snapshot.data![i].semen_id} กับ ',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 16),
                                               ),
-                                            ),
+                                              Text(
+                                                  '${snapshot.data?[i].cow_name} - ${snapshot.data![i].cow_no}',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 16))
+                                            ],
                                           ),
                                         ),
-                                      ]),
-                                      DataRow(cells: <DataCell>[
-                                        DataCell(Text('กลับสัด 2')),
-                                        DataCell(Text(getDate2(
-                                            '${snapshot.data![i].ab_date}'))),
-                                        DataCell(
-                                          Container(
-                                            padding: EdgeInsets.fromLTRB(
-                                                10, 5, 10, 5),
-                                            decoration: BoxDecoration(
-                                                color: Colors.red[800],
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(2),
-                                                )),
-                                            child: Text(
-                                              getDiff1(getDate2('${snapshot.data![i].ab_date}'))
-                                                  .toString(),
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(20),
+                                              topLeft: Radius.circular(20)),
+                                          color: Colors.red[100],
                                         ),
-                                      ]),
-                                      DataRow(cells: <DataCell>[
-                                        DataCell(Text('กลับสัด 3')),
-                                        DataCell(Text(getDate3(
-                                            '${snapshot.data![i].ab_date}'))),
-                                        DataCell(
-                                          Container(
-                                            padding: EdgeInsets.fromLTRB(
-                                                10, 5, 10, 5),
-                                            decoration: BoxDecoration(
-                                                color: Colors.red[800],
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(2),
-                                                )),
-                                            child: Text(
-                                              getDiff1(getDate3('${snapshot.data![i].ab_date}'))
-                                                  .toString(),
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ]),
-                                      DataRow(cells: <DataCell>[
-                                        DataCell(Text('พักท้อง')),
-                                        DataCell(Text(getDate4(
-                                            '${snapshot.data![i].ab_date}'))),
-                                        DataCell(
-                                          Container(
-                                            padding: EdgeInsets.fromLTRB(
-                                                10, 5, 10, 5),
-                                            decoration: BoxDecoration(
-                                                color: Colors.red[800],
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(2),
-                                                )),
-                                            child: Text(
-                                              getDiff1(getDate4('${snapshot.data![i].ab_date}'))
-                                                  .toString(),
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ]),
-                                      DataRow(cells: <DataCell>[
-                                        DataCell(Text('กำหนดคลอด')),
-                                        DataCell(Text(getDate5(
-                                            '${snapshot.data![i].ab_date}'))),
-                                        DataCell(
-                                          Container(
-                                            padding: EdgeInsets.fromLTRB(
-                                                10, 5, 10, 5),
-                                            decoration: BoxDecoration(
-                                                color: Colors.red[800],
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(2),
-                                                )),
-                                            child: Text(
-                                              getDiff1(getDate5('${snapshot.data![i].ab_date}'))
-                                                  .toString(),
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ])
-                                    ],
-                                  ),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.fromLTRB(100, 10, 100, 20),
-                                    child: RaisedButton(
-                                      onPressed: () {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return EditRecordBreed();
-                                        }));
-                                      },
-                                      child: Center(
+                                        height: 100,
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.edit),
-                                            Text('แก้ไข')
+                                          children: <Widget>[
+                                            Container(
+                                              width: 40,
+                                              padding: EdgeInsets.only(
+                                                  left: 0, right: 20),
+                                              alignment: Alignment.center,
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  EdgeInsetsDirectional.only(
+                                                      end: 20),
+                                              child: Image.asset(
+                                                "assets/images/love.png",
+                                                height: 50,
+                                                color: Colors.red[200],
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
-                                    ),
-                                  )
-                                ],
+                                    ]),
                               ),
-                            ],
-                          ),
-                        ),
-                      );
+                            ),
+                          ));
                     });
             }),
         floatingActionButton: FloatingActionButton.extended(
@@ -337,7 +189,7 @@ class _AllRecordBreedingState extends State<AllRecordBreeding> {
                 color: Colors.white, fontWeight: FontWeight.w200, fontSize: 14),
           ),
           icon: Icon(Icons.add),
-          backgroundColor: Color(0xff62b490),
+          backgroundColor: Colors.brown,
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return RecordBreeding();

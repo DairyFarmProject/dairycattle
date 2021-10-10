@@ -36,7 +36,7 @@ class _HomepageState extends State<Homepage> {
     AppBar(
       automaticallyImplyLeading: false,
       title: Text('ภาพรวมฟาร์ม'),
-      backgroundColor: Color(0xff62b490),
+      backgroundColor: Colors.brown[500],
     ),
     AppBar(
       automaticallyImplyLeading: false,
@@ -58,22 +58,22 @@ class _HomepageState extends State<Homepage> {
           },
         )
       ],
-      backgroundColor: Color(0xff62b490),
+      backgroundColor: Colors.brown[500],
     ),
     AppBar(
       automaticallyImplyLeading: false,
       title: Text('เพิ่มกิจกรรม'),
-      backgroundColor: Color(0xff62b490),
+      backgroundColor: Colors.brown[500],
     ),
     AppBar(
       automaticallyImplyLeading: false,
       title: Text('การแจ้งเตือน'),
-      backgroundColor: Color(0xff62b490),
+      backgroundColor: Colors.brown[500],
     ),
     AppBar(
       automaticallyImplyLeading: false,
       title: Text('บัญชีผู้ใช้'),
-      backgroundColor: Color(0xff62b490),
+      backgroundColor: Colors.brown[500],
     ),
   ];
 
@@ -99,7 +99,7 @@ class _HomepageState extends State<Homepage> {
             _selectPage = index;
           });
         },
-        selectedItemColor: Colors.amberAccent,
+        selectedItemColor: Colors.brown[500],
         unselectedItemColor: Colors.blueGrey,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

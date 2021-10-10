@@ -54,7 +54,7 @@ class _RecordVacineState extends State<RecordVacine> {
               color: Colors.white,
             ),
           ),
-          backgroundColor: Color(0xff59aca9),
+          backgroundColor: Color.fromRGBO(111, 193, 148, 5),
         ),
         body: Container(
             child: FutureBuilder<List<Vaccines>>(
@@ -150,7 +150,7 @@ class _RecordVacineState extends State<RecordVacine> {
                                   child: Text(
                                     'ยกเลิก',
                                     style: TextStyle(
-                                        color: Color(0xffd6786e),
+                                        color: Colors.brown,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 14),
                                   ),
@@ -170,7 +170,7 @@ class _RecordVacineState extends State<RecordVacine> {
                                       return SuccessRecord();
                                     }));
                                   },
-                                  color: Color(0xff62b490),
+                                  color: Colors.brown,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(39))),

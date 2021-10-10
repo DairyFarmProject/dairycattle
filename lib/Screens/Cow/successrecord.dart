@@ -78,7 +78,7 @@ class _SuccessRecordState extends State<SuccessRecord> {
                     onPressed: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return AddActivity();
+                        return Homepage();
                       }));
                     },
                     color: Color(0xff59aca9),

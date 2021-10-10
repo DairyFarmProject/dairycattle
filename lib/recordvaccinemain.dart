@@ -35,13 +35,14 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     late List<Vaccine_schedule> vacs;
     Map data = {'farm_id': user?.farm_id.toString()};
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'farm/schedules'),
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: data,
-        encoding: Encoding.getByName("utf-8"));
+    final response =
+        await http.post(Uri.http('127.0.0.1:3000', 'farm/schedules'),
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: data,
+            encoding: Encoding.getByName("utf-8"));
 
     if (response.statusCode == 200) {
       Map<String, dynamic> db = jsonDecode(response.body);
@@ -59,7 +60,6 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
     getVacS();
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +74,7 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
               color: Colors.white,
             ),
           ),
-          backgroundColor: Color(0xff59aca9),
+          backgroundColor: Color.fromRGBO(111, 193, 148, 5),
         ),
         body: FutureBuilder<List<Vaccine_schedule>>(
             future: getVacS(),
@@ -144,10 +144,14 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text('${DateFormat('dd-MM-yyyy').format(DateTime.parse(snapshot.data![i].vac_date.toString()))}'),
-                                            Text('${snapshot.data?[i].vac_name_th}'),
-                                            Text('${DateFormat('dd-MM-yyyy').format(DateTime.parse(snapshot.data![i].next_date.toString()))}'),
-                                            Text('${snapshot.data?[i].cow_name}')
+                                            Text(
+                                                '${DateFormat('dd-MM-yyyy').format(DateTime.parse(snapshot.data![i].vac_date.toString()))}'),
+                                            Text(
+                                                '${snapshot.data?[i].vac_name_th}'),
+                                            Text(
+                                                '${DateFormat('dd-MM-yyyy').format(DateTime.parse(snapshot.data![i].next_date.toString()))}'),
+                                            Text(
+                                                '${snapshot.data?[i].cow_name}')
                                           ],
                                         ),
                                       ],
@@ -158,10 +162,13 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
                                         EdgeInsets.fromLTRB(100, 10, 100, 20),
                                     child: RaisedButton(
                                       onPressed: () {
-                                        Navigator.push(context,
+                                        Navigator.push(
+                                            context,
                                             MaterialPageRoute(
-                                                builder: (context) => EditRecordVaccine(
-                                                      vac: snapshot.data![i])));
+                                                builder: (context) =>
+                                                    EditRecordVaccine(
+                                                        vac: snapshot
+                                                            .data![i])));
                                       },
                                       child: Center(
                                         child: Row(
@@ -188,7 +195,7 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
                 color: Colors.white, fontWeight: FontWeight.w200, fontSize: 14),
           ),
           icon: Icon(Icons.add),
-          backgroundColor: Color(0xff62b490),
+          backgroundColor: Colors.brown,
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return RecordVacine();

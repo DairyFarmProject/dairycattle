@@ -28,7 +28,7 @@ void showInSnackBar(String value) {
 }
 
 class _DeleteCowState extends State<DeleteCow> {
-  int selectStatus=0;
+  int selectStatus = 0;
   List<Status> statuses = <Status>[
     Status('ขายออก'),
     Status('ป่วย'),
@@ -71,7 +71,7 @@ class _DeleteCowState extends State<DeleteCow> {
             color: Colors.white,
           ),
         ),
-        backgroundColor: Color(0xff62b490),
+        backgroundColor: Colors.brown[500],
       ),
       body: Container(
         child: SingleChildScrollView(
@@ -141,14 +141,14 @@ class _DeleteCowState extends State<DeleteCow> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: Color(0xff5a82de),
+                          color: Colors.brown[500],
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
                         child: Text(
                           'สถานะปัจจุบัน : ${widget.cow.type_name}',
                           style: TextStyle(
                             color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
@@ -208,17 +208,20 @@ class _DeleteCowState extends State<DeleteCow> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         RaisedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                           color: Colors.blueGrey[50],
                           padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
                           shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(39))),
+                            borderRadius: BorderRadius.all(Radius.circular(39)),
+                          ),
+                          //hoverColor: Colors.brown[900],
                           child: Text(
                             'ยกเลิก',
                             style: TextStyle(
-                              color: Color(0xffd6786e),
-                              fontWeight: FontWeight.w600,
+                              color: Colors.brown[900],
+                              fontWeight: FontWeight.w500,
                               fontSize: 14,
                             ),
                           ),
@@ -242,7 +245,7 @@ class _DeleteCowState extends State<DeleteCow> {
                             print("Confirm Action $action");
                           },
                           padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-                          color: Color(0xff62b490),
+                          color: Colors.brown[500],
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(39)),
                           ),
@@ -250,7 +253,7 @@ class _DeleteCowState extends State<DeleteCow> {
                             'บันทึกข้อมูล',
                             style: TextStyle(
                               color: Colors.white,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                               fontSize: 14,
                             ),
                           ),
@@ -311,20 +314,29 @@ Future<ConfirmAction?> _asyncConfirmDialog(
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
+          insetPadding: EdgeInsets.fromLTRB(20, 10, 20, 30),
           title: Text(
             'ยืนยันที่จะลบวัวตัวนี้',
             style: TextStyle(
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w500,
             ),
+            textAlign: TextAlign.center,
+          ),
+          content: Text(
+            'เมื่อคุณกดปุ่ม "ยืนยัน" แล้ว วัวของคุณจะถูกลบออกไปโดยทันที ',
             textAlign: TextAlign.center,
           ),
           actions: <Widget>[
             Container(
+              //alignment: Alignment.center,
               width: 130,
               child: RaisedButton(
-                child: const Text('ยกเลิก'),
+                child: const Text(
+                  'ยกเลิก',
+                  style: TextStyle(color: Color(0xFF3F2723)),
+                ),
                 padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-                color: Color(0xffd6786e),
+                color: Colors.blueGrey[50],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(39)),
                 ),
@@ -341,7 +353,7 @@ Future<ConfirmAction?> _asyncConfirmDialog(
                   style: TextStyle(color: Colors.white),
                 ),
                 padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-                color: Color(0xff62b490),
+                color: Colors.brown[900],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(39)),
                 ),

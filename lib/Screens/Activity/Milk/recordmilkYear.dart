@@ -99,7 +99,7 @@ class _RecordMilkYearState extends State<RecordMilkYear> {
                                             child: Column(children: [
                                   ExpansionTile(
                                     collapsedBackgroundColor:
-                                        Colors.blueGrey[200],
+                                        Color.fromRGBO(234, 177, 93, 5),
                                     tilePadding:
                                         const EdgeInsets.fromLTRB(20, 0, 20, 0),
                                     title: Text(

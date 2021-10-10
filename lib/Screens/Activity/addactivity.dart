@@ -32,9 +32,10 @@ class _AddActivityState extends State<AddActivity> {
             Container(),
             Expanded(
                 child: GridView.count(
-              padding: EdgeInsets.fromLTRB(10, 100, 10, 0),
+              padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
               mainAxisSpacing: 10,
-              crossAxisCount: 2,
+              crossAxisCount: 1,
+              childAspectRatio: (200 / 75),
               primary: false,
               crossAxisSpacing: 5,
               children: <Widget>[
@@ -48,24 +49,49 @@ class _AddActivityState extends State<AddActivity> {
                   child: Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
-                    elevation: 2,
-                    color: Colors.amber[500],
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    elevation: 1,
+                    color: Color.fromRGBO(234, 177, 93, 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Center(
+                        Container(
+                          padding: EdgeInsets.only(left: 30),
                           child: Text(
                             'บันทึกน้ำนมวัว',
                             style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18),
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        SizedBox.fromSize(
-                          size: Size.fromHeight(0),
-                        )
+                        Image.asset(
+                          "assets/images/milk.png",
+                          height: 80,
+                          color: Colors.amber[100],
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                topLeft: Radius.circular(20)),
+                            color: Colors.amber[100],
+                          ),
+                          height: 100,
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                width: 30,
+                                padding: EdgeInsets.only(left: 20),
+                                alignment: Alignment.center,
+                              ),
+                              Icon(
+                                Icons.arrow_back_rounded,
+                                color: Color.fromRGBO(234, 177, 93, 5),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -80,17 +106,48 @@ class _AddActivityState extends State<AddActivity> {
                   child: Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
-                    elevation: 2,
-                    color: Colors.teal[400],
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    elevation: 1,
+                    color: Color.fromRGBO(111, 193, 148, 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Center(
-                          child: Text('บันทึกการฉีดวัคซีน',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center),
+                        Container(
+                          padding: EdgeInsets.only(left: 30),
+                          child: Text(
+                            'บันทึกการฉีดวัคซีน',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Image.asset(
+                          "assets/images/vaccines.png",
+                          height: 80,
+                          color: Colors.green[100],
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                topLeft: Radius.circular(20)),
+                            color: Colors.green[100],
+                          ),
+                          height: 100,
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                width: 30,
+                                padding: EdgeInsets.only(left: 20),
+                                alignment: Alignment.center,
+                              ),
+                              Icon(
+                                Icons.arrow_back_rounded,
+                                color: Color.fromRGBO(111, 193, 148, 5),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -106,15 +163,48 @@ class _AddActivityState extends State<AddActivity> {
                   child: Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
-                    elevation: 2,
-                    color: Colors.red[300],
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    elevation: 1,
+                    color: Color.fromRGBO(185, 110, 110, 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          'บันทึกการผสมพันธ์',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                        Container(
+                          padding: EdgeInsets.only(left: 30),
+                          child: Text(
+                            'บันทึกการผสมพันธ์',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Image.asset(
+                          "assets/images/love.png",
+                          height: 80,
+                          color: Colors.red[50],
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                topLeft: Radius.circular(20)),
+                            color: Colors.red[100],
+                          ),
+                          height: 100,
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                width: 30,
+                                padding: EdgeInsets.only(left: 20),
+                                alignment: Alignment.center,
+                              ),
+                              Icon(
+                                Icons.arrow_back_rounded,
+                                color: Color.fromRGBO(185, 110, 110, 5),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -130,15 +220,48 @@ class _AddActivityState extends State<AddActivity> {
                   child: Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
-                    elevation: 2,
-                    color: Colors.indigo[300],
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    elevation: 1,
+                    color: Color.fromRGBO(93, 124, 234, 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          'บันทึกการคลอด',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                        Container(
+                          padding: EdgeInsets.only(left: 30),
+                          child: Text(
+                            'บันทึกการคลอด',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Image.asset(
+                          "assets/images/pacifier.png",
+                          height: 80,
+                          color: Colors.indigo[100],
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                topLeft: Radius.circular(20)),
+                            color: Colors.indigo[100],
+                          ),
+                          height: 100,
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                width: 30,
+                                padding: EdgeInsets.only(left: 20),
+                                alignment: Alignment.center,
+                              ),
+                              Icon(
+                                Icons.arrow_back_rounded,
+                                color: Color.fromRGBO(93, 124, 234, 5),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

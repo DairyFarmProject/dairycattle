@@ -20,7 +20,7 @@ class _RecordVaccineMainAllState extends State<RecordVaccineMainAll> {
           child: Column(
             children: <Widget>[
               ExpansionTile(
-                collapsedBackgroundColor: Color(0xff59aca9),
+                collapsedBackgroundColor: Color.fromRGBO(111, 193, 148, 5),
                 tilePadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 title: Text(
                   'โรงเรือน 1',

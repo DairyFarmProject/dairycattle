@@ -73,7 +73,7 @@ class _RecordMilkState extends State<RecordMilk> {
               color: Colors.white,
             ),
           ),
-          backgroundColor: Colors.amber[600],
+          backgroundColor: Color.fromRGBO(234, 177, 93, 5),
         ),
         body: Container(
           child: Form(
@@ -231,7 +231,9 @@ class _RecordMilkState extends State<RecordMilk> {
                           onPressed: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return EditMilkDay(milk: '${DateFormat.yMMMMd("th_TH").format(DateTime.parse(now.toString()))}');
+                              return EditMilkDay(
+                                  milk:
+                                      '${DateFormat.yMMMMd("th_TH").format(DateTime.parse(now.toString()))}');
                             }));
                           },
                         );
@@ -243,12 +245,17 @@ class _RecordMilkState extends State<RecordMilk> {
                   padding: EdgeInsets.all(20),
                   margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
                   decoration: BoxDecoration(
-                      color: Color(0xffd6786e),
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                    border: Border.all(
+                      color: Colors.brown,
+                      width: 5,
+                    ),
+                    color: Colors.white,
+                    shape: BoxShape.rectangle,
+                    // borderRadius: BorderRadius.all(Radius.circular(10))
+                  ),
                   child: Text('จำนวนน้ำนมทั้งหมด $sum ลิตร',
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.brown[500],
                           fontWeight: FontWeight.bold,
                           fontSize: 16)),
                 ),
@@ -273,8 +280,8 @@ class _RecordMilkState extends State<RecordMilk> {
                               child: Text(
                                 'ยกเลิก',
                                 style: TextStyle(
-                                    color: Color(0xffd6786e),
-                                    fontWeight: FontWeight.w600,
+                                    color: Colors.brown[500],
+                                    fontWeight: FontWeight.w500,
                                     fontSize: 14),
                               ),
                               padding:
@@ -291,7 +298,7 @@ class _RecordMilkState extends State<RecordMilk> {
                               onPressed: () {
                                 addMilk(t1.text, t2.text, user?.farm_id);
                               },
-                              color: Color(0xff62b490),
+                              color: Colors.brown[500],
                               shape: RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(39))),
@@ -299,7 +306,7 @@ class _RecordMilkState extends State<RecordMilk> {
                                 'บันทึกข้อมูล',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontWeight: FontWeight.w600,
+                                    fontWeight: FontWeight.w500,
                                     fontSize: 14),
                               ),
                               padding:

@@ -102,7 +102,7 @@ class _AddCowState extends State<AddCow> {
               color: Colors.white,
             ),
           ),
-          backgroundColor: Color(0xff62b490),
+          backgroundColor: Colors.brown[900],
         ),
         body: Form(
           key: _formKey,
