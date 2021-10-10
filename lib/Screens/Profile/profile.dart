@@ -19,15 +19,15 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       body: Column(
         children: [
-          Container(
-              width: 200,
-              height: 200,
-              decoration:
-                  BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-              child: CircleAvatar(
-                              backgroundImage: NetworkImage('$url'),
-                              radius: 100.0)
-                      ),
+          // Container(
+          //   width: 200,
+          //   height: 200,
+          //   decoration:
+          //       BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+          //   // child: CircleAvatar(
+          //   //                 backgroundImage: NetworkImage('$url'),
+          //   //                 radius: 100.0)
+          // ),
           Container(
             child: Text(
               'โปรไฟล์',
@@ -48,7 +48,8 @@ class _ProfileState extends State<Profile> {
               children: [
                 Text('ชื่อ : ${user?.firstname}'),
                 Text('นามสกุล : ${user?.lastname}'),
-                Text('วันเกิด : ${DateFormat('dd-MM-yyyy').format(DateTime.parse(user!.user_birthday.toString()))}'),
+                Text(
+                    'วันเกิด : ${DateFormat('dd-MM-yyyy').format(DateTime.parse(user!.user_birthday.toString()))}'),
                 Text('เบอร์มือถือ : ${user.mobile}'),
               ],
             ),

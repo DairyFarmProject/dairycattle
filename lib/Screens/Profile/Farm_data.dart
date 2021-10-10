@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:html';
+
+import 'package:dairycattle/Screens/Profile/Editfarm.dart';
 
 import '/Screens/Profile/accept_member.dart';
 import '/Screens/Profile/profile.dart';
@@ -111,8 +114,43 @@ class _FarmDataState extends State<FarmData> {
         body: Container(
       child: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+          children: <Widget>[
+            Container(
+                height: 100,
+                width: 100,
+                margin: EdgeInsets.only(top: 15),
+                child: Stack(
+                  children: <Widget>[
+                    CircleAvatar(
+                      radius: 120,
+                      backgroundImage: NetworkImage('$url'),
+                    ),
+                    // Align(
+                    //   alignment: Alignment.bottomRight,
+                    //   child: Container(
+                    //     height: 22,
+                    //     width: 22,
+                    //     decoration: BoxDecoration(
+                    //       color: Theme.of(context).accentColor,
+                    //       shape: BoxShape.circle,
+                    //     ),
+                    //     child: Center(
+                    //       heightFactor: 10,
+                    //       widthFactor: 10,
+                    //       child: Icon(
+                    //         Icons.camera_alt_outlined,
+                    //         color: Colors.white,
+                    //         size: 12,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                  ],
+                )),
+            SizedBox(height: 10),
+            Text(
+              'เจ้าของฟาร์ม',
+            ),
             SizedBox(height: 20.0),
             DefaultTabController(
                 length: 3,
@@ -123,52 +161,69 @@ class _FarmDataState extends State<FarmData> {
                     Container(
                         margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                         child: TabBar(
-                          unselectedLabelColor: Colors.blueGrey[300],
-                          indicatorSize: TabBarIndicatorSize.label,
-                          indicator: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: Colors.blueGrey[300]),
+                          indicatorColor: Colors.brown,
+                          // unselectedLabelColor: Colors.blueGrey[300],
+                          // indicatorSize: TabBarIndicatorSize.label,
+                          // indicator: BoxDecoration(
+                          //     borderRadius: BorderRadius.circular(50),
+                          //     color: Colors.blueGrey[300]),
                           tabs: [
                             Tab(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    border: Border.all(
-                                        color: Color(0xFFB0BEC5), width: 1)),
-                                child: Align(
-                                    alignment: Alignment.center,
-                                    child: ImageIcon(AssetImage(
-                                        "assets/images/icon_farm.png"))),
-                              ),
-                            ),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                  Align(
+                                      alignment: Alignment.center,
+                                      child: Image.asset(
+                                        "assets/images/icon_farm.png",
+                                        color: Colors.brown,
+                                        height: 20,
+                                      )),
+                                  Padding(padding: EdgeInsets.only(left: 5)),
+                                  Text(
+                                    'ฟาร์ม',
+                                    style: TextStyle(color: Colors.brown),
+                                  )
+                                ])),
                             Tab(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    border: Border.all(
-                                        color: Color(0xFFB0BEC5), width: 1)),
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Icon(Icons.person_add_alt_1_outlined),
-                                ),
-                              ),
-                            ),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                  Align(
+                                      alignment: Alignment.center,
+                                      child: Icon(
+                                        Icons.person_add_alt_1_outlined,
+                                        color: Colors.brown,
+                                        size: 20,
+                                      )),
+                                  Padding(padding: EdgeInsets.only(left: 5)),
+                                  Text(
+                                    'เพิ่มสมาชิก',
+                                    style: TextStyle(color: Colors.brown),
+                                  )
+                                ])),
                             Tab(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    border: Border.all(
-                                        color: Color(0xFFB0BEC5), width: 1)),
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Icon(Icons.person_outline_sharp),
-                                ),
-                              ),
-                            ),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                  Align(
+                                      alignment: Alignment.center,
+                                      child: Icon(
+                                        Icons.person_outline_sharp,
+                                        color: Colors.brown,
+                                        size: 20,
+                                      )),
+                                  Padding(padding: EdgeInsets.only(left: 5)),
+                                  Text(
+                                    'โปรไฟล์',
+                                    style: TextStyle(color: Colors.brown),
+                                  )
+                                ])),
                           ],
                         )),
+
                     Container(
-                        height: 700, //height of TabBarView
+                        height: 600, //height of TabBarView
                         decoration: BoxDecoration(
                             border: Border(
                                 top: BorderSide(
@@ -182,14 +237,14 @@ class _FarmDataState extends State<FarmData> {
                                     children: [
                                       Container(
                                           width: 300,
-                                          height: 200,
+                                          height: 150,
                                           child: Padding(
                                             padding: EdgeInsets.all(4.0),
                                             child: Image.network('$url'),
                                           )),
                                       Container(
                                         child: Text(
-                                          'โปรไฟล์',
+                                          'ข้อมูลฟาร์ม',
                                           style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500),
@@ -222,6 +277,28 @@ class _FarmDataState extends State<FarmData> {
                                           ],
                                         ),
                                       ),
+                                      RaisedButton(
+                                        onPressed: () {
+                                          Navigator.push(context,
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                            return EditFarm();
+                                          }));
+                                        },
+                                        color: Colors.blueGrey[50],
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(39))),
+                                        child: Text(
+                                          'ออกจากฟาร์ม',
+                                          style: TextStyle(
+                                              color: Color(0xffd6786e),
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 14),
+                                        ),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            30, 10, 30, 10),
+                                      )
                                     ],
                                   ),
                                 )),

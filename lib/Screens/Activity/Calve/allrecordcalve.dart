@@ -99,7 +99,7 @@ class _AllRecordCalveState extends State<AllRecordCalve> {
                                 tilePadding:
                                     const EdgeInsets.fromLTRB(20, 0, 20, 0),
                                 title: Text(
-                                  '${snapshot.data?[i].parturition_id}',
+                                  'น้อง${snapshot.data![i].calf_name}',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500,
@@ -120,22 +120,22 @@ class _AllRecordCalveState extends State<AllRecordCalve> {
                                             Text(
                                               'วันที่',
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
+                                                  fontWeight: FontWeight.w500),
                                             ),
                                             Text(
                                               'ผลการทำคลอด',
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
+                                                  fontWeight: FontWeight.w500),
                                             ),
                                             Text(
                                               'ชื่อลูกวัว',
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
+                                                  fontWeight: FontWeight.w500),
                                             ),
                                             Text(
                                               'หมายเหตุ',
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
+                                                  fontWeight: FontWeight.w500),
                                             )
                                           ],
                                         ),
@@ -190,7 +190,7 @@ class _AllRecordCalveState extends State<AllRecordCalve> {
                 color: Colors.white, fontWeight: FontWeight.w200, fontSize: 14),
           ),
           icon: Icon(Icons.add),
-          backgroundColor: Color(0xff62b490),
+          backgroundColor: Colors.brown,
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return RecordCalve();

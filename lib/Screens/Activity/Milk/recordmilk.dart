@@ -247,7 +247,7 @@ class _RecordMilkState extends State<RecordMilk> {
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: Colors.brown,
-                      width: 5,
+                      width: 2,
                     ),
                     color: Colors.white,
                     shape: BoxShape.rectangle,
