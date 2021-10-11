@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:dairycattle/Screens/Profile/Editfarm.dart';
 
@@ -252,12 +251,12 @@ class _FarmDataState extends State<FarmData> {
                                         margin: EdgeInsets.only(top: 10),
                                       ),
                                       Container(
-                                        margin:
-                                            EdgeInsets.fromLTRB(5, 10, 5, 0),
+                                        margin: EdgeInsets.only(
+                                            top: 10, bottom: 10),
                                         width: 420,
-                                        height: 200,
+                                        height: 160,
                                         padding:
-                                            EdgeInsets.fromLTRB(30, 30, 30, 0),
+                                            EdgeInsets.fromLTRB(30, 10, 30, 10),
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(15),
@@ -286,13 +285,14 @@ class _FarmDataState extends State<FarmData> {
                                           }));
                                         },
                                         color: Colors.blueGrey[50],
+                                        
                                         shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(39))),
                                         child: Text(
-                                          'ออกจากฟาร์ม',
+                                          'แก้ไขข้อมูลฟาร์ม',
                                           style: TextStyle(
-                                              color: Color(0xffd6786e),
+                                              color: Colors.brown,
                                               fontWeight: FontWeight.w600,
                                               fontSize: 14),
                                         ),

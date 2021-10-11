@@ -41,6 +41,7 @@ class _AcceptMemberState extends State<AcceptMember> {
               child: Column(
                 children: <Widget>[
                   Container(
+                    padding: EdgeInsets.only(bottom: 10),
                     child: Text(
                       'ตอบรับคำขอเข้าร่วม',
                       style:
@@ -55,7 +56,8 @@ class _AcceptMemberState extends State<AcceptMember> {
                             if (snapshot.data == null) {
                               return Container(
                                 child: Center(
-                                  child: Text('Loading...'),
+                                  child: Text(
+                                      'ขณะนี้ยังไม่มีคำขอเข้ารวมฟาร์มของคุณ'),
                                 ),
                               );
                             } else
@@ -152,7 +154,48 @@ class _AcceptMemberState extends State<AcceptMember> {
                                       ],
                                     ))));
                                   });
-                          }))
+                          })),
+                  Container(
+                    margin: EdgeInsets.only(top: 10, bottom: 10),
+                    width: 420,
+                    height: 160,
+                    padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.blueGrey[50],
+                    ),
+                    child: Column(
+
+                      children: [
+                        Text(
+                          'สมาชิกทั้งหมด',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        DataTable(columns: <DataColumn>[
+                         //Spacer(),
+                          DataColumn(
+                              label: Text(
+                            '',
+                          )),
+                          DataColumn(
+                              label: Text(
+                            'ชื่อ',
+                          )),
+                          DataColumn(
+                              label: Text(
+                            'ตำแหน่ง',
+                          )),
+                          DataColumn(
+                              label: Text(
+                            'สถานะ',
+                          )),
+                        ], rows: [])
+                      ],
+                    ),
+                  ),
                 ],
               ),
             )));

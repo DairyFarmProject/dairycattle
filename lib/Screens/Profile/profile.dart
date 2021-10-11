@@ -1,3 +1,5 @@
+import 'package:dairycattle/Screens/Profile/editprofile.dart';
+
 import '/models/User.dart';
 import '/providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +40,7 @@ class _ProfileState extends State<Profile> {
           Container(
             margin: EdgeInsets.fromLTRB(5, 10, 5, 0),
             width: 420,
-            height: 200,
+            height: 160,
             padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
@@ -54,6 +56,24 @@ class _ProfileState extends State<Profile> {
               ],
             ),
           ),
+          RaisedButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return EditProfile();
+              }));
+            },
+            color: Colors.blueGrey[50],
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(39))),
+            child: Text(
+              'แก้ไขข้อมูลฟาร์ม',
+              style: TextStyle(
+                  color: Colors.brown,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14),
+            ),
+            padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+          )
         ],
       ),
     );
