@@ -19,8 +19,7 @@ class _RecordCalveState extends State<RecordCalve> {
     Map<String, dynamic> data = jsonDecode(response.body);
     final List list = data['data'];
 
-    List<Abdominal> abdominals =
-        list.map((e) => Abdominal.fromMap(e)).toList();
+    List<Abdominal> abdominals = list.map((e) => Abdominal.fromMap(e)).toList();
 
     return abdominals;
   }
@@ -65,11 +64,7 @@ class _RecordCalveState extends State<RecordCalve> {
             future: getAbdominals(),
             builder: (context, snapshot) {
               if (snapshot.data == null) {
-                return Container(
-                  child: Center(
-                    child: Text('Loading...'),
-                  ),
-                );
+                return Container();
               } else
                 return Container(
                     child: Column(children: [
@@ -250,7 +245,5 @@ class _RecordCalveState extends State<RecordCalve> {
         ));
   }
 
-  addCalve() {
-    
-  }
+  addCalve() {}
 }

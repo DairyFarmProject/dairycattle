@@ -1,12 +1,16 @@
 import 'dart:convert';
 
+import 'package:dairycattle/models/User.dart';
+import 'package:dairycattle/providers/user_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import 'Screens/Cow/successrecord.dart';
 import 'models/Vaccines.dart';
+import '../../models/AllChoose.dart';
 
 class RecordVacine extends StatefulWidget {
   @override
@@ -14,24 +18,11 @@ class RecordVacine extends StatefulWidget {
 }
 
 class _RecordVacineState extends State<RecordVacine> {
-  Future<List<Vaccines>> getVaccines() async {
-    final response = await http.get(Uri.http('127.0.0.1:3000', 'vaccines'));
-
-    Map<String, dynamic> data = jsonDecode(response.body);
-    final List list = data['data'];
-
-    List<Vaccines> vaccines = list.map((e) => Vaccines.fromMap(e)).toList();
-
-    return vaccines;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getVaccines();
-  }
-
+  int selectVaccine = 1;
   int _selectIndex = 0;
+
+  final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _onItemTap(int index) {
     setState(() {
@@ -42,6 +33,7 @@ class _RecordVacineState extends State<RecordVacine> {
   DateTime? _dateTime;
   @override
   Widget build(BuildContext context) {
+    User? user = Provider.of<UserProvider>(context).user;
     return Scaffold(
         appBar: AppBar(
           title: Text('บันทึกการฉีดวัคซีน'),
@@ -56,142 +48,161 @@ class _RecordVacineState extends State<RecordVacine> {
           ),
           backgroundColor: Color.fromRGBO(111, 193, 148, 5),
         ),
-        body: Container(
-            child: FutureBuilder<List<Vaccines>>(
-          future: getVaccines(),
-          builder: (context, snapshot) {
-            if (snapshot.data == null) {
-              return Container(
-                child: Center(
-                  child: Text('Loading...'),
+        body: Form(
+          key: _formKey,
+          child: 
+        Container(
+          child: Column(
+            children: [
+              Container(
+                child: Container(
+                  padding: const EdgeInsets.all(20.0),
+                  child: DropdownButton<Vaccine>(
+                    hint: new Text("Select a specie"),
+                    value: selectVaccine == null ? null : vacs[selectVaccine],
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectVaccine = vacs.indexOf(newValue!);
+                        print(selectVaccine);
+                      });
+                    },
+                    items: vacs.map((Vaccine status) {
+                      return new DropdownMenuItem<Vaccine>(
+                        value: status,
+                        child: new Text(
+                          status.name,
+                          style: new TextStyle(color: Colors.black),
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ),
-              );
-            } else
-              return Container(
-                child: Column(
-                  children: [
-                    Container(
-                        child: Container(
-                            margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                            child: DropdownSearch<String>(
-                                mode: Mode.MENU,
-                                showSelectedItems: true,
-                                items: snapshot.data
-                                    ?.map((data) => data.vac_name_th)
-                                    .toList(),
-                                label: "ชื่อวัคซีน",
-                                hint: "country in menu mode",
-                                popupItemDisabled: (String s) =>
-                                    s.startsWith('I'),
-                                onChanged: print,
-                                selectedItem:
-                                    '${snapshot.data?[0].vac_name_th}'),
-                            padding: const EdgeInsets.all(20.0))
-                        //     }
-                        // )
-                        ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      margin: EdgeInsets.all(0),
-                      padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
-                      child: Text('วันที่',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.all(0),
+                padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
+                child: Text('วันที่',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(30, 20, 0, 20),
+                    child: Text(
+                      _dateTime == null ? 'yyyy/mm/dd' : _dateTime.toString(),
                     ),
-                    Row(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.calendar_today_sharp,
+                        color: Colors.blueGrey,
+                      ),
+                      onPressed: () {
+                        showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1970),
+                                lastDate: DateTime(2022))
+                            .then((date) {
+                          setState(() {
+                            _dateTime = date;
+                          });
+                        });
+                      },
+                    ),
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 40, 0, 30),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(30, 20, 0, 20),
-                          child: Text(
-                            _dateTime == null
-                                ? 'yyyy/mm/dd'
-                                : _dateTime.toString(),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.calendar_today_sharp,
-                              color: Colors.blueGrey,
-                            ),
+                        RaisedButton(
                             onPressed: () {
-                              showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1970),
-                                      lastDate: DateTime(2022))
-                                  .then((date) {
-                                setState(() {
-                                  _dateTime = date;
-                                });
-                              });
+                              Navigator.pop(context);
                             },
-                          ),
-                        )
+                            color: Colors.blueGrey[50],
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(39))),
+                            child: Text(
+                              'ยกเลิก',
+                              style: TextStyle(
+                                  color: Colors.brown,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14),
+                            ),
+                            padding: const EdgeInsets.fromLTRB(30, 10, 30, 10))
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 40, 0, 30),
+                    child: Column(
                       children: [
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 40, 0, 30),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              RaisedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  color: Colors.blueGrey[50],
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(39))),
-                                  child: Text(
-                                    'ยกเลิก',
-                                    style: TextStyle(
-                                        color: Colors.brown,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 14),
-                                  ),
-                                  padding:
-                                      const EdgeInsets.fromLTRB(30, 10, 30, 10))
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 40, 0, 30),
-                          child: Column(
-                            children: [
-                              RaisedButton(
-                                  onPressed: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return SuccessRecord();
-                                    }));
-                                  },
-                                  color: Colors.brown,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(39))),
-                                  child: Text(
-                                    'บันทึกข้อมูล',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 14),
-                                  ),
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 12, 20, 12))
-                            ],
-                          ),
-                        )
+                        RaisedButton(
+                            onPressed: () {
+                              userRecordVaccine(
+                                
+                              );
+                              // Navigator.push(context,
+                              //     MaterialPageRoute(builder: (context) {
+                              //   return SuccessRecord();
+                              // }));
+                            },
+                            color: Colors.brown,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(39))),
+                            child: Text(
+                              'บันทึกข้อมูล',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14),
+                            ),
+                            padding: const EdgeInsets.fromLTRB(20, 12, 20, 12))
                       ],
-                    )
-                  ],
-                ),
-              );
-          },
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
         )));
+  }
+
+  userRecordVaccine() async {
+
+    // final response = await http.post(Uri.http('127.0.0.1:3000', 'schedules/create'),
+    //     headers: {
+    //       "Accept": "application/json",
+    //       "Content-Type": "application/x-www-form-urlencoded"
+    //     },
+    //     body: data,
+    //     encoding: Encoding.getByName("utf-8"));
+
+    // if (response.statusCode == 200) {
+    //   Map<String, dynamic> resposne = jsonDecode(response.body);
+    //   Map<String, dynamic> user = resposne['data'];
+    //   print(user['message']);
+    //   Navigator.push(
+    //     context,
+    //     new MaterialPageRoute(
+    //       builder: (context) => new SuccessRecord(),
+    //     ),
+    //   );
+    // } else {
+    //   _scaffoldKey.currentState
+    //       ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+    // }
   }
 }

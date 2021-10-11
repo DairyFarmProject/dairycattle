@@ -55,11 +55,7 @@ class _CowState extends State<Cow> {
                   future: getCow(),
                   builder: (context, snapshot) {
                     if (snapshot.data == null) {
-                      return Container(
-                        child: Center(
-                          child: Text('Loading...'),
-                        ),
-                      );
+                      return Container();
                     } else
                       return GridView.builder(
                           gridDelegate:

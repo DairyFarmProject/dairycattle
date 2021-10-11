@@ -77,9 +77,7 @@ class _AllRecordBreedingState extends State<AllRecordBreeding> {
             builder: (context, snapshot) {
               if (snapshot.data == null) {
                 return Container(
-                  child: Center(
-                    child: Text('Loading...'),
-                  ),
+                  
                 );
               } else
                 return ListView.builder(

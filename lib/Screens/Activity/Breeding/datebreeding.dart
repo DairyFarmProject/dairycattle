@@ -107,11 +107,7 @@ class _DateBreedingState extends State<DateBreeding> {
                       future: getAbdominal(),
                       builder: (context, snapshot) {
                         if (snapshot.data == null) {
-                          return Container(
-                            child: Center(
-                              child: Text('Loading...'),
-                            ),
-                          );
+                          return Container();
                         } else
                           return ListView.builder(
                               shrinkWrap: true,

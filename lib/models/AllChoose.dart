@@ -29,6 +29,11 @@ class Sex {
   final String name;
 }
 
+class Vaccine {
+  const Vaccine(this.name);
+  final String name;
+}
+
 List<Status> statuses = <Status>[
     Status('ปกติ'),
     Status('ขายออก'),
@@ -98,5 +103,15 @@ List<MomSpecie> mom_species = <MomSpecie>[
 List<Sex> sexs = <Sex>[
     Sex('เพศผู้'),
     Sex('เพศเมีย'),
+  ];
+
+List<Vaccine> vacs = <Vaccine>[
+    Vaccine('ไข้ขา'),
+    Vaccine('คอบวม'),
+    Vaccine('กาลี'),
+    Vaccine('ปากเท้าเปื่อย'),
+    Vaccine('ผิวหนังที่เป็นก้อน'),
+    Vaccine('อัลเบนดาโซล'),
+    Vaccine('ไอเวอร์เมคติน'),
   ];
 

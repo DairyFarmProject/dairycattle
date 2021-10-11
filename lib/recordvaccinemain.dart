@@ -19,18 +19,6 @@ class RecordVaccineMain extends StatefulWidget {
 }
 
 class _RecordVaccineMainState extends State<RecordVaccineMain> {
-  // Future<List<Vaccine_schedule>> getMilk() async {
-  //   final response = await http.get(Uri.http('127.0.0.1:3000', 'schedules'));
-
-  //   Map<String, dynamic> data = jsonDecode(response.body);
-  //   final List list = data['data']['row'];
-
-  //   List<Vaccine_schedule> typecows =
-  //       list.map((e) => Vaccine_schedule.fromMap(e)).toList();
-
-  //   return typecows;
-  // }
-
   Future<List<Vaccine_schedule>> getVacS() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     late List<Vaccine_schedule> vacs;
