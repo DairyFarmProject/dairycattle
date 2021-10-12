@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:dairycattle/Screens/Activity/Milk/recordmilktoday.dart';
-
 import '/Screens/Activity/Breeding/editrecordbreed.dart';
 import '/Screens/Activity/Breeding/recordbreeding.dart';
 import '/models/Abdominal.dart';
@@ -13,22 +11,37 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 class DateBreeding extends StatefulWidget {
-  const DateBreeding({Key? key}) : super(key: key);
-
+  final Abdominal ab;
+  DateBreeding({required this.ab});
   @override
   _DateBreedingState createState() => _DateBreedingState();
 }
 
 class _DateBreedingState extends State<DateBreeding> {
   Future<List<Abdominal>> getAbdominal() async {
-    final response = await http.get(Uri.http('127.0.0.1:3000', 'abdominal'));
+    User? user = Provider.of<UserProvider>(context, listen: false).user;
+    late List<Abdominal> adb;
+    Map data = {
+      'farm_id': user?.farm_id.toString(),
+      'user_id': user?.user_id.toString(),
+      'cow_id': widget.ab.cow_id.toString()
+    };
 
-    Map<String, dynamic> data = jsonDecode(response.body);
-    final List list = data['data']['rows'];
-    print(list);
-    List<Abdominal> typecows = list.map((e) => Abdominal.fromMap(e)).toList();
+    final response =
+        await http.post(Uri.http('127.0.0.1:3000', 'cows/abdominal'),
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: data,
+            encoding: Encoding.getByName("utf-8"));
 
-    return typecows;
+    if (response.statusCode == 200) {
+      Map<String, dynamic> db = jsonDecode(response.body);
+      final List list = db['data']['rows'];
+      adb = list.map((e) => Abdominal.fromMap(e)).toList();
+    }
+    return adb;
   }
 
   @override
@@ -97,215 +110,223 @@ class _DateBreedingState extends State<DateBreeding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            margin: EdgeInsets.fromLTRB(20, 15, 20, 5),
-            child: SingleChildScrollView(
-                child: Column(children: <Widget>[
-              // Text('ddd'),
-              Container(
-                  child: FutureBuilder<List<Abdominal>>(
-                      future: getAbdominal(),
-                      builder: (context, snapshot) {
-                        if (snapshot.data == null) {
-                          return Container();
-                        } else
-                          return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (context, i) {
-                                return Container(
-                                  margin: EdgeInsets.fromLTRB(0, 15, 0, 5),
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: <Widget>[
-                                        Text(
-                                          'วันที่เริ่มผสม ${DateFormat('dd/MM/yyyy').format(DateTime.parse('${snapshot.data![i].ab_date}'))}',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 18),
-                                        ),
-                                        DataTable(
-                                          columns: <DataColumn>[
-                                            DataColumn(
-                                                label: Text(
-                                              'ชื่อกิจกรรม',
-                                            )),
-                                            DataColumn(
-                                                label: Text(
-                                              'วันที่',
-                                            )),
-                                            DataColumn(
-                                                label: Text(
-                                              'อีกกี่วัน',
-                                            )),
-                                          ],
-                                          rows: <DataRow>[
-                                            DataRow(cells: <DataCell>[
-                                              DataCell(Text('กลับสัด 1')),
-                                              DataCell(Text(getDate1(
-                                                  '${snapshot.data![i].ab_date}'))),
-                                              DataCell(
-                                                Container(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      10, 5, 10, 5),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.red[800],
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(2),
-                                                      )),
-                                                  child: Text(
-                                                    getDiff1(getDate1(
-                                                            '${snapshot.data![i].ab_date}'))
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ]),
-                                            DataRow(cells: <DataCell>[
-                                              DataCell(Text('กลับสัด 2')),
-                                              DataCell(Text(getDate2(
-                                                  '${snapshot.data![i].ab_date}'))),
-                                              DataCell(
-                                                Container(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      10, 5, 10, 5),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.red[800],
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(2),
-                                                      )),
-                                                  child: Text(
-                                                    getDiff1(getDate2(
-                                                            '${snapshot.data![i].ab_date}'))
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ]),
-                                            DataRow(cells: <DataCell>[
-                                              DataCell(Text('กลับสัด 3')),
-                                              DataCell(Text(getDate3(
-                                                  '${snapshot.data![i].ab_date}'))),
-                                              DataCell(
-                                                Container(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      10, 5, 10, 5),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.red[800],
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(2),
-                                                      )),
-                                                  child: Text(
-                                                    getDiff1(getDate3(
-                                                            '${snapshot.data![i].ab_date}'))
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ]),
-                                            DataRow(cells: <DataCell>[
-                                              DataCell(Text('พักท้อง')),
-                                              DataCell(Text(getDate4(
-                                                  '${snapshot.data![i].ab_date}'))),
-                                              DataCell(
-                                                Container(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      5, 5, 10, 5),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.red[800],
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(2),
-                                                      )),
-                                                  child: Text(
-                                                    getDiff1(getDate4(
-                                                            '${snapshot.data![i].ab_date}'))
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ]),
-                                            DataRow(cells: <DataCell>[
-                                              DataCell(Text('กำหนดคลอด')),
-                                              DataCell(Text(getDate5(
-                                                  '${snapshot.data![i].ab_date}'))),
-                                              DataCell(
-                                                Container(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      10, 5, 10, 5),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.red[800],
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(2),
-                                                      )),
-                                                  child: Text(
-                                                    getDiff1(getDate5(
-                                                            '${snapshot.data![i].ab_date}'))
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ])
-                                          ],
-                                        ),
+        appBar: AppBar(
+          title: Text("บันทึกการผสมพันธุ์"),
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+          ),
+          backgroundColor: Color(0xffd6786e),
+        ),
+        body: FutureBuilder<List<Abdominal>>(
+            future: getAbdominal(),
+            builder: (context, snapshot) {
+              if (snapshot.data == null) {
+                return Container();
+              } else
+                return ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, i) {
+                      return Container(
+                          margin: EdgeInsets.fromLTRB(20, 15, 20, 5),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  'วันที่เริ่มผสม ${DateFormat('dd/MM/yyyy').format(DateTime.parse('${snapshot.data![i].ab_date}'))}',
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 18),
+                                ),
+                                DataTable(
+                                  columns: <DataColumn>[
+                                    DataColumn(
+                                        label: Text(
+                                      'ชื่อกิจกรรม',
+                                    )),
+                                    DataColumn(
+                                        label: Text(
+                                      'วันที่',
+                                    )),
+                                    DataColumn(
+                                        label: Text(
+                                      'อีกกี่วัน',
+                                    )),
+                                  ],
+                                  rows: <DataRow>[
+                                    DataRow(cells: <DataCell>[
+                                      DataCell(Text('กลับสัด 1')),
+                                      DataCell(Text(getDate1(
+                                          '${snapshot.data![i].ab_date}'))),
+                                      DataCell(
                                         Container(
-                                          margin: EdgeInsets.fromLTRB(
-                                              100, 10, 100, 20),
-                                          child: RaisedButton(
-                                            onPressed: () {
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) {
-                                                return EditRecordBreed();
-                                              }));
-                                            },
-                                            child: Center(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(Icons.edit),
-                                                  Text('แก้ไข')
-                                                ],
-                                              ),
+                                          padding:
+                                              EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                          decoration: BoxDecoration(
+                                              color: Colors.red[800],
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(2),
+                                              )),
+                                          child: Text(
+                                            getDiff1(getDate1(
+                                                    '${snapshot.data![i].ab_date}'))
+                                                .toString(),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
-                                        )
-                                      ],
+                                        ),
+                                      ),
+                                    ]),
+                                    DataRow(cells: <DataCell>[
+                                      DataCell(Text('กลับสัด 2')),
+                                      DataCell(Text(getDate2(
+                                          '${snapshot.data![i].ab_date}'))),
+                                      DataCell(
+                                        Container(
+                                          padding:
+                                              EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                          decoration: BoxDecoration(
+                                              color: Colors.red[800],
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(2),
+                                              )),
+                                          child: Text(
+                                            getDiff1(getDate2(
+                                                    '${snapshot.data![i].ab_date}'))
+                                                .toString(),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ]),
+                                    DataRow(cells: <DataCell>[
+                                      DataCell(Text('กลับสัด 3')),
+                                      DataCell(Text(getDate3(
+                                          '${snapshot.data![i].ab_date}'))),
+                                      DataCell(
+                                        Container(
+                                          padding:
+                                              EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                          decoration: BoxDecoration(
+                                              color: Colors.red[800],
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(2),
+                                              )),
+                                          child: Text(
+                                            getDiff1(getDate3(
+                                                    '${snapshot.data![i].ab_date}'))
+                                                .toString(),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ]),
+                                    DataRow(cells: <DataCell>[
+                                      DataCell(Text('พักท้อง')),
+                                      DataCell(Text(getDate4(
+                                          '${snapshot.data![i].ab_date}'))),
+                                      DataCell(
+                                        Container(
+                                          padding:
+                                              EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                          decoration: BoxDecoration(
+                                              color: Colors.red[800],
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(2),
+                                              )),
+                                          child: Text(
+                                            getDiff1(getDate4(
+                                                    '${snapshot.data![i].ab_date}'))
+                                                .toString(),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ]),
+                                    DataRow(cells: <DataCell>[
+                                      DataCell(Text('กำหนดคลอด')),
+                                      DataCell(Text(getDate5(
+                                          '${snapshot.data![i].ab_date}'))),
+                                      DataCell(
+                                        Container(
+                                          padding:
+                                              EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                          decoration: BoxDecoration(
+                                              color: Colors.red[800],
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(2),
+                                              )),
+                                          child: Text(
+                                            getDiff1(getDate5(
+                                                    '${snapshot.data![i].ab_date}'))
+                                                .toString(),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ])
+                                  ],
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(100, 10, 100, 20),
+                                  child: RaisedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  EditRecordBreed(
+                                                      key: ValueKey(i),
+                                                      ab: snapshot.data![i])));
+                                    },
+                                    child: Center(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.edit),
+                                          Text('แก้ไข')
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                );
-                              });
-                      }))
-            ]))));
+                                )
+                              ],
+                            ),
+                          ));
+                    });
+            }),
+        floatingActionButton: FloatingActionButton.extended(
+          label: Text(
+            ' เพิ่มการบันทึกข้อมูล',
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.w200, fontSize: 14),
+          ),
+          icon: Icon(Icons.add),
+          backgroundColor: Color(0xff62b490),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return RecordBreeding();
+            }));
+          },
+        ));
   }
 }

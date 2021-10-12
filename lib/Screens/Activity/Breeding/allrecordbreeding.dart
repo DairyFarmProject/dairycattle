@@ -76,9 +76,7 @@ class _AllRecordBreedingState extends State<AllRecordBreeding> {
             future: getAbdominal(),
             builder: (context, snapshot) {
               if (snapshot.data == null) {
-                return Container(
-                  
-                );
+                return Container();
               } else
                 return ListView.builder(
                     itemCount: snapshot.data!.length,
@@ -100,17 +98,11 @@ class _AllRecordBreedingState extends State<AllRecordBreeding> {
                               ),
                               child: InkWell(
                                 onTap: () async {
-                                  await showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    context: context,
-                                    builder: (context) {
-                                      return Container(
-                                        height: 720,
-                                        width: 20,
-                                        child: DateBreeding(),
-                                      );
-                                    },
-                                  );
+                                  await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => DateBreeding(
+                                              ab: snapshot.data![i])));
                                 },
                                 child: Row(
                                     mainAxisSize: MainAxisSize.max,

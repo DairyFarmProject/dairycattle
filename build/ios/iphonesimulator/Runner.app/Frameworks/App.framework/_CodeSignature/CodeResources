@@ -10,7 +10,7 @@
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		HM7XnmA/yCsCiGSqJG6LI8gbd7s=
+		g3gphJ709LyFb5AOQcGn+eQWcys=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -18,27 +18,7 @@
 		</data>
 		<key>flutter_assets/NOTICES.Z</key>
 		<data>
-<<<<<<< Updated upstream
-		Mmq30EtLTXdRbRdDEHi6j7pLRpw=
-=======
-		MCuURVmkp1+t9wzrpNsbEaW9nJY=
-		</data>
-		<key>flutter_assets/assets/images/.DS_Store</key>
-		<data>
-		3y++sUAKzaCQmjLBz2v0kvESHgc=
-		</data>
-		<key>flutter_assets/assets/images/.flower3.png.icloud</key>
-		<data>
-		jJoRwH8dX1uyS6fpvPP0HpNSkog=
-		</data>
-		<key>flutter_assets/assets/images/.welcome.png.icloud</key>
-		<data>
-		KfLnW5sG9UU+RZsKBTIHzF1L08A=
-		</data>
-		<key>flutter_assets/assets/images/.welcome1.png.icloud</key>
-		<data>
-		saUIpZUFlnqyjjuaXGVKfil/FBA=
->>>>>>> Stashed changes
+		o6+Bop3v2udghtec89VQZIi89bU=
 		</data>
 		<key>flutter_assets/assets/images/DairyCattle1.png</key>
 		<data>
@@ -100,6 +80,10 @@
 		<data>
 		ccrdfh/vC2gQ5iiD0wVrcqUNxDw=
 		</data>
+		<key>flutter_assets/assets/images/welcome2.png</key>
+		<data>
+		o2R+zeS/nTMoOdyqjc+Ff17Wcv8=
+		</data>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<data>
 		33xe6rFwPlxRnZOgZWsODADpUI4=
@@ -130,11 +114,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-<<<<<<< Updated upstream
-		n7yhv6xvT/wZlpBRzs7Ik+nLvqs=
-=======
-		TT9sgR8+7Y6v5qDr4gS/6mvPQYE=
->>>>>>> Stashed changes
+		Ly7rQfxwFUDeZoUozzvPEBg2jkk=
 		</data>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
 		<data>
@@ -151,11 +131,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			HM7XnmA/yCsCiGSqJG6LI8gbd7s=
+			g3gphJ709LyFb5AOQcGn+eQWcys=
 			</data>
 			<key>hash2</key>
 			<data>
-			5bWDqR37cPsvvEAPzHJ7nfsskotomSyDlTnZlsXu2Nk=
+			oappjx7dGl8z2oyJWaXy8jB/z7dwhRCNAmycvY5IztU=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -173,52 +153,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-<<<<<<< Updated upstream
-			Mmq30EtLTXdRbRdDEHi6j7pLRpw=
+			o6+Bop3v2udghtec89VQZIi89bU=
 			</data>
 			<key>hash2</key>
 			<data>
-			rutY6VXlxy9ur3yhUwUHpQ/XpChbZpkgsY4MQWmRgrU=
-=======
-			MCuURVmkp1+t9wzrpNsbEaW9nJY=
-			</data>
-			<key>hash2</key>
-			<data>
-			WxRb4Rmu6Y2OU7GpIVPl2/yNZNkBqODHFsY52IH0yOw=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/images/.flower3.png.icloud</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			jJoRwH8dX1uyS6fpvPP0HpNSkog=
-			</data>
-			<key>hash2</key>
-			<data>
-			ulcgbtDRFRtI59Asqm6xbLnoPSk8w2vf8/JWZ/W4s28=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/images/.welcome.png.icloud</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			KfLnW5sG9UU+RZsKBTIHzF1L08A=
-			</data>
-			<key>hash2</key>
-			<data>
-			JtIyN3ief0DuMBICP3yHngUHhky+x2RjA3Wdz/+9MOw=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/images/.welcome1.png.icloud</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			saUIpZUFlnqyjjuaXGVKfil/FBA=
-			</data>
-			<key>hash2</key>
-			<data>
-			9Eu1M69/RhxsmrOJZRRJdf8kHsEfCAdHVbWhyQtk8Zw=
->>>>>>> Stashed changes
+			qd5KT/FZfAKArilP8GE+cyy+wlVFRLAo6SpDr9UQ60g=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/images/DairyCattle1.png</key>
@@ -386,6 +325,17 @@
 			1qJuvipXjbgOVinpwNgl5cBSe5nRsUEix19glLH7/tw=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/images/welcome2.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			o2R+zeS/nTMoOdyqjc+Ff17Wcv8=
+			</data>
+			<key>hash2</key>
+			<data>
+			AHu0rwOetdL0O0xZVVIYTf6nJOwbJQv8NIyXE6X2y2o=
+			</data>
+		</dict>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<dict>
 			<key>hash</key>
@@ -467,19 +417,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-<<<<<<< Updated upstream
-			n7yhv6xvT/wZlpBRzs7Ik+nLvqs=
+			Ly7rQfxwFUDeZoUozzvPEBg2jkk=
 			</data>
 			<key>hash2</key>
 			<data>
-			k5lj2vHA2bMtW270XNbGaSK92xYawrxKgAs0OmgRxNE=
-=======
-			TT9sgR8+7Y6v5qDr4gS/6mvPQYE=
-			</data>
-			<key>hash2</key>
-			<data>
-			WfNHN/nLNGF2sJJ9vWlMwUk4B5noyABjH6yKWI+0g9k=
->>>>>>> Stashed changes
+			4n3Q1OJx/Hud9nO9mwOAi5hXz5CjEGgm6ADhBg1wNk8=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
