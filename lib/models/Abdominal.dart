@@ -1,28 +1,28 @@
 import 'dart:convert';
 
 class Abdominal {
-  final int abdominal_id;
-  final int cow_id;
-  final int round;
-  final String ab_date;
-  final String ab_status;
-  final String ab_caretaker;
-  final int dry_period;
-  final String semen_id;
-  final String semen_name;
-  final int semen_specie;
-  final String note;
-  final int type_id;
-  final int specie_id;
-  final int farm_id;
-  final int status_id;
-  final String cow_no;
-  final String cow_name;
-  final String cow_birthday;
-  final String cow_sex;
-  final String mom_id;
-  final int mom_specie;
-  final String cow_image;
+  final int? abdominal_id;
+  final int? cow_id;
+  final int? round;
+  final String? ab_date;
+  final String? ab_status;
+  final String? ab_caretaker;
+  final String? semen_id;
+  final String? semen_name;
+  final int? semen_specie;
+  final String? ab_calf;
+  final String? note;
+  final int? type_id;
+  final int? specie_id;
+  final int? farm_id;
+  final int? status_id;
+  final String? cow_no;
+  final String? cow_name;
+  final String? cow_birthday;
+  final String? cow_sex;
+  final String? mom_id;
+  final int? mom_specie;
+  final String? cow_image;
   Abdominal({
     required this.abdominal_id,
     required this.cow_id,
@@ -30,10 +30,10 @@ class Abdominal {
     required this.ab_date,
     required this.ab_status,
     required this.ab_caretaker,
-    required this.dry_period,
     required this.semen_id,
     required this.semen_name,
     required this.semen_specie,
+    required this.ab_calf,
     required this.note,
     required this.type_id,
     required this.specie_id,
@@ -47,7 +47,7 @@ class Abdominal {
     required this.mom_specie,
     required this.cow_image,
   });
- 
+  
 
   Abdominal copyWith({
     int? abdominal_id,
@@ -56,10 +56,10 @@ class Abdominal {
     String? ab_date,
     String? ab_status,
     String? ab_caretaker,
-    int? dry_period,
     String? semen_id,
     String? semen_name,
     int? semen_specie,
+    String? ab_calf,
     String? note,
     int? type_id,
     int? specie_id,
@@ -80,10 +80,10 @@ class Abdominal {
       ab_date: ab_date ?? this.ab_date,
       ab_status: ab_status ?? this.ab_status,
       ab_caretaker: ab_caretaker ?? this.ab_caretaker,
-      dry_period: dry_period ?? this.dry_period,
       semen_id: semen_id ?? this.semen_id,
       semen_name: semen_name ?? this.semen_name,
       semen_specie: semen_specie ?? this.semen_specie,
+      ab_calf: ab_calf ?? this.ab_calf,
       note: note ?? this.note,
       type_id: type_id ?? this.type_id,
       specie_id: specie_id ?? this.specie_id,
@@ -107,10 +107,10 @@ class Abdominal {
       'ab_date': ab_date,
       'ab_status': ab_status,
       'ab_caretaker': ab_caretaker,
-      'dry_period': dry_period,
       'semen_id': semen_id,
       'semen_name': semen_name,
       'semen_specie': semen_specie,
+      'ab_calf': ab_calf,
       'note': note,
       'type_id': type_id,
       'specie_id': specie_id,
@@ -134,10 +134,10 @@ class Abdominal {
       ab_date: map['ab_date'],
       ab_status: map['ab_status'],
       ab_caretaker: map['ab_caretaker'],
-      dry_period: map['dry_period'],
       semen_id: map['semen_id'],
       semen_name: map['semen_name'],
       semen_specie: map['semen_specie'],
+      ab_calf: map['ab_calf'],
       note: map['note'],
       type_id: map['type_id'],
       specie_id: map['specie_id'],
@@ -159,7 +159,7 @@ class Abdominal {
 
   @override
   String toString() {
-    return 'Abdominal(abdominal_id: $abdominal_id, cow_id: $cow_id, round: $round, ab_date: $ab_date, ab_status: $ab_status, ab_caretaker: $ab_caretaker, dry_period: $dry_period, semen_id: $semen_id, semen_name: $semen_name, semen_specie: $semen_specie, note: $note, type_id: $type_id, specie_id: $specie_id, farm_id: $farm_id, status_id: $status_id, cow_no: $cow_no, cow_name: $cow_name, cow_birthday: $cow_birthday, cow_sex: $cow_sex, mom_id: $mom_id, mom_specie: $mom_specie, cow_image: $cow_image)';
+    return 'Abdominal(abdominal_id: $abdominal_id, cow_id: $cow_id, round: $round, ab_date: $ab_date, ab_status: $ab_status, ab_caretaker: $ab_caretaker, semen_id: $semen_id, semen_name: $semen_name, semen_specie: $semen_specie, ab_calf: $ab_calf, note: $note, type_id: $type_id, specie_id: $specie_id, farm_id: $farm_id, status_id: $status_id, cow_no: $cow_no, cow_name: $cow_name, cow_birthday: $cow_birthday, cow_sex: $cow_sex, mom_id: $mom_id, mom_specie: $mom_specie, cow_image: $cow_image)';
   }
 
   @override
@@ -173,10 +173,10 @@ class Abdominal {
       other.ab_date == ab_date &&
       other.ab_status == ab_status &&
       other.ab_caretaker == ab_caretaker &&
-      other.dry_period == dry_period &&
       other.semen_id == semen_id &&
       other.semen_name == semen_name &&
       other.semen_specie == semen_specie &&
+      other.ab_calf == ab_calf &&
       other.note == note &&
       other.type_id == type_id &&
       other.specie_id == specie_id &&
@@ -199,10 +199,10 @@ class Abdominal {
       ab_date.hashCode ^
       ab_status.hashCode ^
       ab_caretaker.hashCode ^
-      dry_period.hashCode ^
       semen_id.hashCode ^
       semen_name.hashCode ^
       semen_specie.hashCode ^
+      ab_calf.hashCode ^
       note.hashCode ^
       type_id.hashCode ^
       specie_id.hashCode ^

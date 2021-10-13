@@ -2,11 +2,12 @@ import 'dart:convert';
 
 class Parturition {
   final int parturition_id;
-  final int cow_id;
+  final int ab_id;
   final String par_date;
   final String calf_name;
   final String calf_sex;
   final String par_caretaker;
+  final String par_status;
   final String note;
   final int type_id;
   final int specie_id;
@@ -21,11 +22,12 @@ class Parturition {
   final String cow_image;
   Parturition({
     required this.parturition_id,
-    required this.cow_id,
+    required this.ab_id,
     required this.par_date,
     required this.calf_name,
     required this.calf_sex,
     required this.par_caretaker,
+    required this.par_status,
     required this.note,
     required this.type_id,
     required this.specie_id,
@@ -43,11 +45,12 @@ class Parturition {
 
   Parturition copyWith({
     int? parturition_id,
-    int? cow_id,
+    int? ab_id,
     String? par_date,
     String? calf_name,
     String? calf_sex,
     String? par_caretaker,
+    String? par_status,
     String? note,
     int? type_id,
     int? specie_id,
@@ -63,11 +66,12 @@ class Parturition {
   }) {
     return Parturition(
       parturition_id: parturition_id ?? this.parturition_id,
-      cow_id: cow_id ?? this.cow_id,
+      ab_id: ab_id ?? this.ab_id,
       par_date: par_date ?? this.par_date,
       calf_name: calf_name ?? this.calf_name,
       calf_sex: calf_sex ?? this.calf_sex,
       par_caretaker: par_caretaker ?? this.par_caretaker,
+      par_status: par_status ?? this.par_status,
       note: note ?? this.note,
       type_id: type_id ?? this.type_id,
       specie_id: specie_id ?? this.specie_id,
@@ -86,11 +90,12 @@ class Parturition {
   Map<String, dynamic> toMap() {
     return {
       'parturition_id': parturition_id,
-      'cow_id': cow_id,
+      'ab_id': ab_id,
       'par_date': par_date,
       'calf_name': calf_name,
       'calf_sex': calf_sex,
       'par_caretaker': par_caretaker,
+      'par_status': par_status,
       'note': note,
       'type_id': type_id,
       'specie_id': specie_id,
@@ -109,11 +114,12 @@ class Parturition {
   factory Parturition.fromMap(Map<String, dynamic> map) {
     return Parturition(
       parturition_id: map['parturition_id'],
-      cow_id: map['cow_id'],
+      ab_id: map['ab_id'],
       par_date: map['par_date'],
       calf_name: map['calf_name'],
       calf_sex: map['calf_sex'],
       par_caretaker: map['par_caretaker'],
+      par_status: map['par_status'],
       note: map['note'],
       type_id: map['type_id'],
       specie_id: map['specie_id'],
@@ -135,7 +141,7 @@ class Parturition {
 
   @override
   String toString() {
-    return 'Parturition(parturition_id: $parturition_id, cow_id: $cow_id, par_date: $par_date, calf_name: $calf_name, calf_sex: $calf_sex, par_caretaker: $par_caretaker, note: $note, type_id: $type_id, specie_id: $specie_id, farm_id: $farm_id, status_id: $status_id, cow_no: $cow_no, cow_name: $cow_name, cow_birthday: $cow_birthday, cow_sex: $cow_sex, mom_id: $mom_id, mom_specie: $mom_specie, cow_image: $cow_image)';
+    return 'Parturition(parturition_id: $parturition_id, ab_id: $ab_id, par_date: $par_date, calf_name: $calf_name, calf_sex: $calf_sex, par_caretaker: $par_caretaker, par_status: $par_status, note: $note, type_id: $type_id, specie_id: $specie_id, farm_id: $farm_id, status_id: $status_id, cow_no: $cow_no, cow_name: $cow_name, cow_birthday: $cow_birthday, cow_sex: $cow_sex, mom_id: $mom_id, mom_specie: $mom_specie, cow_image: $cow_image)';
   }
 
   @override
@@ -144,11 +150,12 @@ class Parturition {
   
     return other is Parturition &&
       other.parturition_id == parturition_id &&
-      other.cow_id == cow_id &&
+      other.ab_id == ab_id &&
       other.par_date == par_date &&
       other.calf_name == calf_name &&
       other.calf_sex == calf_sex &&
       other.par_caretaker == par_caretaker &&
+      other.par_status == par_status &&
       other.note == note &&
       other.type_id == type_id &&
       other.specie_id == specie_id &&
@@ -166,11 +173,12 @@ class Parturition {
   @override
   int get hashCode {
     return parturition_id.hashCode ^
-      cow_id.hashCode ^
+      ab_id.hashCode ^
       par_date.hashCode ^
       calf_name.hashCode ^
       calf_sex.hashCode ^
       par_caretaker.hashCode ^
+      par_status.hashCode ^
       note.hashCode ^
       type_id.hashCode ^
       specie_id.hashCode ^

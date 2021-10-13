@@ -32,7 +32,6 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => UserProvider()),
           Provider<RegisterStore>(create: (_) => RegisterStore()),
           Provider<AuthProvider>(create: (_) => AuthProvider()),
-         // Provider<ProfileProvider>(create: (_) => ProfileProvider()),
           ChangeNotifierProxyProvider<UserProvider, AuthProvider>(
             create: (_) => AuthProvider(),
             update:

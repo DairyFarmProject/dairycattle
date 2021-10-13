@@ -19,35 +19,28 @@ class AllRecordBreeding extends StatefulWidget {
 }
 
 class _AllRecordBreedingState extends State<AllRecordBreeding> {
-  // Future<List<Abdominal>> getMilk() async {
-  //   User user = Provider.of<UserProvider>(context, listen: false).user;
-  //   late List<Abdominal> adb;
-  //   Map data = {'farm_id': user.farm_id.toString()};
-  //   final response = await http.post(Uri.http('127.0.0.1:3000', 'abdominal'),
-  //       headers: {
-  //         "Accept": "application/json",
-  //         "Content-Type": "application/x-www-form-urlencoded"
-  //       },
-  //       body: data,
-  //       encoding: Encoding.getByName("utf-8"));
-
-  //   if (response.statusCode == 200) {
-  //     Map<String, dynamic> db = jsonDecode(response.body);
-  //     final List list = db['data'];
-  //     adb = list.map((e) => Abdominal.fromMap(e)).toList();
-  //   }
-  //   return adb;
-  // }
-
   Future<List<Abdominal>> getAbdominal() async {
-    final response = await http.get(Uri.http('127.0.0.1:3000', 'abdominal'));
+    User? user = Provider.of<UserProvider>(context, listen: false).user;
+    late List<Abdominal> adb;
+    Map data = {
+      'farm_id': user?.farm_id.toString(),
+      'user_id': user?.user_id.toString()
+    };
+    final response =
+        await http.post(Uri.http('127.0.0.1:3000', 'farms/abdominal'),
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: data,
+            encoding: Encoding.getByName("utf-8"));
 
-    Map<String, dynamic> data = jsonDecode(response.body);
-    final List list = data['data']['rows'];
-    print(list);
-    List<Abdominal> typecows = list.map((e) => Abdominal.fromMap(e)).toList();
-
-    return typecows;
+    if (response.statusCode == 200) {
+      Map<String, dynamic> db = jsonDecode(response.body);
+      final List list = db['data']['rows'];
+      adb = list.map((e) => Abdominal.fromMap(e)).toList();
+    }
+    return adb;
   }
 
   @override

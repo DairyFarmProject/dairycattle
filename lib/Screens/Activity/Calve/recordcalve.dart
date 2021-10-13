@@ -70,14 +70,14 @@ class _RecordCalveState extends State<RecordCalve> {
                     child: Column(children: [
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: DropdownSearch<String>(
+                    child: DropdownSearch<String?>(
                         mode: Mode.MENU,
                         showSelectedItems: true,
                         items: snapshot.data
                             ?.map((data) => data.semen_name)
                             .toList(),
                         label: "ชื่อการผสมพันธ์",
-                        popupItemDisabled: (String s) => s.startsWith('I'),
+                        popupItemDisabled: (String? s) => s!.startsWith('I'),
                         onChanged: print,
                         selectedItem: '${snapshot.data?[0].semen_name}'),
                     padding: const EdgeInsets.all(20.0),

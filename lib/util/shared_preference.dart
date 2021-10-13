@@ -199,11 +199,9 @@ class UserPreferences {
         district: district,
         province: province,
         postcode: postcode);
-
-        
   }
 
-  Future <UserDairys> getUserDairy() async {
+  Future<UserDairys> getUserDairy() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     int? user_id = prefs.getInt("user_id");
@@ -226,39 +224,6 @@ class UserPreferences {
         password: password);
   }
 
-
-  Future setUser(Cows cow) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final json = jsonEncode(cow.toJson());
-    final idCow = cow.cow_id.toString();
-
-    await prefs.setString(idCow, json);
-  }
-
-  Cows getCow(String idCow) {
-    final json = _prefs!.getString(idCow);
-
-    return Cows.fromJson(jsonDecode(json!));
-  }
-
-  Future addCows(Cows cow) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final idCows = prefs.getStringList('cows') ?? <String>[];
-    final newIdCows = List.of(idCows)..add(cow.cow_id.toString());
-
-    await prefs.setStringList('cows', newIdCows);
-  }
-
-  Future<List<Cows>> getCows() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final idCows = prefs.getStringList('cows');
-
-    if (idCows == null) {
-      return <Cows>[];
-    } else {
-      return idCows.map<Cows>(getCow).toList();
-    }
-  }
 
   void removeUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

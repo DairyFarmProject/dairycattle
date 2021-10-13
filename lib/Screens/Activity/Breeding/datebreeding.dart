@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:dairycattle/util/shared_preference.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '/Screens/Activity/Breeding/editrecordbreed.dart';
 import '/Screens/Activity/Breeding/recordbreeding.dart';
 import '/models/Abdominal.dart';
@@ -20,7 +23,7 @@ class DateBreeding extends StatefulWidget {
 class _DateBreedingState extends State<DateBreeding> {
   Future<List<Abdominal>> getAbdominal() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
-    late List<Abdominal> adb;
+    List<Abdominal> adb = [];
     Map data = {
       'farm_id': user?.farm_id.toString(),
       'user_id': user?.user_id.toString(),
@@ -38,8 +41,8 @@ class _DateBreedingState extends State<DateBreeding> {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> db = jsonDecode(response.body);
-      final List list = db['data']['rows'];
-      adb = list.map((e) => Abdominal.fromMap(e)).toList();
+      Abdominal currentCow = Abdominal.fromMap(db['data']['rows']);
+      adb.add(currentCow);
     }
     return adb;
   }

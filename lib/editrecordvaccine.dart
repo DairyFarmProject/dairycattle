@@ -60,6 +60,8 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
       date2 = date1;
     });
 
+    print(date2);
+
     return date1;
   }
 
@@ -119,6 +121,8 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
                                   },
                                 ),
                                 padding: const EdgeInsets.all(20.0))
+                            //     }
+                            // )
                             ),
                         Container(
                           alignment: Alignment.topLeft,

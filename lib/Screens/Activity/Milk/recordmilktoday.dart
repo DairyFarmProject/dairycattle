@@ -29,7 +29,10 @@ class _RecordMilkTodayState extends State<RecordMilkToday> {
   Future<List<Milks>> getMilk() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     late List<Milks> milks;
-    Map data = {'farm_id': user!.farm_id.toString()};
+    Map data = {
+      'farm_id': user!.farm_id.toString(),
+      'user_id': user.user_id.toString()
+    };
     final response = await http.post(Uri.http('127.0.0.1:3000', 'farms/milks'),
         headers: {
           "Accept": "application/json",
@@ -45,17 +48,6 @@ class _RecordMilkTodayState extends State<RecordMilkToday> {
     }
     return milks;
   }
-
-  // Future<List<Milks>> getMilk() async {
-  //   final response = await http.get(Uri.http('127.0.0.1:3000', 'milks'));
-
-  //   Map<String, dynamic> data = jsonDecode(response.body);
-  //   final List list = data['data']['rows'];
-
-  //   List<Milks> typecows = list.map((e) => Milks.fromMap(e)).toList();
-
-  //   return typecows;
-  // }
 
   @override
   void initState() {

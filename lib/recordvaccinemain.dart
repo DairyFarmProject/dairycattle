@@ -22,7 +22,10 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
   Future<List<Vaccine_schedule>> getVacS() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     late List<Vaccine_schedule> vacs;
-    Map data = {'farm_id': user?.farm_id.toString()};
+    Map data = {
+      'farm_id': user?.farm_id.toString(),
+      'user_id': user?.user_id.toString()
+    };
     final response =
         await http.post(Uri.http('127.0.0.1:3000', 'farm/schedules'),
             headers: {
@@ -70,7 +73,9 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
               if (snapshot.data == null) {
                 return Container(
                   child: Center(
-                    child: CircularProgressIndicator(color: Colors.green[400],),
+                    child: CircularProgressIndicator(
+                      color: Colors.green[400],
+                    ),
                   ),
                 );
               } else

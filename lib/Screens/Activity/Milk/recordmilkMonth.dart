@@ -24,7 +24,7 @@ class _RecordMilkMonthState extends State<RecordMilkMonth> {
   int? milks;
 
   Future<List<Milks>> getMilk() async {
-    final response = await http.get(Uri.http('127.0.0.1:3000', 'milks/month'));
+    final response = await http.post(Uri.http('127.0.0.1:3000', 'milks/month'));
 
     Map<String, dynamic> data = jsonDecode(response.body);
     final List list = data['data']['rows'];
@@ -35,7 +35,7 @@ class _RecordMilkMonthState extends State<RecordMilkMonth> {
   }
 
   Future getCount() async {
-    final response = await http.get(Uri.http('127.0.0.1:3000', 'milks/month'));
+    final response = await http.post(Uri.http('127.0.0.1:3000', 'milks/month'));
 
     Map<String, dynamic> data = jsonDecode(response.body);
     int? milk = data['data']['milk'];

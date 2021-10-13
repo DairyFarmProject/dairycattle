@@ -145,10 +145,11 @@ class _AllRecordCalveState extends State<AllRecordCalve> {
                                           children: [
                                             Text(
                                                 '${DateFormat('dd-MM-yyyy').format(DateTime.parse(snapshot.data![i].par_date))}'),
-                                            Text('ปกติ'),
+                                            Text(
+                                                '${snapshot.data![i].par_status}'),
                                             Text(
                                                 '${snapshot.data![i].calf_name}'),
-                                            Text('ไม่มีเลย')
+                                            Text('${snapshot.data![i].note}')
                                           ],
                                         ),
                                       ],
