@@ -160,11 +160,14 @@ class _AllRecordCalveState extends State<AllRecordCalve> {
                                         EdgeInsets.fromLTRB(100, 10, 100, 20),
                                     child: RaisedButton(
                                       onPressed: () {
-                                        Navigator.push(context,
+                                        Navigator.push(
+                                            context,
                                             MaterialPageRoute(
-                                                builder: (context) {
-                                          return EditRecordCalve();
-                                        }));
+                                                builder: (context) =>
+                                                    EditRecordCalve(
+                                                        key: ValueKey(i),
+                                                        par: snapshot
+                                                            .data![i])));
                                       },
                                       child: Center(
                                         child: Row(

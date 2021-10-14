@@ -385,11 +385,6 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                                                       noteController.text,
                                                       user?.user_id,
                                                       user?.farm_id);
-                                                  // Navigator.push(context,
-                                                  //     MaterialPageRoute(
-                                                  //         builder: (context) {
-                                                  //   return SuccessRecord();
-                                                  // }));
                                                 },
                                                 color: Color(0xff62b490),
                                                 shape: RoundedRectangleBorder(
@@ -423,7 +418,8 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
 
   userEditAb(ab_id, cow_id, round, ab_date, caretaker, id, name, specie, note,
       user, farm) async {
-    String ab_status = 'fail';
+    String ab_status = 'wait';
+    String ab_calf = 'false';
 
     Map data = {
       'abdominal_id': ab_id.toString(),
@@ -431,6 +427,40 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
       'round': round.toString(),
       'ab_date': ab_date,
       'ab_status': ab_status,
+      'ab_caretaker': caretaker,
+      'semen_id': id,
+      'semen_name': name,
+      'semen_specie': specie.toString(),
+      'ab_calf': ab_calf,
+      'note': note,
+      'user_id': user.toString(),
+      'farm_id': farm.toString()
     };
+
+    print(data);
+
+    final response =
+        await http.put(Uri.http('127.0.0.1:3000', 'abdominal/edit'),
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: data,
+            encoding: Encoding.getByName("utf-8"));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      Map<String, dynamic> user = resposne['data'];
+      print(user['message']);
+      Navigator.push(
+        context,
+        new MaterialPageRoute(
+          builder: (context) => new SuccessRecord(),
+        ),
+      );
+    } else {
+      _scaffoldKey.currentState
+          ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+    }
   }
 }
