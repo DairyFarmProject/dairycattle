@@ -1,4 +1,8 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'dart:convert';
+
+import 'package:dairycattle/eachvaccine.dart';
 
 import '/editrecordvaccine.dart';
 import '/models/Vaccine_schedule.dart';
@@ -85,101 +89,191 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
                       return Container(
                           margin: EdgeInsets.fromLTRB(20, 15, 20, 5),
                           child: SingleChildScrollView(
-                              child: Card(
-                                  child: Column(
-                            children: [
-                              ExpansionTile(
-                                collapsedBackgroundColor: Color(0xff59aca9),
-                                tilePadding:
-                                    const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                title: Text(
-                                  '${snapshot.data?[i].schedule_id}',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16),
-                                ),
-                                children: <Widget>[
-                                  Container(
-                                    margin:
-                                        EdgeInsets.only(top: 20, bottom: 10),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'วันที่ฉีด',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              'วัคซีน',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              'นัดหมาย',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              'วัว',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            )
-                                          ],
+                              child: Material(
+                            // color: Colors.transparent,
+                            //elevation: 3,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.86,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                color: Color.fromRGBO(111, 193, 148, 5),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: InkWell(
+                                onTap: () async {
+                                  await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => EachVaccine()));
+                                },
+                                child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Expanded(
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  10, 0, 10, 0),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '${DateFormat('dd-MM-yyyy').format(DateTime.parse(snapshot.data![i].vac_date.toString()))}',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 16),
+                                              ),
+                                              Text(
+                                                  '${snapshot.data?[i].vac_name_th}',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 16))
+                                            ],
+                                          ),
                                         ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                                '${DateFormat('dd-MM-yyyy').format(DateTime.parse(snapshot.data![i].vac_date.toString()))}'),
-                                            Text(
-                                                '${snapshot.data?[i].vac_name_th}'),
-                                            Text(
-                                                '${DateFormat('dd-MM-yyyy').format(DateTime.parse(snapshot.data![i].next_date.toString()))}'),
-                                            Text(
-                                                '${snapshot.data?[i].cow_name}')
-                                          ],
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(20),
+                                              topLeft: Radius.circular(20)),
+                                          color: Colors.green[100],
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.fromLTRB(100, 10, 100, 20),
-                                    child: RaisedButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    EditRecordVaccine(
-                                                        vac: snapshot
-                                                            .data![i])));
-                                      },
-                                      child: Center(
+                                        height: 100,
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.edit),
-                                            Text('แก้ไข')
+                                          children: <Widget>[
+                                            Container(
+                                              width: 40,
+                                              padding: EdgeInsets.only(
+                                                  left: 0, right: 20),
+                                              alignment: Alignment.center,
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  EdgeInsetsDirectional.only(
+                                                      end: 20),
+                                              child: Image.asset(
+                                                "assets/images/vaccines.png",
+                                                height: 50,
+                                                color:  Color.fromRGBO(111, 193, 148, 5),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
-                                    ),
-                                  )
-                                ],
+                                    ]),
                               ),
-                            ],
-                          ))));
-                    });
+                            ),
+                          )
+
+                              // child: Card(
+                              //     child: Column(
+                              // children: [
+                              //   ExpansionTile(
+                              //     collapsedBackgroundColor: Color(0xff59aca9),
+                              //     tilePadding:
+                              //         const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              //     title: Text(
+                              //       '${snapshot.data?[i].schedule_id}',
+                              //       style: TextStyle(
+                              //           color: Colors.black,
+                              //           fontWeight: FontWeight.w500,
+                              //           fontSize: 16),
+                              //     ),
+                              //     children: <Widget>[
+
+                              //       Container(
+                              //         margin:
+                              //             EdgeInsets.only(top: 20, bottom: 10),
+                              //         child: Row(
+                              //           mainAxisAlignment:
+                              //               MainAxisAlignment.spaceEvenly,
+                              //           children: [
+                              //             Column(
+                              //               crossAxisAlignment:
+                              //                   CrossAxisAlignment.start,
+                              //               children: [
+                              //                 Text(
+                              //                   'วันที่ฉีด',
+                              //                   style: TextStyle(
+                              //                       fontWeight: FontWeight.bold),
+                              //                 ),
+                              //                 Text(
+                              //                   'วัคซีน',
+                              //                   style: TextStyle(
+                              //                       fontWeight: FontWeight.bold),
+                              //                 ),
+                              //                 Text(
+                              //                   'นัดหมาย',
+                              //                   style: TextStyle(
+                              //                       fontWeight: FontWeight.bold),
+                              //                 ),
+                              //                 Text(
+                              //                   'วัว',
+                              //                   style: TextStyle(
+                              //                       fontWeight: FontWeight.bold),
+                              //                 )
+                              //               ],
+                              //             ),
+                              //             Column(
+                              //               crossAxisAlignment:
+                              //                   CrossAxisAlignment.start,
+                              //               children: [
+                              //                 Text(
+                              //                     '${DateFormat('dd-MM-yyyy').format(DateTime.parse(snapshot.data![i].vac_date.toString()))}'),
+                              //                 Text(
+                              //                     '${snapshot.data?[i].vac_name_th}'),
+                              //                 Text(
+                              //                     '${DateFormat('dd-MM-yyyy').format(DateTime.parse(snapshot.data![i].next_date.toString()))}'),
+                              //                 Text(
+                              //                     '${snapshot.data?[i].cow_name}')
+                              //               ],
+                              //             ),
+                              //           ],
+                              //         ),
+                              //       ),
+                              //       Container(
+                              //         margin:
+                              //             EdgeInsets.fromLTRB(100, 10, 100, 20),
+                              //         child: RaisedButton(
+                              //           onPressed: () {
+                              //             Navigator.push(
+                              //                 context,
+                              //                 MaterialPageRoute(
+                              //                     builder: (context) =>
+                              //                         EditRecordVaccine(
+                              //                             vac: snapshot
+                              //                                 .data![i])));
+                              //           },
+                              //           child: Center(
+                              //             child: Row(
+                              //               mainAxisAlignment:
+                              //                   MainAxisAlignment.center,
+                              //               children: [
+                              //                 Icon(Icons.edit),
+                              //                 Text('แก้ไข')
+                              //               ],
+                              //             ),
+                              //           ),
+                              //         ),
+                              //       )
+                              //     ],
+                              //   ),
+                              // ],
+                              //))
+                              ));
+                    }
+                    );
             }),
         floatingActionButton: FloatingActionButton.extended(
           label: Text(

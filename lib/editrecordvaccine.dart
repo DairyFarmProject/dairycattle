@@ -97,135 +97,145 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
                     )),
                   );
                 } else
-                  return Container(
-                    child: Column(
-                      children: [
-                        Container(
-                            child: Container(
-                                margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                                child: DropdownButton<Vaccines>(
-                                  hint: new Text('select vaccine'),
-                                  value: selectVaccine == null
-                                      ? null
-                                      : snapshot.data?[selectVaccine],
-                                  items: snapshot.data?.map((data) {
-                                    return new DropdownMenuItem<Vaccines>(
-                                        value: data,
-                                        child: new Text(data.vac_name_th));
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectVaccine =
-                                          snapshot.data!.indexOf(value!);
-                                    });
-                                  },
-                                ),
-                                padding: const EdgeInsets.all(20.0))
-                            //     }
-                            // )
-                            ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          margin: EdgeInsets.all(0),
-                          padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
-                          child: Text('วันที่',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Row(
+                  return Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                        alignment: Alignment.topLeft,
+                        child: Column(
                           children: [
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(30, 20, 0, 20),
-                              child: Text(
-                                _dateTime == null
-                                    ? '${DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.vac.vac_date))}'
-                                    : '${DateFormat('dd-MM-yyyy').format(DateTime.parse(_dateTime.toString()))}',
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.calendar_today_sharp,
-                                  color: Colors.blueGrey,
+                            Text('ชื่อวัคซีน',
+                                style: TextStyle(fontWeight: FontWeight.w500)),
+                            Container(
+                                child: Container(
+                                    margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                                    child: DropdownButton<Vaccines>(
+                                      hint: new Text('select vaccine'),
+                                      value: selectVaccine == null
+                                          ? null
+                                          : snapshot.data?[selectVaccine],
+                                      items: snapshot.data?.map((data) {
+                                        return new DropdownMenuItem<Vaccines>(
+                                            value: data,
+                                            child: new Text(data.vac_name_th));
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectVaccine =
+                                              snapshot.data!.indexOf(value!);
+                                        });
+                                      },
+                                    ),
+                                    padding: const EdgeInsets.all(20.0))
+                                //     }
+                                // )
                                 ),
-                                onPressed: () {
-                                  showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime(1970),
-                                          lastDate: DateTime(2022))
-                                      .then((date) {
-                                    setState(() {
-                                      _dateTime = date;
-                                    });
-                                  });
-                                },
-                              ),
+                            Container(
+                              alignment: Alignment.topLeft,
+                              margin: EdgeInsets.all(0),
+                              padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
+                              child: Text('วันที่',
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(30, 20, 0, 20),
+                                  child: Text(
+                                    _dateTime == null
+                                        ? '${DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.vac.vac_date))}'
+                                        : '${DateFormat('dd-MM-yyyy').format(DateTime.parse(_dateTime.toString()))}',
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 10, 0, 10),
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.calendar_today_sharp,
+                                      color: Colors.blueGrey,
+                                    ),
+                                    onPressed: () {
+                                      showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime(1970),
+                                              lastDate: DateTime(2022))
+                                          .then((date) {
+                                        setState(() {
+                                          _dateTime = date;
+                                        });
+                                      });
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(0, 40, 0, 30),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      RaisedButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          color: Colors.blueGrey[50],
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(39))),
+                                          child: Text(
+                                            'ยกเลิก',
+                                            style: TextStyle(
+                                                color: Color(0xffd6786e),
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 14),
+                                          ),
+                                          padding: const EdgeInsets.fromLTRB(
+                                              30, 10, 30, 10))
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(0, 40, 0, 30),
+                                  child: Column(
+                                    children: [
+                                      RaisedButton(
+                                          onPressed: () {
+                                            userRecordVaccine(
+                                                widget.vac.schedule_id,
+                                                selectVaccine,
+                                                widget.vac.cow_id,
+                                                '${DateFormat('yyyy-MM-dd').format(DateTime.parse(_dateTime.toString()))}',
+                                                getDate(_dateTime.toString()));
+                                          },
+                                          color: Color(0xff62b490),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(39))),
+                                          child: Text(
+                                            'บันทึกข้อมูล',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 14),
+                                          ),
+                                          padding: const EdgeInsets.fromLTRB(
+                                              20, 12, 20, 12))
+                                    ],
+                                  ),
+                                )
+                              ],
                             )
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.fromLTRB(0, 40, 0, 30),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  RaisedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      color: Colors.blueGrey[50],
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(39))),
-                                      child: Text(
-                                        'ยกเลิก',
-                                        style: TextStyle(
-                                            color: Color(0xffd6786e),
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 14),
-                                      ),
-                                      padding: const EdgeInsets.fromLTRB(
-                                          30, 10, 30, 10))
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(0, 40, 0, 30),
-                              child: Column(
-                                children: [
-                                  RaisedButton(
-                                      onPressed: () {
-                                        userRecordVaccine(
-                                            widget.vac.schedule_id,
-                                            selectVaccine,
-                                            widget.vac.cow_id,
-                                            '${DateFormat('yyyy-MM-dd').format(DateTime.parse(_dateTime.toString()))}',
-                                            getDate(_dateTime.toString()));
-                                      },
-                                      color: Color(0xff62b490),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(39))),
-                                      child: Text(
-                                        'บันทึกข้อมูล',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 14),
-                                      ),
-                                      padding: const EdgeInsets.fromLTRB(
-                                          20, 12, 20, 12))
-                                ],
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
+                      ),
+                    ],
                   );
               },
             ))));

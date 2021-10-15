@@ -92,7 +92,7 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
               color: Colors.white,
             ),
           ),
-          backgroundColor: Colors.red[300],
+          backgroundColor: Color.fromRGBO(185, 110, 110, 5),
         ),
         body: Form(
             key: _formKey,
@@ -108,46 +108,64 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                           )),
                         );
                       } else
+                        // ignore: curly_braces_in_flow_control_structures
                         return SingleChildScrollView(
                           child: Column(
                             children: [
                               Container(
-                                  margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                                  child: DropdownButton<Cows>(
-                                    hint: new Text('select vaccine'),
-                                    value: selectCow == null
-                                        ? null
-                                        : snapshot.data?[selectCow],
-                                    items: snapshot.data?.map((data) {
-                                      return new DropdownMenuItem<Cows>(
-                                          value: data,
-                                          child: new Text(data.cow_name));
-                                    }).toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectCow =
-                                            snapshot.data!.indexOf(value!);
-                                      });
-                                    },
-                                  ),
-                                  padding: const EdgeInsets.all(20.0)),
-                              Visibility(
-                                visible: isShowOtherField,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                                  child: TextFormField(
-                                    decoration: InputDecoration(
-                                        labelText: 'ชื่อวัว',
-                                        fillColor: Colors.blueGrey,
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.blueGrey, width: 2),
-                                        )),
-                                    onChanged: (String name) {},
-                                  ),
+                                padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                                alignment: Alignment.topLeft,
+                                child: Text('ชื่อแม่พันธ์',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500)),
+                              ),
+                              Container(
+                                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                alignment: Alignment.topLeft,
+                                child: DropdownButton<Cows>(
+                                  isExpanded: true,
+                                  hint: new Text('select cow'),
+                                  value: selectCow == null
+                                      ? null
+                                      : snapshot.data?[selectCow],
+                                  items: snapshot.data?.map((data) {
+                                    // ignore: unnecessary_new
+                                    return new DropdownMenuItem<Cows>(
+                                      alignment: Alignment.centerLeft,
+                                      //enabled: false,
+                                      value: data,
+                                      child: new SizedBox(
+                                        child: Text(data.cow_name),
+                                      ),
+
+                                      //enabled: false,
+                                    );
+                                  }).toList(growable: isShowOtherField),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectCow =
+                                          snapshot.data!.indexOf(value!);
+                                    });
+                                  },
                                 ),
                               ),
+                              // Visibility(
+                              //   visible: isShowOtherField,
+                              //   child: Padding(
+                              //     padding:
+                              //         const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                              //     child: TextFormField(
+                              //       decoration: InputDecoration(
+                              //           labelText: 'ชื่อวัว',
+                              //           fillColor: Colors.blueGrey,
+                              //           focusedBorder: OutlineInputBorder(
+                              //             borderSide: BorderSide(
+                              //                 color: Colors.blueGrey, width: 2),
+                              //           )),
+                              //       onChanged: (String name) {},
+                              //     ),
+                              //   ),
+                              // ),
                               Column(
                                 children: [
                                   Container(
@@ -158,17 +176,17 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                                     child: Text(
                                       'รอบการผสมพันธ์',
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ),
                                   Row(children: [
                                     Padding(
                                         padding:
-                                            EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                            EdgeInsets.fromLTRB(40, 0, 0, 0),
                                         child: IconButton(
                                           icon: Icon(
                                             Icons.indeterminate_check_box,
-                                            color: Colors.blueGrey,
+                                            color: Colors.brown,
                                           ),
                                           onPressed: decrement,
                                         )),
@@ -181,7 +199,7 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                                         child: IconButton(
                                           icon: Icon(
                                             Icons.add_box,
-                                            color: Colors.blueGrey,
+                                            color: Colors.brown,
                                           ),
                                           onPressed: increment,
                                         )),
@@ -191,8 +209,8 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                               Column(children: [
                                 Container(
                                   alignment: Alignment.topLeft,
-                                  margin: EdgeInsets.all(0),
-                                  padding: const EdgeInsets.all(20),
+                                  padding:
+                                      const EdgeInsets.only(top: 10, left: 20),
                                   child: Text('หมายเลขพ่อพันธุ์',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500)),
@@ -213,9 +231,8 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                               Column(children: [
                                 Container(
                                   alignment: Alignment.topLeft,
-                                  margin: EdgeInsets.all(20),
                                   padding:
-                                      const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                      const EdgeInsets.only(top: 20, left: 20),
                                   child: Text('ชื่อพ่อพันธุ์',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500)),
@@ -233,47 +250,61 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                                   ),
                                 )
                               ]),
-                              Container(
-                                padding: const EdgeInsets.all(20),
-                                child: DropdownButton<Specie>(
-                                  hint: new Text("Select a specie"),
-                                  value: selectSpecie == null
-                                      ? null
-                                      : species[selectSpecie],
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      selectSpecie = species.indexOf(newValue!);
-                                      print(selectSpecie);
-                                    });
-                                  },
-                                  items: species.map((Specie status) {
-                                    return new DropdownMenuItem<Specie>(
-                                      value: status,
-                                      child: new Text(
-                                        status.name,
-                                        style:
-                                            new TextStyle(color: Colors.black),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
                               Column(
                                 children: [
                                   Container(
+                                    padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
                                     alignment: Alignment.topLeft,
-                                    margin: EdgeInsets.all(0),
+                                    child: Text('ชื่อสายพันธ์',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500)),
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20, 0, 20, 10),
+                                    child: DropdownButton<Specie>(
+                                      isExpanded: true,
+                                      hint: new Text("Select a specie"),
+                                      value: selectSpecie == null
+                                          ? null
+                                          : species[selectSpecie],
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          selectSpecie =
+                                              species.indexOf(newValue!);
+                                          print(selectSpecie);
+                                        });
+                                      },
+                                      items: species.map((Specie status) {
+                                        return new DropdownMenuItem<Specie>(
+                                          value: status,
+                                          child: new Text(
+                                            status.name,
+                                            style: new TextStyle(
+                                                color: Colors.black),
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              Column(
+                                children: [
+                                  Container(
+                                    alignment: Alignment.bottomLeft,
                                     padding:
-                                        const EdgeInsets.fromLTRB(20, 0, 0, 10),
+                                        const EdgeInsets.fromLTRB(20, 0, 0, 0),
                                     child: Text('วันที่',
                                         style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
+                                            fontWeight: FontWeight.w500)),
                                   ),
                                   Row(
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(
-                                            30, 20, 0, 20),
+                                            20, 0, 0, 0),
                                         child: Text(
                                           _dateTime == null
                                               ? '${DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.ab.ab_date.toString()))}'
@@ -282,11 +313,11 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(
-                                            10, 10, 0, 10),
+                                            20, 0, 0, 0),
                                         child: IconButton(
                                           icon: Icon(
                                             Icons.calendar_today_sharp,
-                                            color: Colors.blueGrey,
+                                            color: Colors.brown,
                                           ),
                                           onPressed: () {
                                             showDatePicker(
@@ -307,9 +338,8 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                                   Column(children: [
                                     Container(
                                       alignment: Alignment.topLeft,
-                                      margin: EdgeInsets.all(20),
                                       padding:
-                                          const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                          EdgeInsets.fromLTRB(20, 0, 20, 0),
                                       child: Text('รายละเอียดอื่นๆ',
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500)),
@@ -354,7 +384,7 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                                                 child: Text(
                                                   'ยกเลิก',
                                                   style: TextStyle(
-                                                      color: Color(0xffd6786e),
+                                                      color: Colors.brown,
                                                       fontWeight:
                                                           FontWeight.w600,
                                                       fontSize: 14),
@@ -386,7 +416,7 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                                                       user?.user_id,
                                                       user?.farm_id);
                                                 },
-                                                color: Color(0xff62b490),
+                                                color: Colors.brown,
                                                 shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.all(

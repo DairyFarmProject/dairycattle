@@ -1,290 +1,313 @@
-import 'package:dropdown_search/dropdown_search.dart';
-import '/Screens/Cow/successrecord.dart';
-import '/main.dart';
+import '/Screens/Activity/Breeding/editrecordbreed.dart';
+import '/Screens/Activity/Breeding/recordbreeding.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RecordBreeding extends StatefulWidget {
+  const RecordBreeding({Key? key}) : super(key: key);
+
   @override
   _RecordBreedingState createState() => _RecordBreedingState();
 }
 
 class _RecordBreedingState extends State<RecordBreeding> {
-  DateTime? _dateTime;
+  createAlertDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Center(child: Text('ผลการตรวจสอบการตั้งท้อง')),
+            actions: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                      margin: EdgeInsets.fromLTRB(20, 20, 100, 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          // ignore: deprecated_member_use
+                          RaisedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            color: Color(0xffd6786e),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(39))),
+                            child: Row(
+                              children: [
+                                Icon(Icons.close),
+                                Text(
+                                  'ไม่ตั้งท้อง',
+                                  style: TextStyle(
+                                      color: Colors.blueGrey[50],
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14),
+                                ),
+                              ],
+                            ),
+                            padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                          )
+                        ],
+                      )),
+                  Container(
+                      margin: EdgeInsets.fromLTRB(0, 20, 20, 20),
+                      child: Column(
+                        children: [
+                          // ignore: deprecated_member_use
 
-  String n1 = 'มูมู้';
-  String c1 = 'A121';
-  String n2 = 'บุญเกิด';
-  String c2 = 'A122';
-  String n3 = 'บุญมี';
-  String c3 = 'A123';
-  String n4 = 'บุญจัง';
-  String c4 = 'A124';
-  String A = 'อื่นๆ';
+                          RaisedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            color: Color(0xff62b490),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(39))),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  'ตั้งท้อง',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14),
+                                ),
+                              ],
+                            ),
+                            padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
+                          )
+                        ],
+                      )),
+                ],
+              )
+            ],
+          );
+        });
+  }
 
-  bool isShowOtherField = false;
-
-  int _counter = 0;
-
-  increment() => setState(() {
-        _counter++;
-      });
-
-  decrement() => setState(() {
-        _counter--;
-      });
-
-  //selectother(String data){
-  //  if(data==A){
-  //   return
-  // }
-  //}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Text('บันทึกการผสมพันธ์'),
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
+        appBar: AppBar(
+          title: Text("บันทึกการผสมพันธ์"),
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+          ),
+          backgroundColor: Color(0xffd6786e),
+        ),
+        body: Container(
+          margin: EdgeInsets.fromLTRB(20, 15, 20, 5),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                ExpansionTile(
+                  collapsedBackgroundColor: Color(0xff59aca9),
+                  tilePadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  title: Text(
+                    'บุญมี - A122 กับ บุญรี - A123',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16),
+                  ),
+                  children: <Widget>[
+                    Text(
+                      'วันที่เริ่มผสม 11/12/63',
+                      style: TextStyle(color: Colors.black, fontSize: 18),
+                    ),
+                    DataTable(
+                      columns: <DataColumn>[
+                        DataColumn(
+                            label: Text(
+                          'ชื่อกิจกรรม',
+                        )),
+                        DataColumn(
+                            label: Text(
+                          'วันที่',
+                        )),
+                        DataColumn(
+                            label: Text(
+                          'อีกกี่วัน',
+                        )),
+                      ],
+                      rows: <DataRow>[
+                        DataRow(cells: <DataCell>[
+                          DataCell(Text('กลับสัด 1')),
+                          DataCell(Text('4/1/2564')),
+                          DataCell(
+                            Container(
+                              padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[600],
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(2),
+                                  )),
+                              child: Text(
+                                'เสร็จสิ้น',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ]),
+                        DataRow(cells: <DataCell>[
+                          DataCell(Text('กลับสัด 2')),
+                          DataCell(Text('7/1/2564')),
+                          DataCell(
+                            Container(
+                              padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[600],
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(2),
+                                  )),
+                              child: Text(
+                                'เสร็จสิ้น',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ]),
+                        DataRow(cells: <DataCell>[
+                          DataCell(Text('กลับสัด 3')),
+                          DataCell(Text('12/1/2564')),
+                          DataCell(
+                            Container(
+                              padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[600],
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(2),
+                                  )),
+                              child: Text(
+                                'เสร็จสิ้น',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ]),
+                        DataRow(cells: <DataCell>[
+                          DataCell(Text('ตรวจสอบการตั้งท้อง')),
+                          DataCell(Text('13/1/2564')),
+                          DataCell(
+                            Container(
+                              padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                              decoration: BoxDecoration(
+                                  color: Colors.amber[400],
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(2),
+                                  )),
+                              child: Text(
+                                'ถึงกำหนดแล้ว',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ]),
+                        DataRow(cells: <DataCell>[
+                          DataCell(Text('พักท้อง')),
+                          DataCell(Text('14/1/2564')),
+                          DataCell(
+                            Container(
+                              padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                              decoration: BoxDecoration(
+                                  color: Colors.red[800],
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(2),
+                                  )),
+                              child: Text(
+                                'อีก 12 วัน',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ]),
+                        DataRow(cells: <DataCell>[
+                          DataCell(Text('กำหนดคลอด')),
+                          DataCell(Text('17/1/2564')),
+                          DataCell(
+                            Container(
+                              padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                              decoration: BoxDecoration(
+                                  color: Colors.red[800],
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(2),
+                                  )),
+                              child: Text(
+                                'อีก 15 วัน',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ])
+                      ],
+                    ),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(100, 10, 100, 20),
+                      child: RaisedButton(
+                        onPressed: () {
+                          createAlertDialog(context);
+                        },
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.update),
+                              Text('อัพเดตตรวจสอบการตั้งท้อง')
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
-        backgroundColor: Colors.red[300],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
-              child: DropdownSearch<String>(
-                  mode: Mode.MENU,
-                  showSelectedItems: true,
-                  items: [n1 + c1, n2 + c2, n3 + c3, n4 + c4, A],
-                  label: "ชื่อวัว",
-                  popupItemDisabled: (String s) => s.startsWith('I'),
-                  onChanged: (String? selectedCow) {
-                    if (selectedCow == A) {
-                      setState(() {
-                        isShowOtherField = true;
-                      });
-                    }
-                  },
-                  selectedItem: n4 + c4),
-              padding: const EdgeInsets.all(20.0),
-            ),
-            Visibility(
-              visible: isShowOtherField,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      labelText: 'ชื่อวัว',
-                      fillColor: Colors.blueGrey,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Colors.blueGrey, width: 2),
-                      )),
-                  onChanged: (String name) {},
-                ),
-              ),
-            ),
-            Column(
-              children: [
-                Container(
-                  alignment: Alignment.topLeft,
-                  margin: EdgeInsets.all(0),
-                  padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
-                  child: Text(
-                    'รอบการผสมพันธ์',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Row(children: [
-                  Padding(
-                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.indeterminate_check_box,
-                          color: Colors.blueGrey,
-                        ),
-                        onPressed: decrement,
-                      )),
-                  Padding(
-                    padding: EdgeInsets.all(3),
-                    child: Text('$_counter'),
-                  ),
-                  Padding(
-                      padding: EdgeInsets.all(0),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.add_box,
-                          color: Colors.blueGrey,
-                        ),
-                        onPressed: increment,
-                      )),
-                ])
-              ],
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
-              child: DropdownSearch<String>(
-                  mode: Mode.MENU,
-                  showSelectedItems: true,
-                  items: [n1 + c1, n2 + c2, n3 + c3, n4 + c4, A],
-                  label: "ชื่อพ่อพันธ์",
-                  // popupItemDisabled: (String s) => s.startsWith('I'),
-                  popupItemDisabled: (String s) {
-                    return s.startsWith('I');
-                  },
-                  onChanged: (String? selectedCow) {
-                    if (selectedCow == A) {
-                      setState(() {
-                        isShowOtherField = true;
-                      });
-                    }
-                  },
-                  selectedItem: n4 + c4),
-              padding: const EdgeInsets.all(20.0),
-            ),
-            Visibility(
-              visible: isShowOtherField,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      labelText: 'ชื่อพ่อพันธ์',
-                      fillColor: Colors.blueGrey,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Colors.blueGrey, width: 2),
-                      )),
-                  onChanged: (String name) {},
-                ),
-              ),
-            ),
-            Column(
-              children: [
-                Container(
-                  alignment: Alignment.topLeft,
-                  margin: EdgeInsets.all(0),
-                  padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
-                  child: Text('วันที่',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 20, 0, 20),
-                      child: Text(
-                        _dateTime == null ? 'yyyy/mm/dd' : _dateTime.toString(),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.calendar_today_sharp,
-                          color: Colors.blueGrey,
-                        ),
-                        onPressed: () {
-                          showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(1970),
-                            lastDate: DateTime(2022),
-                          ).then((date) {
-                            setState(() {
-                              _dateTime = date;
-                            });
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        labelText: 'รายละเอียดอื่นๆ',
-                        fillColor: Colors.blueGrey,
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.blueGrey, width: 2),
-                        )),
-                    onChanged: (String name) {},
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                        margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // ignore: deprecated_member_use
-                            RaisedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              color: Colors.blueGrey[50],
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(39))),
-                              child: Text(
-                                'ยกเลิก',
-                                style: TextStyle(
-                                    color: Color(0xffd6786e),
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14),
-                              ),
-                              padding:
-                                  const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                            )
-                          ],
-                        )),
-                    Container(
-                        margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                        child: Column(
-                          children: [
-                            // ignore: deprecated_member_use
-
-                            RaisedButton(
-                              onPressed: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return SuccessRecord();
-                                }));
-                              },
-                              color: Color(0xff62b490),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(39))),
-                              child: Text(
-                                'บันทึกข้อมูล',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14),
-                              ),
-                              padding:
-                                  const EdgeInsets.fromLTRB(20, 12, 20, 12),
-                            )
-                          ],
-                        )),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+        floatingActionButton: FloatingActionButton.extended(
+          label: Text(
+            ' เพิ่มการบันทึกข้อมูล',
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.w200, fontSize: 14),
+          ),
+          icon: Icon(Icons.add),
+          backgroundColor: Color(0xff62b490),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return RecordBreeding();
+            }));
+          },
+        ));
   }
 }
