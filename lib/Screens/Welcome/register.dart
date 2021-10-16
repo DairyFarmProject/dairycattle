@@ -118,15 +118,10 @@ class _RegisterScreenState extends State<RegisterScreen>
                     Expanded(
                         child: Align(
                       alignment: Alignment.centerRight,
-                      child: IconButton(
-                        icon: Icon(Icons.account_circle,
-                            color: Colors.green[400], size: 30),
-                        onPressed: () {},
-                      ),
                     )),
                   ],
                 ),
-                backgroundColor: Colors.green[400],
+                backgroundColor: Colors.brown,
                 key: loginStore.loginScaffoldKey,
               ),
               body: Form(
@@ -155,7 +150,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                       height: 200,
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: Colors.white),
+                                          color: Colors.brown[50]),
                                       child: Padding(
                                           padding: EdgeInsets.all(4.0),
                                           child: Center(
@@ -164,7 +159,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                             icon: Icon(
                                               Icons.add_a_photo_outlined,
                                               size: 30,
-                                              color: Colors.blueGrey,
+                                              color: Colors.brown,
                                             ),
                                             onPressed: () {
                                               getImage();
@@ -230,7 +225,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                         child: IconButton(
                                           icon: Icon(
                                             Icons.calendar_today_sharp,
-                                            color: Colors.blueGrey,
+                                            color: Colors.brown,
                                           ),
                                           onPressed: () {
                                             showDatePicker(
@@ -302,7 +297,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                       child: Text(
                                         'ยกเลิก',
                                         style: TextStyle(
-                                            color: Color(0xffd6786e),
+                                            color: Colors.brown,
                                             fontWeight: FontWeight.w600,
                                             fontSize: 14),
                                       ),
@@ -351,7 +346,8 @@ class _RegisterScreenState extends State<RegisterScreen>
                                         }
 
                                         if (mobileController.text.isNotEmpty) {
-                                          String d = '${DateFormat('yyyy-MM-dd').format(DateTime.parse(_dateTime.toString()))}';
+                                          String d =
+                                              '${DateFormat('yyyy-MM-dd').format(DateTime.parse(_dateTime.toString()))}';
                                           print('------' + d);
                                           UserPreferences().saveRegister(
                                               args.user_id,
@@ -378,7 +374,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                           ));
                                         }
                                       },
-                                      color: Color(0xff62b490),
+                                      color: Colors.brown,
                                       shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(39))),

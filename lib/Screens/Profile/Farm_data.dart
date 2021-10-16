@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:dairycattle/Screens/Profile/Editfarm.dart';
+import 'package:dairycattle/Screens/Profile/editfarm.dart';
 
 import '/Screens/Profile/accept_member.dart';
 import '/Screens/Profile/profile.dart';

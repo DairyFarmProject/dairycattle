@@ -67,6 +67,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         controller: passwordController,
                         onChanged: (value) {},
                       ),
+                      //เพิ่่มtextfield กรอกรหัสผ่านอีกรอบ check จากช่องที่กรอกก่่อนหน้า
+                      RoundedPasswordField(
+                        onSaved: (value) => _password = value,
+                        controller: passwordController,
+                        onChanged: (value) {},
+                      ),
                       RoundedButton(
                         text: "สมัครใช้งาน",
                         press: () {

@@ -1,4 +1,5 @@
 import 'package:dairycattle/Screens/Profile/editprofile.dart';
+import 'package:dairycattle/Screens/Welcome/welcome.dart';
 
 import '/models/User.dart';
 import '/providers/user_provider.dart';
@@ -38,7 +39,7 @@ class _ProfileState extends State<Profile> {
             margin: EdgeInsets.only(top: 10),
           ),
           Container(
-            margin: EdgeInsets.fromLTRB(5, 10, 5, 0),
+            margin: EdgeInsets.fromLTRB(15, 10, 15, 20),
             width: 420,
             height: 160,
             padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
@@ -66,13 +67,34 @@ class _ProfileState extends State<Profile> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(39))),
             child: Text(
-              'แก้ไขข้อมูลฟาร์ม',
+              'แก้ไขข้อมูลส่วนตัว',
               style: TextStyle(
                   color: Colors.brown,
                   fontWeight: FontWeight.w600,
                   fontSize: 14),
             ),
             padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 5),
+            child: RaisedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return Welcome();
+                }));
+              },
+              color: Colors.brown,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(39))),
+              child: Text(
+                'ออกจากระบบ',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14),
+              ),
+              padding: const EdgeInsets.fromLTRB(45, 10, 45, 10),
+            ),
           )
         ],
       ),

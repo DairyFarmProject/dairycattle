@@ -26,6 +26,7 @@ class _AcceptMemberState extends State<AcceptMember> {
   }
 
   @override
+  Uri? url;
   void initState() {
     super.initState();
     getJoinFarm();
@@ -165,7 +166,6 @@ class _AcceptMemberState extends State<AcceptMember> {
                       color: Colors.blueGrey[50],
                     ),
                     child: Column(
-
                       children: [
                         Text(
                           'สมาชิกทั้งหมด',
@@ -174,8 +174,7 @@ class _AcceptMemberState extends State<AcceptMember> {
                               fontSize: 16,
                               fontWeight: FontWeight.w500),
                         ),
-                        DataTable(columns: <DataColumn>[
-                         //Spacer(),
+                        DataTable(columnSpacing: 40, columns: <DataColumn>[
                           DataColumn(
                               label: Text(
                             '',
@@ -188,11 +187,20 @@ class _AcceptMemberState extends State<AcceptMember> {
                               label: Text(
                             'ตำแหน่ง',
                           )),
-                          DataColumn(
-                              label: Text(
-                            'สถานะ',
-                          )),
-                        ], rows: [])
+                        ], rows: <DataRow>[
+                          DataRow(
+                            cells: <DataCell>[
+                              DataCell(
+                                CircleAvatar(
+                                  radius: 20,
+                                  backgroundImage: NetworkImage('$url'),
+                                ),
+                              ),
+                              DataCell(Text('Sarah')),
+                              DataCell(Text('สมาชิกในฟาร์ม')),
+                            ],
+                          )
+                        ])
                       ],
                     ),
                   ),

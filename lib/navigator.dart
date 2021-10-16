@@ -72,7 +72,7 @@ class _HomepageState extends State<Homepage> {
     ),
     AppBar(
       automaticallyImplyLeading: false,
-      title: Text('บัญชีผู้ใช้'),
+      title: Text('ข้อมมูลส่วนตัว'),
       backgroundColor: Colors.brown[500],
     ),
   ];

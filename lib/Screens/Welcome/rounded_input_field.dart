@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import '/Screens/Welcome/constants.dart';
 import '/Screens/Welcome/text_field_container.dart';
@@ -19,7 +18,6 @@ class RoundedInputField extends StatelessWidget {
     required this.validator,
     required this.onSaved,
   }) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class RoundedInputField extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final TextEditingController? controller;
@@ -21,7 +22,7 @@ class RoundedInputField extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       width: size.width * 0.9,
       decoration: BoxDecoration(
-        color: Colors.green[50],
+        color: Colors.brown[50],
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextFormField(
@@ -29,7 +30,7 @@ class RoundedInputField extends StatelessWidget {
           keyboardType: keyboardType,
           controller: controller,
           onChanged: onChanged,
-          cursorColor: Colors.green[900],
+          cursorColor: Colors.brown,
           decoration: InputDecoration(
             hintText: hintText,
             border: InputBorder.none,
