@@ -107,7 +107,8 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
                                   await Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => EachVaccine()));
+                                          builder: (context) => EachVaccine(vac: snapshot
+                                                              .data![i])));
                                 },
                                 child: Row(
                                     mainAxisSize: MainAxisSize.max,

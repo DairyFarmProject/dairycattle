@@ -108,7 +108,6 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                           )),
                         );
                       } else
-                        // ignore: curly_braces_in_flow_control_structures
                         return SingleChildScrollView(
                           child: Column(
                             children: [
@@ -129,16 +128,12 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                                       ? null
                                       : snapshot.data?[selectCow],
                                   items: snapshot.data?.map((data) {
-                                    // ignore: unnecessary_new
                                     return new DropdownMenuItem<Cows>(
                                       alignment: Alignment.centerLeft,
-                                      //enabled: false,
                                       value: data,
                                       child: new SizedBox(
                                         child: Text(data.cow_name),
                                       ),
-
-                                      //enabled: false,
                                     );
                                   }).toList(growable: isShowOtherField),
                                   onChanged: (value) {
@@ -149,23 +144,6 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                                   },
                                 ),
                               ),
-                              // Visibility(
-                              //   visible: isShowOtherField,
-                              //   child: Padding(
-                              //     padding:
-                              //         const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                              //     child: TextFormField(
-                              //       decoration: InputDecoration(
-                              //           labelText: 'ชื่อวัว',
-                              //           fillColor: Colors.blueGrey,
-                              //           focusedBorder: OutlineInputBorder(
-                              //             borderSide: BorderSide(
-                              //                 color: Colors.blueGrey, width: 2),
-                              //           )),
-                              //       onChanged: (String name) {},
-                              //     ),
-                              //   ),
-                              // ),
                               Column(
                                 children: [
                                   Container(
@@ -289,7 +267,6 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                                   ),
                                 ],
                               ),
-
                               Column(
                                 children: [
                                   Container(

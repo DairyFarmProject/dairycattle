@@ -1,28 +1,28 @@
 import 'dart:convert';
 
 class Abdominal {
-  final int? abdominal_id;
-  final int? cow_id;
-  final int? round;
-  final String? ab_date;
-  final String? ab_status;
-  final String? ab_caretaker;
-  final String? semen_id;
-  final String? semen_name;
-  final int? semen_specie;
-  final String? ab_calf;
-  final String? note;
-  final int? type_id;
-  final int? specie_id;
-  final int? farm_id;
-  final int? status_id;
-  final String? cow_no;
-  final String? cow_name;
-  final String? cow_birthday;
-  final String? cow_sex;
-  final String? mom_id;
-  final int? mom_specie;
-  final String? cow_image;
+  final int abdominal_id;
+  final int cow_id;
+  final int round;
+  final String ab_date;
+  final String ab_status;
+  final String ab_caretaker;
+  final String semen_id;
+  final String semen_name;
+  final int semen_specie;
+  final String ab_calf;
+  final String note;
+  final int type_id;
+  final int specie_id;
+  final int farm_id;
+  final int status_id;
+  final String cow_no;
+  final String cow_name;
+  final String cow_birthday;
+  final String cow_sex;
+  final String mom_id;
+  final int mom_specie;
+  final String cow_image;
   Abdominal({
     required this.abdominal_id,
     required this.cow_id,

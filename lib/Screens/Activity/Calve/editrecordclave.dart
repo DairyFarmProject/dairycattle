@@ -23,18 +23,9 @@ class EditRecordCalve extends StatefulWidget {
 
 class _EditRecordCalveState extends State<EditRecordCalve> {
   DateTime? _dateTime;
-  @override
-  int _selectIndex = 0;
-
-  void _onItemTap(int index) {
-    setState(() {
-      _selectIndex = index;
-    });
-  }
-
-  bool isShowOtherField = false;
   int selectSex = 1;
-  String status = '';
+  String? sex;
+  String? status;
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -97,26 +88,27 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                           style: TextStyle(fontWeight: FontWeight.w500)),
                     ),
                     Container(
+                      child: DropdownSearch<String>(
+                          mode: Mode.MENU,
+                          showSelectedItems: true,
+                          items: ["", "เพศผู้", "เพศเมีย"],
+                          label: "เพศ",
+                          hint: "เพศลูกวัว",
+                          popupItemDisabled: (String s) => s.startsWith('I'),
+                          onChanged: (newValue) {
+                            print(newValue);
+                            if (newValue == "เพศผู้") {
+                              setState(() {
+                                sex = "M";
+                              });
+                            } else {
+                              setState(() {
+                                sex = "F";
+                              });
+                            }
+                            ;
+                          }),
                       padding: const EdgeInsets.all(20.0),
-                      child: DropdownButton<Sex>(
-                        hint: new Text("Select a sex"),
-                        value: selectSex == null ? null : sexs[selectSex],
-                        onChanged: (newValue) {
-                          setState(() {
-                            selectSex = sexs.indexOf(newValue!);
-                            print(selectSex);
-                          });
-                        },
-                        items: sexs.map((Sex status) {
-                          return new DropdownMenuItem<Sex>(
-                            value: status,
-                            child: new Text(
-                              status.name,
-                              style: new TextStyle(color: Colors.black),
-                            ),
-                          );
-                        }).toList(),
-                      ),
                     ),
                   ]),
                   Column(children: [
@@ -147,53 +139,23 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                       child: Text('สถานะ',
                           style: TextStyle(fontWeight: FontWeight.w500)),
                     ),
-                    // Container(
-                    //   padding: const EdgeInsets.all(20),
-                    //   child: DropdownButton<Specie>(
-                    //     hint: new Text("Select a specie"),
-                    //     value:
-                    //         selectSpecie == null ? null : species[selectSpecie],
-                    //     onChanged: (newValue) {
-                    //       setState(() {
-                    //         selectSpecie = species.indexOf(newValue!);
-                    //         print(selectSpecie);
-                    //       });
-                    //     },
-                    //     items: species.map((Specie status) {
-                    //       return new DropdownMenuItem<Specie>(
-                    //         value: status,
-                    //         child: new Text(
-                    //           status.name,
-                    //           style: new TextStyle(color: Colors.black),
-                    //         ),
-                    //       );
-                    //     }).toList(),
-                    //   ),
-                    // ),
+                    Container(
+                      child: DropdownSearch<String>(
+                        mode: Mode.MENU,
+                        showSelectedItems: true,
+                        items: ["", "ปกติ", "แท้ง"],
+                        label: "สถานะ",
+                        hint: "สถานะ",
+                        popupItemDisabled: (String s) => s.startsWith('I'),
+                        onChanged: (newValue) {
+                          setState(() {
+                            status = newValue;
+                          });
+                        },
+                      ),
+                      padding: const EdgeInsets.all(20.0),
+                    ),
                   ]),
-                  // Container(
-                  //   padding: const EdgeInsets.all(20),
-                  //   child: DropdownButton<Specie>(
-                  //     hint: new Text("Select a specie"),
-                  //     value:
-                  //         selectSpecie == null ? null : species[selectSpecie],
-                  //     onChanged: (newValue) {
-                  //       setState(() {
-                  //         selectSpecie = species.indexOf(newValue!);
-                  //         print(selectSpecie);
-                  //       });
-                  //     },
-                  //     items: species.map((Specie status) {
-                  //       return new DropdownMenuItem<Specie>(
-                  //         value: status,
-                  //         child: new Text(
-                  //           status.name,
-                  //           style: new TextStyle(color: Colors.black),
-                  //         ),
-                  //       );
-                  //     }).toList(),
-                  //   ),
-                  // ),
                   Column(
                     children: [
                       Container(
@@ -293,19 +255,17 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                                   // ignore: deprecated_member_use
                                   RaisedButton(
                                     onPressed: () {
-                                      //   userEditAb(
-                                      //       widget.par.parturition_id,
-                                      //       widget.par.ab_id,
-                                      //       selectCow,
-                                      //       _counter,
-                                      //       '${DateFormat('dd-MM-yyyy').format(DateTime.parse(_dateTime.toString()))}',
-                                      //       widget.ab.ab_caretaker,
-                                      //       dadIdController.text,
-                                      //       dadController.text,
-                                      //       selectSpecie,
-                                      //       noteController.text,
-                                      //       user?.user_id,
-                                      //       user?.farm_id);
+                                      userEditAb(
+                                          widget.par.parturition_id,
+                                          widget.par.ab_id,
+                                          _dateTime.toString(),
+                                          calfNameController.text,
+                                          sex,
+                                          caretakerController.text,
+                                          status,
+                                          noteController.text,
+                                          user?.user_id,
+                                          user?.farm_id);
                                     },
                                     color: Color(0xff62b490),
                                     shape: RoundedRectangleBorder(
@@ -332,22 +292,16 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
             ))));
   }
 
-  userEditAb(ab_id, cow_id, round, ab_date, caretaker, id, name, specie, note,
-      user, farm) async {
-    String ab_status = 'wait';
-    String ab_calf = 'false';
-
+  userEditAb(par_id, ab_id, date, name, sex, caretaker, status, note, user,
+      farm) async {
     Map data = {
-      'abdominal_id': ab_id.toString(),
-      'cow_id': cow_id.toString(),
-      'round': round.toString(),
-      'ab_date': ab_date,
-      'ab_status': ab_status,
-      'ab_caretaker': caretaker,
-      'semen_id': id,
-      'semen_name': name,
-      'semen_specie': specie.toString(),
-      'ab_calf': ab_calf,
+      'parturition_id': par_id.toString(),
+      'ab_id': ab_id.toString(),
+      'par_date': date,
+      'calf_name': name,
+      'calf_sex': sex,
+      'par_caretaker': caretaker,
+      'par_status': status,
       'note': note,
       'user_id': user.toString(),
       'farm_id': farm.toString()
@@ -356,7 +310,7 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
     print(data);
 
     final response =
-        await http.put(Uri.http('127.0.0.1:3000', 'abdominal/edit'),
+        await http.put(Uri.http('127.0.0.1:3000', 'parturition/edit'),
             headers: {
               "Accept": "application/json",
               "Content-Type": "application/x-www-form-urlencoded"

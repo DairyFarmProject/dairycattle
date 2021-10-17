@@ -133,7 +133,7 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
                           child: TextField(
                             keyboardType: TextInputType.number,
                             decoration: new InputDecoration(
-                              hintText: widget.milk.milk_liter_morn,
+                              hintText: widget.milk.milk_liter_morn.toString(),
                             ),
                             controller: t1,
                           ),
@@ -207,7 +207,7 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
                           child: TextField(
                             keyboardType: TextInputType.number,
                             decoration: new InputDecoration(
-                              hintText: widget.milk.milk_liter_even,
+                              hintText: widget.milk.milk_liter_even.toString(),
                             ),
                             controller: t2,
                           ),

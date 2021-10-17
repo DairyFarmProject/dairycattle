@@ -2,10 +2,10 @@ import 'dart:convert';
 
 class Milks {
   int milk_id;
-  String milk_liter_morn;
-  String milk_liter_even;
+  int milk_liter_morn;
+  int milk_liter_even;
   String milk_date;
-  String total;
+  int total;
   Milks({
     required this.milk_id,
     required this.milk_liter_morn,
@@ -17,10 +17,10 @@ class Milks {
 
   Milks copyWith({
     int? milk_id,
-    String? milk_liter_morn,
-    String? milk_liter_even,
+    int? milk_liter_morn,
+    int? milk_liter_even,
     String? milk_date,
-    String? total,
+    int? total,
   }) {
     return Milks(
       milk_id: milk_id ?? this.milk_id,
