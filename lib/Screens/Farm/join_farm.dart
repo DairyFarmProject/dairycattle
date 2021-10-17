@@ -20,40 +20,41 @@ class JoinFarm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            Expanded(
-              child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Icon(
-                        Icons.arrow_back_ios_outlined,
-                        color: Colors.white,
-                      ))),
-            ),
-            Center(
-              child: Text('เข้าร่วมฟาร์ม'),
-            ),
-            Expanded(
-                child: Align(
-              alignment: Alignment.centerRight,
-              child: IconButton(
-                icon: Icon(Icons.account_circle, color: Colors.white, size: 30),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return Profile();
-                  }));
-                },
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Icon(
+                          Icons.arrow_back_ios_outlined,
+                          color: Colors.white,
+                        ))),
               ),
-            )),
-          ],
-        ),
-        backgroundColor: Colors.green[400],
-      ),
+              Center(
+                child: Text('เข้าร่วมฟาร์ม'),
+              ),
+              Expanded(
+                  child: Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  icon:
+                      Icon(Icons.account_circle, color: Colors.white, size: 30),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return Profile();
+                    }));
+                  },
+                ),
+              )),
+            ],
+          ),
+          backgroundColor: Colors.brown),
       body: Column(
         children: <Widget>[
           Container(
@@ -67,23 +68,18 @@ class JoinFarm extends StatelessWidget {
             keyboardAppearance: Brightness.light,
             pinTheme: PinTheme(
                 shape: PinCodeFieldShape.box,
-                //activeColor: Colors.green[100],
-                selectedColor: Colors.green[100],
-                inactiveFillColor: Colors.green[100],
-                selectedFillColor: Colors.white,
-                inactiveColor: Colors.green[100],
+                selectedColor: Colors.brown,
+                inactiveFillColor: Colors.brown[50],
+                selectedFillColor: Colors.brown[50],
+                inactiveColor: Colors.brown,
                 borderRadius: BorderRadius.circular(5),
                 fieldHeight: 70,
-                fieldWidth: 60,
-                activeFillColor: Colors.white,
+                fieldWidth: 50,
+                activeFillColor: Colors.brown[50],
                 fieldOuterPadding: EdgeInsets.only(left: 10, right: 10)),
-
             mainAxisAlignment: MainAxisAlignment.center,
-
             animationDuration: Duration(milliseconds: 300),
-            //backgroundColor: Colors.blue.shade50,
             enableActiveFill: true,
-            //xerrorAnimationController: errorController,
             controller: textEditingController,
             onCompleted: (v) {
               print("Completed");
@@ -99,7 +95,7 @@ class JoinFarm extends StatelessWidget {
             },
             appContext: context,
             pastedTextStyle: TextStyle(
-              color: Colors.green.shade600,
+              color: Colors.brown,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -125,7 +121,7 @@ class JoinFarm extends StatelessWidget {
                   return JoinFarmWait();
                 }));
               },
-              color: Color(0xff62b490),
+              color: Colors.brown,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(39))),
               child: Text(

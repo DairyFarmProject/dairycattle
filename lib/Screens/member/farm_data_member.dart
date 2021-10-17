@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:dairycattle/Screens/Farm/join_farm.dart';
 import 'package:dairycattle/Screens/Profile/editfarm.dart';
-import 'package:dairycattle/Screens/member/navigator_member.dart';
 
 import '/Screens/Profile/accept_member.dart';
 import '/Screens/Profile/profile.dart';
@@ -13,13 +13,13 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class FarmData extends StatefulWidget {
-  const FarmData({Key? key}) : super(key: key);
+class FarmData_member extends StatefulWidget {
+  const FarmData_member({Key? key}) : super(key: key);
   @override
-  _FarmDataState createState() => _FarmDataState();
+  _FarmData_memberState createState() => _FarmData_memberState();
 }
 
-class _FarmDataState extends State<FarmData> {
+class _FarmData_memberState extends State<FarmData_member> {
   int? farm_id;
   String? farm_no;
   String? farm_code;
@@ -149,11 +149,11 @@ class _FarmDataState extends State<FarmData> {
                 )),
             SizedBox(height: 10),
             Text(
-              'เจ้าของฟาร์ม',
+              'สมาชิกในฟาร์ม',
             ),
             SizedBox(height: 20.0),
             DefaultTabController(
-                length: 3,
+                length: 2,
                 initialIndex: 0,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -182,23 +182,6 @@ class _FarmDataState extends State<FarmData> {
                                   Padding(padding: EdgeInsets.only(left: 5)),
                                   Text(
                                     'ฟาร์ม',
-                                    style: TextStyle(color: Colors.brown),
-                                  )
-                                ])),
-                            Tab(
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                  Align(
-                                      alignment: Alignment.center,
-                                      child: Icon(
-                                        Icons.person_add_alt_1_outlined,
-                                        color: Colors.brown,
-                                        size: 20,
-                                      )),
-                                  Padding(padding: EdgeInsets.only(left: 5)),
-                                  Text(
-                                    'เพิ่มสมาชิก',
                                     style: TextStyle(color: Colors.brown),
                                   )
                                 ])),
@@ -282,7 +265,7 @@ class _FarmDataState extends State<FarmData> {
                                           Navigator.push(context,
                                               MaterialPageRoute(
                                                   builder: (context) {
-                                            return EditFarm();
+                                            return JoinFarm();
                                           }));
                                         },
                                         color: Colors.blueGrey[50],
@@ -290,29 +273,7 @@ class _FarmDataState extends State<FarmData> {
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(39))),
                                         child: Text(
-                                          'แก้ไขข้อมูลฟาร์ม',
-                                          style: TextStyle(
-                                              color: Colors.brown,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 14),
-                                        ),
-                                        padding: const EdgeInsets.fromLTRB(
-                                            30, 10, 30, 10),
-                                      ),
-                                      RaisedButton(
-                                        onPressed: () {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return Homepage_Member();
-                                          }));
-                                        },
-                                        color: Colors.blueGrey[50],
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(39))),
-                                        child: Text(
-                                          'ไปหน้าฝั่ง member',
+                                          'ออกจากฟาร์ม',
                                           style: TextStyle(
                                               color: Colors.brown,
                                               fontWeight: FontWeight.w600,
@@ -325,7 +286,6 @@ class _FarmDataState extends State<FarmData> {
                                   ),
                                 )),
                           ),
-                          AcceptMember(),
                           Profile(),
                         ]))
                     // Container(

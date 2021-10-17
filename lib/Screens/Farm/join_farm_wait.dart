@@ -1,3 +1,7 @@
+import 'package:dairycattle/Screens/Profile/Editfarm.dart';
+import 'package:dairycattle/Screens/Profile/Farm_data.dart';
+import 'package:dairycattle/Screens/member/farm_data_member.dart';
+
 import '/Screens/Farm/join_farm.dart';
 import '/Screens/Profile/profile.dart';
 import 'package:flutter/material.dart';
@@ -14,40 +18,31 @@ class _JoinFarmWaitState extends State<JoinFarmWait> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            Expanded(
-              child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Icon(
-                        Icons.arrow_back_ios_outlined,
-                        color: Colors.white,
-                      ))),
-            ),
-            Center(
-              child: Text('เข้าร่วมฟาร์ม'),
-            ),
-            Expanded(
-                child: Align(
-              alignment: Alignment.centerRight,
-              child: IconButton(
-                icon: Icon(Icons.account_circle, color: Colors.white, size: 30),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return Profile();
-                  }));
-                },
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Icon(
+                          Icons.arrow_back_ios_outlined,
+                          color: Colors.white,
+                        ))),
               ),
-            )),
-          ],
-        ),
-        backgroundColor: Colors.green[400],
-      ),
+              Center(
+                child: Text('เข้าร่วมฟาร์ม'),
+              ),
+              Expanded(
+                  child: Align(
+                alignment: Alignment.centerRight,
+              )),
+            ],
+          ),
+          backgroundColor: Colors.brown),
       body: Column(
         children: [
           Center(
@@ -71,9 +66,9 @@ class _JoinFarmWaitState extends State<JoinFarmWait> {
                   Icon(
                     Icons.watch_later,
                     size: 62,
-                    color: Colors.teal[700],
+                    color: Colors.brown[700],
                   ),
-                  Text('สถานะ : รองเจ้าของฟาร์มอนุมัติ')
+                  Text('สถานะ : รอเจ้าของฟาร์มอนุมัติ')
                 ],
               ),
             ),
@@ -96,13 +91,13 @@ class _JoinFarmWaitState extends State<JoinFarmWait> {
                           return JoinFarm();
                         }));
                       },
-                      color: Color(0xffd6786e),
+                      color: Colors.blueGrey[50],
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(39))),
                       child: Text(
                         'ยกเลิกคำขอ',
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.brown,
                             fontWeight: FontWeight.w600,
                             fontSize: 16),
                       ),
@@ -128,7 +123,7 @@ class _JoinFarmWaitState extends State<JoinFarmWait> {
                                 onPressed: () {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
-                                    return Profile();
+                                    return FarmData_member();
                                   }));
                                 },
                                 child: const Text('เข้าสู่หน้าหลัก',
@@ -154,7 +149,7 @@ class _JoinFarmWaitState extends State<JoinFarmWait> {
                         //     return JoinFarmWait();
                         //   }));
                         // },
-                        color: Color(0xff62b490),
+                        color: Colors.brown,
                         shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(39))),

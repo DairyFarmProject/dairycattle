@@ -1,25 +1,23 @@
+import 'package:dairycattle/Screens/Activity/addactivity.dart';
+import 'package:dairycattle/Screens/Cow/cow1.dart';
+import 'package:dairycattle/Screens/member/farm_data_member.dart';
+
 import '/Screens/Profile/Farm_data.dart';
 import '/dashboard.dart';
 import '/notification.dart';
 import '/Screens/Profile/profile.dart';
 import 'package:flutter/material.dart';
 
-import 'Screens/Activity/addactivity.dart';
-import 'Screens/Cow/addcow1.dart';
-import 'Screens/Cow/cow1.dart';
-import 'Screens/Cow/onecow.dart';
-
-class Homepage extends StatefulWidget {
+class Homepage_Member extends StatefulWidget {
   @override
-  _HomepageState createState() => _HomepageState();
+  _Homepage_MemberState createState() => _Homepage_MemberState();
 }
 
 int _selectIndex = 0;
 
-class _HomepageState extends State<Homepage> {
+class _Homepage_MemberState extends State<Homepage_Member> {
   int _selectedIndex = 0;
   List<Widget> _widgetOptions = <Widget>[
-    Text('ภาพรวม'),
     Text('วัวของฉัน'),
     Text('เพิ่มกิจกรรม'),
     Text('แจ้งเตือน'),
@@ -33,11 +31,6 @@ class _HomepageState extends State<Homepage> {
   }
 
   List<AppBar> _appBarList = [
-    AppBar(
-      automaticallyImplyLeading: false,
-      title: Text('ภาพรวมฟาร์ม'),
-      backgroundColor: Colors.brown[500],
-    ),
     AppBar(
       automaticallyImplyLeading: false,
       centerTitle: true,
@@ -80,11 +73,10 @@ class _HomepageState extends State<Homepage> {
   int _selectPage = 0;
 
   final _pageOptions = [
-    Dashboard(),
     Cow(),
     AddActivity(),
     Notifications(),
-    FarmData(),
+    FarmData_member(),
   ];
 
   @override
@@ -103,10 +95,6 @@ class _HomepageState extends State<Homepage> {
         unselectedItemColor: Colors.blueGrey,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'ภาพรวม',
-          ),
-          BottomNavigationBarItem(
             icon: ImageIcon(AssetImage("assets/images/icon_cow.png")),
             label: 'วัวของฉัน',
           ),
@@ -124,22 +112,6 @@ class _HomepageState extends State<Homepage> {
           ),
         ],
         currentIndex: _selectPage,
-      ),
-      floatingActionButton: Visibility(
-        visible: _selectPage == 1,
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return AddCow();
-            }));
-          },
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-            size: 40,
-          ),
-          backgroundColor: Color(0xff62b490),
-        ),
       ),
     );
   }
