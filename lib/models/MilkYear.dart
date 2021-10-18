@@ -1,54 +1,52 @@
 import 'dart:convert';
 
 class MilkYear {
-  int month;
-  String count;
+  String month;
+  String sum;
   MilkYear({
     required this.month,
-    required this.count,
+    required this.sum,
   });
-  
 
   MilkYear copyWith({
-    int? month,
-    String? count,
+    String? month,
+    String? sum,
   }) {
     return MilkYear(
       month: month ?? this.month,
-      count: count ?? this.count,
+      sum: sum ?? this.sum,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'month': month,
-      'count': count,
+      'sum': sum,
     };
   }
 
   factory MilkYear.fromMap(Map<String, dynamic> map) {
     return MilkYear(
       month: map['month'],
-      count: map['count'],
+      sum: map['sum'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory MilkYear.fromJson(String source) => MilkYear.fromMap(json.decode(source));
+  factory MilkYear.fromJson(String source) =>
+      MilkYear.fromMap(json.decode(source));
 
   @override
-  String toString() => 'MilkYear(month: $month, count: $count)';
+  String toString() => 'MilkYear(month: $month, sum: $sum)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
-    return other is MilkYear &&
-      other.month == month &&
-      other.count == count;
+
+    return other is MilkYear && other.month == month && other.sum == sum;
   }
 
   @override
-  int get hashCode => month.hashCode ^ count.hashCode;
+  int get hashCode => month.hashCode ^ sum.hashCode;
 }

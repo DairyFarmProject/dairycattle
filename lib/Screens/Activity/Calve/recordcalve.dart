@@ -1,8 +1,8 @@
-import 'package:dairycattle/models/CowAb.dart';
-import 'package:dairycattle/models/Cows.dart';
-import 'package:dairycattle/models/Parturitions.dart';
-import 'package:dairycattle/models/User.dart';
-import 'package:dairycattle/providers/user_provider.dart';
+import '../../../models/CowAb.dart';
+import '../../../models/Cows.dart';
+import '../../../models/Parturitions.dart';
+import '../../../models/User.dart';
+import '../../../providers/user_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:intl/intl.dart';

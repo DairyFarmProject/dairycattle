@@ -15,6 +15,8 @@ import 'package:http/http.dart' as http;
 import '/Screens/Activity/Milk/editrecordmilk.dart';
 import 'package:provider/provider.dart';
 
+import 'edit_milkDay.dart';
+
 class RecordMilkToday extends StatefulWidget {
   const RecordMilkToday({Key? key}) : super(key: key);
 
@@ -165,7 +167,7 @@ class _RecordMilkTodayState extends State<RecordMilkToday> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          EditRecordMilk(
+                                                          EditMilkDay(
                                                               milk: snapshot
                                                                   .data![i])));
                                             },

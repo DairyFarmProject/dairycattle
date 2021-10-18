@@ -213,31 +213,6 @@ class _RecordMilkState extends State<RecordMilk> {
                             borderRadius: BorderRadius.circular(18.0),
                           ))),
                       onPressed: doAddition,
-                      onLongPress: () {
-                        TextButton(
-                          child: Text('แก้ไข',
-                              style:
-                                  TextStyle(fontSize: 14, color: Colors.white)),
-                          style: ButtonStyle(
-                              padding: MaterialStateProperty.all<EdgeInsets>(
-                                  EdgeInsets.all(10)),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  (Colors.grey[400])!),
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
-                              ))),
-                          onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return EditMilkDay(
-                                  milk:
-                                      '${DateFormat.yMMMMd("th_TH").format(DateTime.parse(now.toString()))}');
-                            }));
-                          },
-                        );
-                      },
                     ),
                   ],
                 ),
@@ -296,7 +271,8 @@ class _RecordMilkState extends State<RecordMilk> {
                             // ignore: deprecated_member_use
                             RaisedButton(
                               onPressed: () {
-                                addMilk(t1.text, t2.text, user?.farm_id);
+                                addMilk(t1.text, t2.text, user?.farm_id,
+                                    user?.user_id);
                               },
                               color: Colors.brown[500],
                               shape: RoundedRectangleBorder(
@@ -322,7 +298,7 @@ class _RecordMilkState extends State<RecordMilk> {
         ));
   }
 
-  addMilk(milk_litermorn, milkliter_even, farm_id) async {
+  addMilk(milk_litermorn, milkliter_even, farm_id, user_id) async {
     int num1 = int.parse(milk_litermorn);
     int num2 = int.parse(milkliter_even);
 
@@ -334,7 +310,8 @@ class _RecordMilkState extends State<RecordMilk> {
       "milk_liter_even": num2.toString(),
       "milk_date": now,
       "total": sum.toString(),
-      "farm_id": farm_id.toString()
+      "farm_id": farm_id.toString(),
+      "user_id": user_id.toString()
     };
     print(data.toString());
     final response = await http.post(Uri.http('127.0.0.1:3000', 'milks/create'),

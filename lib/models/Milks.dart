@@ -2,12 +2,14 @@ import 'dart:convert';
 
 class Milks {
   int milk_id;
+  int farm_id;
   int milk_liter_morn;
   int milk_liter_even;
   String milk_date;
   int total;
   Milks({
     required this.milk_id,
+    required this.farm_id,
     required this.milk_liter_morn,
     required this.milk_liter_even,
     required this.milk_date,
@@ -17,6 +19,7 @@ class Milks {
 
   Milks copyWith({
     int? milk_id,
+    int? farm_id,
     int? milk_liter_morn,
     int? milk_liter_even,
     String? milk_date,
@@ -24,6 +27,7 @@ class Milks {
   }) {
     return Milks(
       milk_id: milk_id ?? this.milk_id,
+      farm_id: farm_id ?? this.farm_id,
       milk_liter_morn: milk_liter_morn ?? this.milk_liter_morn,
       milk_liter_even: milk_liter_even ?? this.milk_liter_even,
       milk_date: milk_date ?? this.milk_date,
@@ -34,6 +38,7 @@ class Milks {
   Map<String, dynamic> toMap() {
     return {
       'milk_id': milk_id,
+      'farm_id': farm_id,
       'milk_liter_morn': milk_liter_morn,
       'milk_liter_even': milk_liter_even,
       'milk_date': milk_date,
@@ -44,6 +49,7 @@ class Milks {
   factory Milks.fromMap(Map<String, dynamic> map) {
     return Milks(
       milk_id: map['milk_id'],
+      farm_id: map['farm_id'],
       milk_liter_morn: map['milk_liter_morn'],
       milk_liter_even: map['milk_liter_even'],
       milk_date: map['milk_date'],
@@ -57,7 +63,7 @@ class Milks {
 
   @override
   String toString() {
-    return 'Milks(milk_id: $milk_id, milk_liter_morn: $milk_liter_morn, milk_liter_even: $milk_liter_even, milk_date: $milk_date, total: $total)';
+    return 'Milks(milk_id: $milk_id, farm_id: $farm_id, milk_liter_morn: $milk_liter_morn, milk_liter_even: $milk_liter_even, milk_date: $milk_date, total: $total)';
   }
 
   @override
@@ -66,6 +72,7 @@ class Milks {
   
     return other is Milks &&
       other.milk_id == milk_id &&
+      other.farm_id == farm_id &&
       other.milk_liter_morn == milk_liter_morn &&
       other.milk_liter_even == milk_liter_even &&
       other.milk_date == milk_date &&
@@ -75,9 +82,10 @@ class Milks {
   @override
   int get hashCode {
     return milk_id.hashCode ^
+      farm_id.hashCode ^
       milk_liter_morn.hashCode ^
       milk_liter_even.hashCode ^
       milk_date.hashCode ^
       total.hashCode;
   }
-} 
+}

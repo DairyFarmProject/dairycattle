@@ -19,6 +19,11 @@ class EditRecordMilk extends StatefulWidget {
 }
 
 class _EditRecordMilkState extends State<EditRecordMilk> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   var num1 = 0, num2 = 0, sum = 0;
   DateTime? now = new DateTime.now();
   var formatter = new DateFormat.yMMMMd("th_TH");
@@ -52,12 +57,6 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    initializeDateFormatting();
-  }
-
-  @override
   Widget build(BuildContext context) {
     User? user = Provider.of<UserProvider>(context).user;
     return Scaffold(
@@ -75,277 +74,289 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
           ),
           backgroundColor: Colors.amber[600],
         ),
-        body: Center(
-          child: Container(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  Center(
-                    child: Container(
-                      margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                              icon: const Icon(Icons.navigate_before, size: 28),
-                              onPressed: () {}),
-                          Text(
-                            '${DateFormat.yMMMMd("th_TH").format(DateTime.parse(widget.milk.milk_date))}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          IconButton(
-                              icon: const Icon(
-                                Icons.navigate_next,
-                                size: 24,
+        body: Form(
+            key: _formKey,
+            child: Container(
+              margin: EdgeInsets.fromLTRB(20, 15, 20, 5),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Center(
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                                icon:
+                                    const Icon(Icons.navigate_before, size: 28),
+                                onPressed: () {}),
+                            Text(
+                              '${DateFormat.yMMMMd("th_TH").format(DateTime.parse(widget.milk.milk_date.toString()))}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
-                              onPressed: () {}),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: Text(
-                      'ช่วงเช้า',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                        child: Text('จำนวนน้ำนมวัว'),
-                      ),
-                      SizedBox(
-                        width: 100,
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                          child: TextField(
-                            keyboardType: TextInputType.number,
-                            decoration: new InputDecoration(
-                              hintText: widget.milk.milk_liter_morn.toString(),
+                              textAlign: TextAlign.center,
                             ),
-                            controller: t1,
-                          ),
+                            IconButton(
+                                icon: const Icon(
+                                  Icons.navigate_next,
+                                  size: 24,
+                                ),
+                                onPressed: () {}),
+                          ],
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
-                        child: Text(
-                          'ลิตร',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ),
-                      TextButton(
-                        child: Text('บันทึก',
-                            style:
-                                TextStyle(fontSize: 14, color: Colors.white)),
-                        style: ButtonStyle(
-                            padding: MaterialStateProperty.all<EdgeInsets>(
-                                EdgeInsets.all(10)),
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Color(0xff62b490)),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            ))),
-                        onPressed: doAddition,
-                        onLongPress: () {
-                          TextButton(
-                            child: Text('แก้ไข',
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.white)),
-                            style: ButtonStyle(
-                                padding: MaterialStateProperty.all<EdgeInsets>(
-                                    EdgeInsets.all(10)),
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        (Colors.grey[400])!),
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                ))),
-                            onPressed: () {},
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: Text(
-                      'ช่วงเย็น',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
                       ),
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                        child: Text('จำนวนน้ำนมวัว'),
-                      ),
-                      SizedBox(
-                        width: 100,
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                          child: TextField(
-                            keyboardType: TextInputType.number,
-                            decoration: new InputDecoration(
-                              hintText: widget.milk.milk_liter_even.toString(),
-                            ),
-                            controller: t2,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
-                        child: Text(
-                          'ลิตร',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ),
-                      TextButton(
-                        child: Text('บันทึก',
-                            style:
-                                TextStyle(fontSize: 14, color: Colors.white)),
-                        style: ButtonStyle(
-                            padding: MaterialStateProperty.all<EdgeInsets>(
-                                EdgeInsets.all(10)),
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Color(0xff62b490)),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            ))),
-                        onPressed: doAddition,
-                        onLongPress: () {
-                          TextButton(
-                            child: Text('แก้ไข',
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.white)),
-                            style: ButtonStyle(
-                                padding: MaterialStateProperty.all<EdgeInsets>(
-                                    EdgeInsets.all(10)),
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        (Colors.grey[400])!),
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                ))),
-                            onPressed: () {},
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                    decoration: BoxDecoration(
-                        color: Color(0xffd6786e),
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: Text('จำนวนน้ำนมทั้งหมด $sum ลิตร',
+                    Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                      child: Text(
+                        'ช่วงเช้า',
                         style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16)),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                          margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // ignore: deprecated_member_use
-                              RaisedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                color: Colors.blueGrey[50],
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(39))),
-                                child: Text(
-                                  'ยกเลิก',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                          child: Text('จำนวนน้ำนมวัว'),
+                        ),
+                        SizedBox(
+                          width: 100,
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              decoration: new InputDecoration(
+                                  hintText: '${widget.milk.milk_liter_morn}'),
+                              controller: t1,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
+                          child: Text(
+                            'ลิตร',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ),
+                        TextButton(
+                          child: Text('บันทึก',
+                              style:
+                                  TextStyle(fontSize: 14, color: Colors.white)),
+                          style: ButtonStyle(
+                              padding: MaterialStateProperty.all<EdgeInsets>(
+                                  EdgeInsets.all(10)),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Color(0xff62b490)),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ))),
+                          onPressed: doAddition,
+                          onLongPress: () {
+                            TextButton(
+                              child: Text('แก้ไข',
                                   style: TextStyle(
-                                      color: Color(0xffd6786e),
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14),
-                                ),
-                                padding:
-                                    const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                              )
-                            ],
-                          )),
-                      Container(
-                          margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
-                          child: Column(
-                            children: [
-                              // ignore: deprecated_member_use
-                              RaisedButton(
-                                onPressed: () {
-                                  // editMilk(t1.text, t2.text, user?.farm_id);
-                                },
-                                color: Color(0xff62b490),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(39))),
-                                child: Text(
-                                  'บันทึกการแก้ไข',
+                                      fontSize: 14, color: Colors.white)),
+                              style: ButtonStyle(
+                                  padding:
+                                      MaterialStateProperty.all<EdgeInsets>(
+                                          EdgeInsets.all(10)),
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          (Colors.grey[400])!),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                  ))),
+                              onPressed: () {},
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                      child: Text(
+                        'ช่วงเย็น',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                          child: Text('จำนวนน้ำนมวัว'),
+                        ),
+                        SizedBox(
+                          width: 100,
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              decoration: new InputDecoration(
+                                hintText: '${widget.milk.milk_liter_even}',
+                              ),
+                              controller: t2,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
+                          child: Text(
+                            'ลิตร',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ),
+                        TextButton(
+                          child: Text('บันทึก',
+                              style:
+                                  TextStyle(fontSize: 14, color: Colors.white)),
+                          style: ButtonStyle(
+                              padding: MaterialStateProperty.all<EdgeInsets>(
+                                  EdgeInsets.all(10)),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Color(0xff62b490)),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ))),
+                          onPressed: doAddition,
+                          onLongPress: () {
+                            TextButton(
+                              child: Text('แก้ไข',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14),
-                                ),
-                                padding:
-                                    const EdgeInsets.fromLTRB(20, 12, 20, 12),
-                              )
-                            ],
-                          )),
-                    ],
-                  ),
-                ],
+                                      fontSize: 14, color: Colors.white)),
+                              style: ButtonStyle(
+                                  padding:
+                                      MaterialStateProperty.all<EdgeInsets>(
+                                          EdgeInsets.all(10)),
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          (Colors.grey[400])!),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                  ))),
+                              onPressed: () {},
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                      decoration: BoxDecoration(
+                          color: Color(0xffd6786e),
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: Text('จำนวนน้ำนมทั้งหมด $sum ลิตร',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16)),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                            margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // ignore: deprecated_member_use
+                                RaisedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  color: Colors.blueGrey[50],
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(39))),
+                                  child: Text(
+                                    'ยกเลิก',
+                                    style: TextStyle(
+                                        color: Color(0xffd6786e),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14),
+                                  ),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                                )
+                              ],
+                            )),
+                        Container(
+                            margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                            child: Column(
+                              children: [
+                                // ignore: deprecated_member_use
+                                RaisedButton(
+                                  onPressed: () {
+                                    editMilk(
+                                        widget.milk.milk_id,
+                                        t1.text,
+                                        t2.text,
+                                        user?.farm_id,
+                                        user?.user_id,
+                                        widget.milk.milk_date);
+                                  },
+                                  color: Color(0xff62b490),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(39))),
+                                  child: Text(
+                                    'บันทึกการแก้ไข',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14),
+                                  ),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(20, 12, 20, 12),
+                                )
+                              ],
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ),
-        ));
+            )));
   }
 
-  editMilk(milk_litermorn, milkliter_even, farm_id) async {
+  editMilk(milk_id, milk_litermorn, milkliter_even, farm_id, user_id,
+      milk_date) async {
     int num1 = int.parse(milk_litermorn);
     int num2 = int.parse(milkliter_even);
 
     int sum = num1 + num2;
 
-    String now = new DateTime.now().toString();
     Map<String, dynamic> data = {
+      "milk_id": milk_id.toString(),
       "milk_liter_morn": num1.toString(),
       "milk_liter_even": num2.toString(),
-      "milk_date": now,
+      "milk_date": milk_date.toString(),
       "total": sum.toString(),
-      "farm_id": farm_id.toString()
+      "farm_id": farm_id.toString(),
+      "user_id": user_id.toString()
     };
     print(data.toString());
     final response = await http.put(Uri.http('127.0.0.1:3000', 'milks/edit'),

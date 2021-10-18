@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:dairycattle/models/User.dart';
+import 'package:dairycattle/providers/user_provider.dart';
+
 import '/Screens/Activity/Milk/editrecordmilk.dart';
 import '/models/MilkYear.dart';
 import 'package:flutter/material.dart';
@@ -25,27 +28,51 @@ class _RecordMilkYearState extends State<RecordMilkYear> {
   int milks = 0;
 
   Future<List<MilkYear>> getMilk() async {
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'milks/year'));
+    User? user = Provider.of<UserProvider>(context, listen: false).user;
+    List<MilkYear> milks = [];
+    Map data = {
+      'farm_id': user?.farm_id.toString(),
+      'user_id': user?.user_id.toString()
+    };
+    final response = await http.post(Uri.http('127.0.0.1:3000', 'milks/year'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
 
-    Map<String, dynamic> data = jsonDecode(response.body);
-    final List list = data['data']['rows'];
-
-    List<MilkYear> typecows = list.map((e) => MilkYear.fromMap(e)).toList();
-
-    print(typecows);
-    return typecows;
+    if (response.statusCode == 200) {
+      Map<String, dynamic> db = jsonDecode(response.body);
+      final List list = db['data']['rows'];
+      milks = list.map((e) => MilkYear.fromMap(e)).toList();
+    }
+    return milks;
   }
 
   Future getCount() async {
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'milks/year'));
+    User? user = Provider.of<UserProvider>(context, listen: false).user;
+    String milk = '';
+    Map data = {
+      'farm_id': user?.farm_id.toString(),
+      'user_id': user?.user_id.toString()
+    };
+    final response = await http.post(Uri.http('127.0.0.1:3000', 'milks/year'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
 
-    Map<String, dynamic> data = jsonDecode(response.body);
-    int milk = data['data']['total'];
+    if (response.statusCode == 200) {
+      Map<String, dynamic> db = jsonDecode(response.body);
+      milk = db['data']['total'];
 
-    setState(() {
-      milks = milk;
-    });
-
+      setState(() {
+        milks = int.parse(milk);
+      });
+    }
     return milk;
   }
 
@@ -121,7 +148,7 @@ class _RecordMilkYearState extends State<RecordMilkYear> {
                                         rows: <DataRow>[
                                           DataRow(cells: <DataCell>[
                                             DataCell(Text(
-                                                '${snapshot.data?[i].count}')),
+                                                '${snapshot.data?[i].sum}')),
                                           ]),
                                         ],
                                       ),
