@@ -57,7 +57,7 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
   DateTime? _dateTime;
 
   bool isShowOtherField = false;
-
+  int? cow_id;
   int _counter = 1;
   int selectCow = 1;
   int selectSpecie = 1;
@@ -82,7 +82,7 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text('แก้ไขบันทึกการผสมพันธ์'),
+          title: Text('แก้ไขบันทึกการผสมพันธุ์'),
           leading: GestureDetector(
             onTap: () {
               Navigator.pop(context);
@@ -112,38 +112,38 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                           child: Column(
                             children: [
                               Container(
-                                padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                                alignment: Alignment.topLeft,
-                                child: Text('ชื่อแม่พันธ์',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w500)),
-                              ),
-                              Container(
-                                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                alignment: Alignment.topLeft,
-                                child: DropdownButton<Cows>(
-                                  isExpanded: true,
-                                  hint: new Text('select cow'),
-                                  value: selectCow == null
-                                      ? null
-                                      : snapshot.data?[selectCow],
-                                  items: snapshot.data?.map((data) {
-                                    return new DropdownMenuItem<Cows>(
-                                      alignment: Alignment.centerLeft,
-                                      value: data,
-                                      child: new SizedBox(
-                                        child: Text(data.cow_name),
-                                      ),
-                                    );
-                                  }).toList(growable: isShowOtherField),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectCow =
-                                          snapshot.data!.indexOf(value!);
-                                    });
-                                  },
-                                ),
-                              ),
+                                  child: FutureBuilder<List<Cows>>(
+                                      future: getCow(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.data == null) {
+                                          return Container(
+                                            child: Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                              color: Colors.red[400],
+                                            )),
+                                          );
+                                        } else
+                                          return Container(
+                                            padding: EdgeInsets.fromLTRB(
+                                                20, 20, 20, 20),
+                                            child: DropdownSearch<Cows>(
+                                              showSelectedItems: true,
+                                              compareFn: (Cows? i, Cows? s) =>
+                                                  i!.isEqual(s),
+                                              label: "วัว",
+                                              onFind: (String? filter) =>
+                                                  getData(filter),
+                                              onChanged: (Cows? data) {
+                                                setState(() {
+                                                  cow_id = data!.cow_id;
+                                                });
+                                              },
+                                              dropdownBuilder: _customDropDown,
+                                              popupItemBuilder: _customPopup,
+                                            ),
+                                          );
+                                      })),
                               Column(
                                 children: [
                                   Container(
@@ -152,7 +152,7 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                                     padding: const EdgeInsets.fromLTRB(
                                         20, 10, 0, 10),
                                     child: Text(
-                                      'รอบการผสมพันธ์',
+                                      'รอบการผสมพันธุ์',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500),
                                     ),
@@ -233,7 +233,7 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                                   Container(
                                     padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
                                     alignment: Alignment.topLeft,
-                                    child: Text('ชื่อสายพันธ์',
+                                    child: Text('ชื่อสายพันธุ์',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w500)),
                                   ),
@@ -469,5 +469,67 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
       _scaffoldKey.currentState
           ?.showSnackBar(SnackBar(content: Text("Please Try again")));
     }
+  }
+
+  Widget _customDropDown(BuildContext context, Cows? item) {
+    return Container(
+        child: (item?.cow_name == null)
+            ? ListTile(
+                contentPadding: EdgeInsets.all(0),
+                leading: Icon(Icons.add_outlined),
+                title: Text("กรุณาเลือกวัว"),
+              )
+            : ListTile(
+                contentPadding: EdgeInsets.all(0),
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(item!.cow_image),
+                ),
+                title: Text("${item.cow_name}"),
+              ));
+  }
+
+  Widget _customPopup(BuildContext context, Cows? item, bool isSelected) {
+    return Container(
+        margin: EdgeInsets.symmetric(horizontal: 8),
+        decoration: !isSelected
+            ? null
+            : BoxDecoration(
+                border: Border.all(color: Color(0xff5a82de)),
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.white),
+        child: ListTile(
+          selected: isSelected,
+          title: Text(item!.cow_name),
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(item.cow_image),
+          ),
+        ));
+  }
+
+  Future<List<Cows>> getData(filter) async {
+    User? user = Provider.of<UserProvider>(context, listen: false).user;
+    List<Cows> cows = [];
+    Map data = {
+      'farm_id': user?.farm_id.toString(),
+      'user_id': user?.user_id.toString()
+    };
+
+    final queryParameters = {'filter': filter};
+
+    final response = await http.post(
+        Uri.http('127.0.0.1:3000', 'farms/cow', queryParameters),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> db = jsonDecode(response.body);
+      final List list = db['data']['rows'];
+      cows = list.map((e) => Cows.fromMap(e)).toList();
+    }
+    return cows;
   }
 }

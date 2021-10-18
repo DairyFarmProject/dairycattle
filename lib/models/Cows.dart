@@ -184,4 +184,8 @@ class Cows {
       specie_name_en.hashCode ^
       specie_name_th.hashCode;
   }
+
+  bool isEqual(Cows? model) {
+    return this.cow_id == model?.cow_id;
+  }
 }

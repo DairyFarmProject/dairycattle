@@ -1,9 +1,6 @@
 import '../../../models/CowAb.dart';
-import '../../../models/Cows.dart';
-import '../../../models/Parturitions.dart';
 import '../../../models/User.dart';
 import '../../../providers/user_provider.dart';
-import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +8,6 @@ import '/Screens/Cow/successrecord.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:convert';
-import '../../../models/Abdominal.dart';
 import 'package:http/http.dart' as http;
 
 class RecordCalve extends StatefulWidget {
@@ -42,31 +38,6 @@ class _RecordCalveState extends State<RecordCalve> {
       Map<String, dynamic> db = jsonDecode(response.body);
       final List list = db['data']['rows'];
       cows = list.map((e) => CowAb.fromMap(e)).toList();
-    }
-    return cows;
-  }
-
-  Future<List<Parturition>> getPar(int? cow_id) async {
-    User? user = Provider.of<UserProvider>(context, listen: false).user;
-    List<Parturition> cows = [];
-    Map data = {'user_id': user?.user_id.toString()};
-    final response =
-        await http.post(Uri.http('127.0.0.1:3000', 'cows/parturition'),
-            headers: {
-              "Accept": "application/json",
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: data,
-            encoding: Encoding.getByName("utf-8"));
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> db = jsonDecode(response.body);
-      Parturition currentCow = Parturition.fromMap(db['data']['rows']);
-      cows.add(currentCow);
-
-      setState(() {
-        ab_id = currentCow.ab_id;
-      });
     }
     return cows;
   }
@@ -135,7 +106,6 @@ class _RecordCalveState extends State<RecordCalve> {
                                       setState(() {
                                         ab_id = data!.abdominal_id;
                                       });
-                                      print(selectCow);
                                     },
                                     dropdownBuilder: _customDropDown,
                                     popupItemBuilder: _customPopup,
