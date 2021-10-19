@@ -1,17 +1,15 @@
 import 'dart:convert';
 
-import 'package:dairycattle/checkbox_state.dart';
-import 'package:dairycattle/models/User.dart';
-import 'package:dairycattle/providers/user_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/foundation.dart';
+import '../../../models/Cows.dart';
+import '../../../models/checkbox_state.dart';
+import '../../../models/User.dart';
+import '../../../providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-import 'Screens/Cow/successrecord.dart';
-import 'models/Vaccines.dart';
-import '../../models/AllChoose.dart';
+import '../../Cow/successrecord.dart';
+import '../../../../../models/AllChoose.dart';
 
 class RecordVacine extends StatefulWidget {
   @override
@@ -19,8 +17,31 @@ class RecordVacine extends StatefulWidget {
 }
 
 class _RecordVacineState extends State<RecordVacine> {
+  Future<List<Cows>> getCow() async {
+    User? user = Provider.of<UserProvider>(context, listen: false).user;
+    List<Cows> cows = [];
+    Map data = {
+      'farm_id': user?.farm_id.toString(),
+      'user_id': user?.user_id.toString()
+    };
+    final response = await http.post(Uri.http('127.0.0.1:3000', 'farms/cow'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> db = jsonDecode(response.body);
+      final List list = db['data']['rows'];
+      cows = list.map((e) => Cows.fromMap(e)).toList();
+    }
+    return cows;
+  }
+
   int selectVaccine = 1;
-  int _selectIndex = 0;
+  int _selectIndex = 1;
 
   final allowNotifications = CheckBoxState(title: 'ทุกตัว');
 
@@ -36,6 +57,7 @@ class _RecordVacineState extends State<RecordVacine> {
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final noteController = TextEditingController();
 
   void _onItemTap(int index) {
     setState(() {
@@ -153,6 +175,26 @@ class _RecordVacineState extends State<RecordVacine> {
                         ...notifications.map(buildSingleCheckbox).toList(),
                       ],
                     ),
+                    Column(children: [
+                      Container(
+                        alignment: Alignment.topLeft,
+                        margin: EdgeInsets.all(20),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        child: Text('รายละเอียดอื่นๆ',
+                            style: TextStyle(fontWeight: FontWeight.w500)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                        child: TextField(
+                          controller: noteController,
+                          decoration: InputDecoration(
+                            hintText: 'รายละเอียด',
+                            fillColor: Colors.blueGrey,
+                          ),
+                          onChanged: (String name) {},
+                        ),
+                      )
+                    ]),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -227,6 +269,7 @@ class _RecordVacineState extends State<RecordVacine> {
             checkBox.value = value!;
             allowNotifications.value =
                 notifications.every((Notification) => Notification.value);
+          
           }));
 
   Widget buildGroupCheckBox(CheckBoxState checkbox) => CheckboxListTile(
@@ -235,11 +278,16 @@ class _RecordVacineState extends State<RecordVacine> {
       value: checkbox.value,
       title: Text(checkbox.title),
       onChanged: toggleGroupCheckbox);
-  void toggleGroupCheckbox(bool? value) {
+  void toggleGroupCheckbox(dynamic? value) {
     if (value == null) return;
+    print('value');
+    print(value);
     setState(() {
       allowNotifications.value = value;
+      print('allow');
+      print(allowNotifications.value);
       notifications.forEach((notification) => notification.value = value);
+      print(notifications);
     });
   }
 

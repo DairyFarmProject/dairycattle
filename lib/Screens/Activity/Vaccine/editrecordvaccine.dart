@@ -1,4 +1,5 @@
 import 'package:dairycattle/models/AllChoose.dart';
+import 'package:dairycattle/models/VacIDCow.dart';
 
 import '/models/Vaccine_schedule.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +10,11 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-import 'Screens/Cow/successrecord.dart';
-import 'models/Vaccines.dart';
+import '../../Cow/successrecord.dart';
+import '../../../models/Vaccines.dart';
 
 class EditRecordVaccine extends StatefulWidget {
-  final Vaccine_schedule vac;
+  final VacIDCow vac;
   EditRecordVaccine({required this.vac});
   @override
   _EditRecordVaccineState createState() => _EditRecordVaccineState();
@@ -126,10 +127,7 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
                                         });
                                       },
                                     ),
-                                    padding: const EdgeInsets.all(20.0))
-                                //     }
-                                // )
-                                ),
+                                    padding: const EdgeInsets.all(20.0))),
                             Container(
                               alignment: Alignment.topLeft,
                               margin: EdgeInsets.all(0),
@@ -209,7 +207,7 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
                                           onPressed: () {
                                             userRecordVaccine(
                                                 widget.vac.schedule_id,
-                                                selectVaccine,
+                                                selectVaccine + 1,
                                                 widget.vac.cow_id,
                                                 '${DateFormat('yyyy-MM-dd').format(DateTime.parse(_dateTime.toString()))}',
                                                 getDate(_dateTime.toString()));

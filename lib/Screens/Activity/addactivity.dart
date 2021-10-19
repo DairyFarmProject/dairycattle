@@ -4,7 +4,7 @@ import '/Screens/Cow/cow1.dart';
 import '/Screens/Cow/onecow.dart';
 import '/Screens/Activity/Calve/allrecordcalve.dart';
 
-import '/recordvaccinemain.dart';
+import 'Vaccine/recordvaccinemain.dart';
 import 'package:flutter/material.dart';
 
 class AddActivity extends StatefulWidget {

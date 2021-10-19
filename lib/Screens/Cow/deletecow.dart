@@ -314,54 +314,59 @@ Future<ConfirmAction?> _asyncConfirmDialog(
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          insetPadding: EdgeInsets.fromLTRB(20, 10, 20, 30),
+          insetPadding: EdgeInsets.fromLTRB(20, 10, 20, 0),
           title: Text(
-            'ยืนยันที่จะลบวัวตัวนี้',
+            'ยืนยันที่จะลบข้อมูลนี้',
             style: TextStyle(
               fontWeight: FontWeight.w500,
             ),
             textAlign: TextAlign.center,
           ),
           content: Text(
-            'เมื่อคุณกดปุ่ม "ยืนยัน" แล้ว วัวของคุณจะถูกลบออกไปโดยทันที ',
+            'เมื่อคุณกดปุ่ม "ยืนยัน" แล้ว ข้อมูลของคุณจะถูกลบออกไปโดยทันที ',
             textAlign: TextAlign.center,
           ),
           actions: <Widget>[
-            Container(
-              //alignment: Alignment.center,
-              width: 130,
-              child: RaisedButton(
-                child: const Text(
-                  'ยกเลิก',
-                  style: TextStyle(color: Color(0xFF3F2723)),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                // width: 130,
+                child: RaisedButton(
+                  child: const Text(
+                    'ยกเลิก',
+                    style: TextStyle(color: Color(0xFF3F2723)),
+                  ),
+                  padding: const EdgeInsets.fromLTRB(50, 12, 50, 12),
+                  color: Colors.blueGrey[50],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(39)),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(ConfirmAction.Cancle);
+                  },
                 ),
-                padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-                color: Colors.blueGrey[50],
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(39)),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop(ConfirmAction.Cancle);
-                },
               ),
-            ),
-            Container(
-              width: 130,
-              child: RaisedButton(
-                child: const Text(
-                  'ยืนยัน',
-                  style: TextStyle(color: Colors.white),
+              Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                // width: 130,
+                child: RaisedButton(
+                  child: const Text(
+                    'ยืนยัน',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  padding: const EdgeInsets.fromLTRB(50, 12, 50, 12),
+                  color: Colors.brown[900],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(39)),
+                  ),
+                  onPressed: () {
+                    deleteCow(context, status, user_id, farm_id, cow_id);
+                  },
                 ),
-                padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-                color: Colors.brown[900],
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(39)),
-                ),
-                onPressed: () {
-                  deleteCow(context, status, user_id, farm_id, cow_id);
-                },
               ),
-            ),
+            ])
           ],
         );
       });
