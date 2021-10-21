@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '/models/JoinFarm.dart';
+import '/models/Worker.dart';
 import '/models/User.dart';
 import '/providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -14,22 +14,35 @@ class AcceptMember extends StatefulWidget {
 }
 
 class _AcceptMemberState extends State<AcceptMember> {
-  Future<List<JoinFarm>> getJoinFarm() async {
-    final response = await http.get(Uri.http('127.0.0.1:3000', 'manage'));
+  Future<List<Worker>> getWorker() async {
+    User? user = Provider.of<UserProvider>(context, listen: false).user;
+    late List<Worker> vacs;
+    Map data = {
+      'farm_id': user?.farm_id.toString(),
+      'user_id': user?.user_id.toString()
+    };
+    final response = await http.post(Uri.http('127.0.0.1:3000', 'farm/workers'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
 
-    Map<String, dynamic> data = jsonDecode(response.body);
-    final List list = data['data'];
-
-    List<JoinFarm> typecows = list.map((e) => JoinFarm.fromMap(e)).toList();
-
-    return typecows;
+    if (response.statusCode == 200) {
+      Map<String, dynamic> db = jsonDecode(response.body);
+      print('Get Vaccine Schedule');
+      final List list = db['data']['rows'];
+      vacs = list.map((e) => Worker.fromMap(e)).toList();
+    }
+    return vacs;
   }
 
   @override
   Uri? url;
   void initState() {
     super.initState();
-    getJoinFarm();
+    getWorker();
   }
 
   @override
@@ -37,134 +50,12 @@ class _AcceptMemberState extends State<AcceptMember> {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     return Scaffold(
         body: Container(
-            margin: EdgeInsets.fromLTRB(20, 15, 20, 5),
+            margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.only(bottom: 10),
-                    child: Text(
-                      'ตอบรับคำขอเข้าร่วม',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                    ),
-                    margin: EdgeInsets.only(top: 10),
-                  ),
-                  Container(
-                      child: FutureBuilder<List<JoinFarm>>(
-                          future: getJoinFarm(),
-                          builder: (context, snapshot) {
-                            if (snapshot.data == null) {
-                              return Container(
-                                child: Center(
-                                  child: Text(
-                                      'ขณะนี้ยังไม่มีคำขอเข้ารวมฟาร์มของคุณ'),
-                                ),
-                              );
-                            } else
-                              return ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data!.length,
-                                  itemBuilder: (context, i) {
-                                    return Container(
-                                        child: SingleChildScrollView(
-                                            child: Card(
-                                                child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                            child: Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 20, 0, 20),
-                                              child: Text(
-                                                  "${snapshot.data?[i].firstname}"),
-                                            ),
-                                            Container(
-                                              margin: EdgeInsets.fromLTRB(
-                                                  20, 20, 10, 20),
-                                              child: RaisedButton(
-                                                onPressed: () {},
-                                                color: Colors.blueGrey[50],
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                39))),
-                                                child: Text(
-                                                  'ยกเลิก',
-                                                  style: TextStyle(
-                                                      color: Color(0xffd6786e),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 14),
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        20, 10, 20, 10),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  EdgeInsets.only(right: 10),
-                                              child: RaisedButton(
-                                                onPressed: () =>
-                                                    showDialog<String>(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          AlertDialog(
-                                                    title: const Text(
-                                                        'คุณ... ได้เข้าร่วมฟาร์มของคุณแล้ว'),
-                                                    //content: const Text('AlertDialog description'),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                context, 'OK'),
-                                                        child: const Text('OK'),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                color: Color(0xff62b490),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                39))),
-                                                child: Text(
-                                                  'ยืนยัน',
-                                                  style: TextStyle(
-                                                      color:
-                                                          Colors.blueGrey[50],
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 14),
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        20, 10, 20, 10),
-                                              ),
-                                            )
-                                          ],
-                                        ))
-                                      ],
-                                    ))));
-                                  });
-                          })),
-                  Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 10),
-                    width: 420,
-                    height: 160,
                     padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.blueGrey[50],
-                    ),
                     child: Column(
                       children: [
                         Text(
@@ -174,33 +65,45 @@ class _AcceptMemberState extends State<AcceptMember> {
                               fontSize: 16,
                               fontWeight: FontWeight.w500),
                         ),
-                        DataTable(columnSpacing: 40, columns: <DataColumn>[
-                          DataColumn(
-                              label: Text(
-                            '',
-                          )),
-                          DataColumn(
-                              label: Text(
-                            'ชื่อ',
-                          )),
-                          DataColumn(
-                              label: Text(
-                            'ตำแหน่ง',
-                          )),
-                        ], rows: <DataRow>[
-                          DataRow(
-                            cells: <DataCell>[
-                              DataCell(
-                                CircleAvatar(
-                                  radius: 20,
-                                  backgroundImage: NetworkImage('$url'),
-                                ),
-                              ),
-                              DataCell(Text('Sarah')),
-                              DataCell(Text('สมาชิกในฟาร์ม')),
-                            ],
-                          )
-                        ])
+                        FutureBuilder<List<Worker>>(
+                            future: getWorker(),
+                            builder: (context, snapshot) {
+                              if (snapshot.data == null) {
+                                return Container();
+                              } else
+                                return SingleChildScrollView(
+                                    child: DataTable(
+                                        columnSpacing: 50,
+                                        columns: <DataColumn>[
+                                          DataColumn(
+                                              label: Text(
+                                            '',
+                                          )),
+                                          DataColumn(
+                                              label: Text(
+                                            'ชื่อ',
+                                          )),
+                                          DataColumn(
+                                              label: Text(
+                                            'ตำแหน่ง',
+                                          )),
+                                        ],
+                                        rows: snapshot.data!.map<DataRow>((e) {
+                                          return DataRow(
+                                            cells: <DataCell>[
+                                              DataCell(
+                                                CircleAvatar(
+                                                  radius: 20,
+                                                  backgroundImage: NetworkImage(
+                                                      '${e.user_image}'),
+                                                ),
+                                              ),
+                                              DataCell(Text('${e.firstname}')),
+                                              DataCell(Text('${e.role_name}')),
+                                            ],
+                                          );
+                                        }).toList()));
+                            })
                       ],
                     ),
                   ),
@@ -208,4 +111,6 @@ class _AcceptMemberState extends State<AcceptMember> {
               ),
             )));
   }
+
+  userAccpt() async {}
 }
