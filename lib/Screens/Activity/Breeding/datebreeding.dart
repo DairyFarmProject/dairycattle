@@ -1,11 +1,9 @@
 import 'dart:convert';
 
-import 'package:dairycattle/Screens/Cow/successdeletecow.dart';
-import 'package:dairycattle/util/shared_preference.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import '/models/DateAb.dart';
+import '/Screens/Cow/successdeletecow.dart';
+import '/models/DistinctCowAb.dart';
 import '/Screens/Activity/Breeding/editrecordbreed.dart';
-import '/Screens/Activity/Breeding/recordbreeding.dart';
 import '/models/Abdominal.dart';
 import '/models/User.dart';
 import '/providers/user_provider.dart';
@@ -15,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 class DateBreeding extends StatefulWidget {
-  final Abdominal ab;
+  final DistinctCowAb ab;
   DateBreeding({required this.ab});
   @override
   _DateBreedingState createState() => _DateBreedingState();
@@ -27,9 +25,9 @@ void showInSnackBar(String value) {
 }
 
 class _DateBreedingState extends State<DateBreeding> {
-  Future<List<Abdominal>> getAbdominal() async {
+  Future<List<DateAb>> getDateAb() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
-    List<Abdominal> adb = [];
+    List<DateAb> adb = [];
     Map data = {
       'farm_id': user?.farm_id.toString(),
       'user_id': user?.user_id.toString(),
@@ -37,7 +35,7 @@ class _DateBreedingState extends State<DateBreeding> {
     };
 
     final response =
-        await http.post(Uri.http('127.0.0.1:3000', 'cows/abdominal'),
+        await http.post(Uri.http('127.0.0.1:3000', 'cows/abdominals'),
             headers: {
               "Accept": "application/json",
               "Content-Type": "application/x-www-form-urlencoded"
@@ -47,8 +45,8 @@ class _DateBreedingState extends State<DateBreeding> {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> db = jsonDecode(response.body);
-      Abdominal currentCow = Abdominal.fromMap(db['data']['rows']);
-      adb.add(currentCow);
+      final List list = db['data']['all'];
+      adb = list.map((e) => DateAb.fromMap(e)).toList();
     }
     return adb;
   }
@@ -56,52 +54,7 @@ class _DateBreedingState extends State<DateBreeding> {
   @override
   void initState() {
     super.initState();
-    getAbdominal();
-  }
-
-  getDate1(date) {
-    DateTime dateTime = DateTime.parse(date);
-    var newDate =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day + 21);
-    var date1 =
-        (DateFormat('dd/MM/yyyy').format(DateTime.parse(newDate.toString())));
-    return date1;
-  }
-
-  getDate2(date) {
-    DateTime dateTime = DateTime.parse(date);
-    var newDate =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day + 42);
-    var date2 =
-        (DateFormat('dd/MM/yyyy').format(DateTime.parse(newDate.toString())));
-    return date2;
-  }
-
-  getDate3(date) {
-    DateTime dateTime = DateTime.parse(date);
-    var newDate =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day + 63);
-    var date3 =
-        (DateFormat('dd/MM/yyyy').format(DateTime.parse(newDate.toString())));
-    return date3;
-  }
-
-  getDate4(date) {
-    DateTime dateTime = DateTime.parse(date);
-    var newDate =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day + 210);
-    var date4 =
-        (DateFormat('dd/MM/yyyy').format(DateTime.parse(newDate.toString())));
-    return date4;
-  }
-
-  getDate5(date) {
-    DateTime dateTime = DateTime.parse(date);
-    var newDate =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day + 282);
-    var date5 =
-        (DateFormat('dd/MM/yyyy').format(DateTime.parse(newDate.toString())));
-    return date5;
+    getDateAb();
   }
 
   getDiff1(date) {
@@ -120,254 +73,451 @@ class _DateBreedingState extends State<DateBreeding> {
   Widget build(BuildContext context) {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     return Scaffold(
-      appBar: AppBar(
-        title: Text("บันทึกการผสมพันธุ์"),
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
+        appBar: AppBar(
+          title: Text("บันทึกการผสมพันธุ์"),
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
           ),
+          backgroundColor: Color.fromRGBO(185, 110, 110, 5),
         ),
-        backgroundColor: Color.fromRGBO(185, 110, 110, 5),
-      ),
-      body: FutureBuilder<List<Abdominal>>(
-          future: getAbdominal(),
-          builder: (context, snapshot) {
-            if (snapshot.data == null) {
-              return Container();
-            } else
-              return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, i) {
-                    return Container(
-                        margin: EdgeInsets.fromLTRB(20, 15, 20, 5),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                'วันที่เริ่มผสม ${DateFormat('dd/MM/yyyy').format(DateTime.parse('${snapshot.data![i].ab_date}'))}',
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 18),
-                              ),
-                              DataTable(
-                                columns: <DataColumn>[
-                                  DataColumn(
-                                      label: Text(
-                                    'ชื่อกิจกรรม',
-                                  )),
-                                  DataColumn(
-                                      label: Text(
-                                    'วันที่',
-                                  )),
-                                  DataColumn(
-                                      label: Text(
-                                    'อีกกี่วัน',
-                                  )),
-                                ],
-                                rows: <DataRow>[
-                                  DataRow(cells: <DataCell>[
-                                    DataCell(Text('กลับสัด 1')),
-                                    DataCell(Text(getDate1(
-                                        '${snapshot.data![i].ab_date}'))),
-                                    DataCell(
-                                      Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(10, 5, 10, 5),
-                                        decoration: BoxDecoration(
-                                            color: Colors.red[800],
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(2),
-                                            )),
-                                        child: Text(
-                                          getDiff1(getDate1(
-                                                  '${snapshot.data![i].ab_date}'))
-                                              .toString(),
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ]),
-                                  DataRow(cells: <DataCell>[
-                                    DataCell(Text('กลับสัด 2')),
-                                    DataCell(Text(getDate2(
-                                        '${snapshot.data![i].ab_date}'))),
-                                    DataCell(
-                                      Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(10, 5, 10, 5),
-                                        decoration: BoxDecoration(
-                                            color: Colors.red[800],
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(2),
-                                            )),
-                                        child: Text(
-                                          getDiff1(getDate2(
-                                                  '${snapshot.data![i].ab_date}'))
-                                              .toString(),
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ]),
-                                  DataRow(cells: <DataCell>[
-                                    DataCell(Text('กลับสัด 3')),
-                                    DataCell(Text(getDate3(
-                                        '${snapshot.data![i].ab_date}'))),
-                                    DataCell(
-                                      Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(10, 5, 10, 5),
-                                        decoration: BoxDecoration(
-                                            color: Colors.red[800],
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(2),
-                                            )),
-                                        child: Text(
-                                          getDiff1(getDate3(
-                                                  '${snapshot.data![i].ab_date}'))
-                                              .toString(),
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ]),
-                                  DataRow(cells: <DataCell>[
-                                    DataCell(Text('พักท้อง')),
-                                    DataCell(Text(getDate4(
-                                        '${snapshot.data![i].ab_date}'))),
-                                    DataCell(
-                                      Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(10, 5, 10, 5),
-                                        decoration: BoxDecoration(
-                                            color: Colors.red[800],
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(2),
-                                            )),
-                                        child: Text(
-                                          getDiff1(getDate4(
-                                                  '${snapshot.data![i].ab_date}'))
-                                              .toString(),
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ]),
-                                  DataRow(cells: <DataCell>[
-                                    DataCell(Text('กำหนดคลอด')),
-                                    DataCell(Text(getDate5(
-                                        '${snapshot.data![i].ab_date}'))),
-                                    DataCell(
-                                      Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(10, 5, 10, 5),
-                                        decoration: BoxDecoration(
-                                            color: Colors.red[800],
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(2),
-                                            )),
-                                        child: Text(
-                                          getDiff1(getDate5(
-                                                  '${snapshot.data![i].ab_date}'))
-                                              .toString(),
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ])
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                      margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          RaisedButton(
-                                            onPressed: () async {
-                                              final ConfirmAction? action =
-                                                  await _asyncConfirmDialog(
-                                                      context,
-                                                      snapshot.data?[i]
-                                                          .abdominal_id,
-                                                      user?.farm_id,
-                                                      user?.user_id);
-                                            },
-                                            color: Colors.blueGrey[50],
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(39))),
-                                            child: Row(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 5),
-                                                  child: Icon(
-                                                    Icons.delete,
-                                                    color: Colors.brown,
+        body: FutureBuilder<List<DateAb>>(
+            future: getDateAb(),
+            builder: (context, snapshot) {
+              if (snapshot.data == null) {
+                return Container();
+              } else
+                return ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, i) {
+                      return Container(
+                          margin: EdgeInsets.fromLTRB(20, 15, 20, 5),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: <Widget>[
+                                DataTable(
+                                  columns: <DataColumn>[
+                                    DataColumn(
+                                        label: Text(
+                                      'ชื่อกิจกรรม',
+                                    )),
+                                    DataColumn(
+                                        label: Text(
+                                      'วันที่',
+                                    )),
+                                    DataColumn(
+                                        label: Text(
+                                      'อีกกี่วัน',
+                                    )),
+                                  ],
+                                  rows: <DataRow>[
+                                    DataRow(cells: <DataCell>[
+                                      DataCell(Text('กลับสัด 1')),
+                                      DataCell(Text(
+                                          '${DateFormat('dd/MM/yyyy').format(DateTime.parse(snapshot.data![i].firstHeat))}')),
+                                      DataCell(
+                                        Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              if (snapshot
+                                                      .data![i].secondcount ==
+                                                  -1)
+                                                Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      10, 5, 10, 5),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.grey,
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(2),
+                                                      )),
+                                                  child: Text(
+                                                    'เสร็จสิ้น'.toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
                                                   ),
                                                 ),
-                                                Text(
-                                                  'ลบข้อมูล',
-                                                  style: TextStyle(
-                                                      color: Colors.brown,
+                                              if (snapshot
+                                                      .data![i].secondcount ==
+                                                  0)
+                                                Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      10, 5, 10, 5),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.yellow,
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(2),
+                                                      )),
+                                                  child: Text(
+                                                    'วันนี้'.toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
                                                       fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 14),
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              if (snapshot
+                                                      .data![i].secondcount >
+                                                  0)
+                                                Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      10, 5, 10, 5),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.red[800],
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(2),
+                                                      )),
+                                                  child: Text(
+                                                    '${snapshot.data![i].firstcount}'
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
                                                 )
-                                              ],
-                                            ),
-                                            padding: const EdgeInsets.fromLTRB(
-                                                20, 10, 20, 10),
-                                          )
-                                        ],
-                                      )),
-                                  Container(
-                                      margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                                      child: Column(
-                                        children: [
-                                          // ignore: deprecated_member_use
-
-                                          RaisedButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          EditRecordBreed(
-                                                              key: ValueKey(i),
-                                                              ab: snapshot
-                                                                  .data![i])));
-                                            },
-                                            color: Colors.brown,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(39))),
-                                            child: Center(
+                                            ]),
+                                      ),
+                                    ]),
+                                    DataRow(cells: <DataCell>[
+                                      DataCell(Text('กลับสัด 2')),
+                                      DataCell(Text(
+                                          '${DateFormat('dd/MM/yyyy').format(DateTime.parse(snapshot.data![i].secondHeat))}')),
+                                      DataCell(
+                                        Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              if (snapshot
+                                                      .data![i].secondcount ==
+                                                  -1)
+                                                Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      10, 5, 10, 5),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.grey,
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(2),
+                                                      )),
+                                                  child: Text(
+                                                    'เสร็จสิ้น'.toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              if (snapshot
+                                                      .data![i].secondcount ==
+                                                  0)
+                                                Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      10, 5, 10, 5),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.yellow,
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(2),
+                                                      )),
+                                                  child: Text(
+                                                    'วันนี้'.toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              if (snapshot
+                                                      .data![i].secondcount >
+                                                  0)
+                                                Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      10, 5, 10, 5),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.red[800],
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(2),
+                                                      )),
+                                                  child: Text(
+                                                    '${snapshot.data![i].secondcount}'
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                            ]),
+                                      )
+                                    ]),
+                                    DataRow(cells: <DataCell>[
+                                      DataCell(Text('กลับสัด 3')),
+                                      DataCell(Text(
+                                          '${DateFormat('dd/MM/yyyy').format(DateTime.parse(snapshot.data![i].thirdHeat))}')),
+                                      DataCell(
+                                        Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              if (snapshot
+                                                      .data![i].thirdcount ==
+                                                  -1)
+                                                Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      10, 5, 10, 5),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.grey,
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(2),
+                                                      )),
+                                                  child: Text(
+                                                    'เสร็จสิ้น'.toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              if (snapshot
+                                                      .data![i].thirdcount ==
+                                                  0)
+                                                Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      10, 5, 10, 5),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.yellow,
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(2),
+                                                      )),
+                                                  child: Text(
+                                                    'วันนี้'.toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              if (snapshot.data![i].thirdcount >
+                                                  0)
+                                                Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      10, 5, 10, 5),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.red[800],
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(2),
+                                                      )),
+                                                  child: Text(
+                                                    '${snapshot.data![i].thirdcount}'
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                            ]),
+                                      )
+                                    ]),
+                                    DataRow(cells: <DataCell>[
+                                      DataCell(Text('พักท้อง')),
+                                      DataCell(Text(
+                                          '${DateFormat('dd/MM/yyyy').format(DateTime.parse(snapshot.data![i].dryDate))}')),
+                                      DataCell(
+                                        Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              if (snapshot.data![i].drycount ==
+                                                  -1)
+                                                Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      10, 5, 10, 5),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.grey,
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(2),
+                                                      )),
+                                                  child: Text(
+                                                    'เสร็จสิ้น'.toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              if (snapshot.data![i].drycount ==
+                                                  0)
+                                                Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      10, 5, 10, 5),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.yellow,
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(2),
+                                                      )),
+                                                  child: Text(
+                                                    'วันนี้'.toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              if (snapshot.data![i].drycount >
+                                                  0)
+                                                Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      10, 5, 10, 5),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.red[800],
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(2),
+                                                      )),
+                                                  child: Text(
+                                                    '${snapshot.data![i].drycount}'
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                            ]),
+                                      )
+                                    ]),
+                                    DataRow(cells: <DataCell>[
+                                      DataCell(Text('กำหนดคลอด')),
+                                      DataCell(Text(
+                                          '${DateFormat('dd/MM/yyyy').format(DateTime.parse(snapshot.data![i].parDate))}')),
+                                      DataCell(
+                                        Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              if (snapshot.data![i].parcount ==
+                                                  -1)
+                                                Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      10, 5, 10, 5),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.grey,
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(2),
+                                                      )),
+                                                  child: Text(
+                                                    'เสร็จสิ้น'.toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              if (snapshot.data![i].parcount ==
+                                                  0)
+                                                Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      10, 5, 10, 5),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.yellow,
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(2),
+                                                      )),
+                                                  child: Text(
+                                                    'วันนี้'.toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              if (snapshot.data![i].parcount >
+                                                  0)
+                                                Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      10, 5, 10, 5),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.red[800],
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(2),
+                                                      )),
+                                                  child: Text(
+                                                    '${snapshot.data![i].parcount}'
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                            ]),
+                                      )
+                                    ])
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            RaisedButton(
+                                              onPressed: () async {
+                                                final ConfirmAction? action =
+                                                    await _asyncConfirmDialog(
+                                                        context,
+                                                        snapshot.data?[i]
+                                                            .abdominal_id,
+                                                        user?.farm_id,
+                                                        user?.user_id);
+                                              },
+                                              color: Colors.blueGrey[50],
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(39))),
                                               child: Row(
                                                 children: [
                                                   Padding(
@@ -375,34 +525,87 @@ class _DateBreedingState extends State<DateBreeding> {
                                                         const EdgeInsets.only(
                                                             right: 5),
                                                     child: Icon(
-                                                      Icons.edit,
-                                                      color: Colors.white,
+                                                      Icons.delete,
+                                                      color: Colors.brown,
                                                     ),
                                                   ),
                                                   Text(
-                                                    'แก้ไข',
+                                                    'ลบข้อมูล',
                                                     style: TextStyle(
-                                                        color: Colors.white,
+                                                        color: Colors.brown,
                                                         fontWeight:
                                                             FontWeight.w600,
                                                         fontSize: 14),
                                                   )
                                                 ],
                                               ),
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20, 10),
+                                            )
+                                          ],
+                                        )),
+                                    Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                        child: Column(
+                                          children: [
+                                            // ignore: deprecated_member_use
+
+                                            RaisedButton(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            EditRecordBreed(
+                                                                key:
+                                                                    ValueKey(i),
+                                                                ab: snapshot
+                                                                        .data![
+                                                                    i])));
+                                              },
+                                              color: Colors.brown,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(39))),
+                                              child: Center(
+                                                child: Row(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 5),
+                                                      child: Icon(
+                                                        Icons.edit,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      'แก้ไข',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 14),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      30, 12, 30, 12),
                                             ),
-                                            padding: const EdgeInsets.fromLTRB(
-                                                30, 12, 30, 12),
-                                          ),
-                                        ],
-                                      )),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ));
-                  });
-          }),
-    );
+                                          ],
+                                        )),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ));
+                    });
+            }));
   }
 }
 
@@ -483,7 +686,7 @@ Future<ConfirmAction?> _asyncConfirmDialog(
                   },
                 ),
               ),
-            Container(
+              Container(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                 // width: 130,
@@ -497,9 +700,9 @@ Future<ConfirmAction?> _asyncConfirmDialog(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(39)),
                   ),
-                onPressed: () {
-                  deleteAb(context, user_id, farm_id, abdominal_id);
-                },
+                  onPressed: () {
+                    deleteAb(context, user_id, farm_id, abdominal_id);
+                  },
                 ),
               ),
             ])

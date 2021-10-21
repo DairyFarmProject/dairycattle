@@ -26,7 +26,7 @@ class _RecordCalveState extends State<RecordCalve> {
       'user_id': user?.user_id.toString()
     };
     final response =
-        await http.post(Uri.http('127.0.0.1:3000', 'farms/abdominal/cows'),
+        await http.post(Uri.http('127.0.0.1:3000', 'cows/abdominal/success'),
             headers: {
               "Accept": "application/json",
               "Content-Type": "application/x-www-form-urlencoded"
@@ -430,7 +430,7 @@ class _RecordCalveState extends State<RecordCalve> {
     final queryParameters = {'filter': filter};
 
     final response = await http.post(
-        Uri.http('127.0.0.1:3000', 'farms/abdominal/cows', queryParameters),
+        Uri.http('127.0.0.1:3000', 'cows/abdominal/success', queryParameters),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"

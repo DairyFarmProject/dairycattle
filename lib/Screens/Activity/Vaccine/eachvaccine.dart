@@ -1,13 +1,9 @@
 import 'dart:convert';
-import 'dart:math';
 
-import 'package:dairycattle/Screens/Cow/successdeletecow.dart';
-import 'package:dairycattle/models/DistinctCow.dart';
-import 'package:dairycattle/models/DistinctVac.dart';
-import 'package:dairycattle/models/VacIDCow.dart';
-
+import '/Screens/Cow/successdeletecow.dart';
+import '/models/DistinctCowVac.dart';
+import '/models/VacIDCow.dart';
 import 'editrecordvaccine.dart';
-import '/models/Vaccine_schedule.dart';
 import '/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -15,10 +11,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/User.dart';
-import 'recordvaccine.dart';
 
 class EachVaccine extends StatefulWidget {
-  final DistinctCow vac;
+  final DistinctCowVac vac;
   EachVaccine({required this.vac});
 
   @override
@@ -100,20 +95,18 @@ class _EachVaccineState extends State<EachVaccine> {
               child: Column(
                 children: [
                   Container(
-                      margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                      margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
                       alignment: Alignment.topLeft,
                       child: Row(children: [
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Text(
-                              //     'วันที่ฉีด : ${DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.vac.toString()))}'),
                               Text('ชื่อวัว : ${widget.vac.cow_name}'),
                               Text('ชื่อวัคซีน : ${widget.vac.vac_name_th}'),
                               Text('ชื่ออังกฤษ : ${widget.vac.vac_name_en}'),
                             ]),
                         Container(
-                            margin: EdgeInsets.fromLTRB(120, 0, 0, 0),
+                            margin: EdgeInsets.fromLTRB(100, 0, 0, 0),
                             child: CircleAvatar(
                                 backgroundImage:
                                     NetworkImage('${widget.vac.cow_image}'),
@@ -145,8 +138,11 @@ class _EachVaccineState extends State<EachVaccine> {
                                                 children: [
                                                   Text(
                                                       'วันที่ฉีด : ${DateFormat('dd-MM-yyyy').format(DateTime.parse('${snapshot.data![i].vac_date.toString()}'))}'),
-                                                  Text(
-                                                      'วันที่ฉีด : ${DateFormat('dd-MM-yyyy').format(DateTime.parse('${snapshot.data![i].next_date.toString()}'))}'),
+                                                  Text(snapshot.data![i]
+                                                              .next_date ==
+                                                          '0000-00-00'
+                                                      ? ''
+                                                      : 'วันที่ฉีด : ${DateFormat('dd-MM-yyyy').format(DateTime.parse('${snapshot.data![i].next_date.toString()}'))}'),
                                                   Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment

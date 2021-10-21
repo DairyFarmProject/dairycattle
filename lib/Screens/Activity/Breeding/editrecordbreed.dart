@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-import 'package:dairycattle/models/Abdominal.dart';
-import 'package:dairycattle/models/Cows.dart';
-import 'package:dairycattle/models/User.dart';
-import 'package:dairycattle/providers/user_provider.dart';
+import '/models/Abdominal.dart';
+import '/models/Cows.dart';
+import '/models/DateAb.dart';
+import '/models/User.dart';
+import '/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,7 +17,7 @@ import '/main.dart';
 import 'package:flutter/material.dart';
 
 class EditRecordBreed extends StatefulWidget {
-  final Abdominal ab;
+  final DateAb ab;
   EditRecordBreed({Key? key, required this.ab}) : super(key: key);
 
   @override
@@ -426,7 +427,7 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
   userEditAb(ab_id, cow_id, round, ab_date, caretaker, id, name, specie, note,
       user, farm) async {
     String ab_status = 'wait';
-    String ab_calf = 'false';
+    String ab_calf = 'f';
 
     Map data = {
       'abdominal_id': ab_id.toString(),

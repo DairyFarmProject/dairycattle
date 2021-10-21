@@ -1,16 +1,13 @@
-// ignore_for_file: curly_braces_in_flow_control_structures
-
 import 'dart:convert';
 
-import 'package:dairycattle/models/DistinctCow.dart';
-
-import '../../../Screens/Activity/Vaccine/eachvaccine.dart';
-import '../../../models/DistinctVac.dart';
+import '/models/DistinctCowVac.dart';
+import '/Screens/Activity/Vaccine/eachvaccine.dart';
+import '/models/DistinctVac.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import '/providers/user_provider.dart';
-import '../../../models/User.dart';
+import '/models/User.dart';
 import 'recordvaccine.dart';
 
 class VaccineCow extends StatefulWidget {
@@ -22,9 +19,9 @@ class VaccineCow extends StatefulWidget {
 }
 
 class _VaccineCowState extends State<VaccineCow> {
-  Future<List<DistinctCow>> getVacS() async {
+  Future<List<DistinctCowVac>> getVacS() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
-    late List<DistinctCow> vacs;
+    late List<DistinctCowVac> vacs;
     Map data = {
       'farm_id': user?.farm_id.toString(),
       'user_id': user?.user_id.toString(),
@@ -43,7 +40,7 @@ class _VaccineCowState extends State<VaccineCow> {
       Map<String, dynamic> db = jsonDecode(response.body);
       print('Get Cow of Vaccine Schedule');
       final List list = db['data']['rows'];
-      vacs = list.map((e) => DistinctCow.fromMap(e)).toList();
+      vacs = list.map((e) => DistinctCowVac.fromMap(e)).toList();
     }
     return vacs;
   }
@@ -71,7 +68,7 @@ class _VaccineCowState extends State<VaccineCow> {
           ),
           backgroundColor: Color.fromRGBO(111, 193, 148, 5),
         ),
-        body: FutureBuilder<List<DistinctCow>>(
+        body: FutureBuilder<List<DistinctCowVac>>(
             future: getVacS(),
             builder: (context, snapshot) {
               if (snapshot.data == null) {

@@ -1,15 +1,13 @@
 import 'dart:convert';
 
-import 'package:dairycattle/Screens/Activity/Breeding/datebreeding.dart';
-import 'package:dairycattle/Screens/Activity/Milk/recordmilktoday.dart';
+import 'package:dairycattle/models/DistinctCowAb.dart';
 
-import '/Screens/Activity/Breeding/editrecordbreed.dart';
+import '/Screens/Activity/Breeding/datebreeding.dart';
 import '/Screens/Activity/Breeding/recordbreeding.dart';
 import '/models/Abdominal.dart';
 import '/models/User.dart';
 import '/providers/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -19,15 +17,15 @@ class AllRecordBreeding extends StatefulWidget {
 }
 
 class _AllRecordBreedingState extends State<AllRecordBreeding> {
-  Future<List<Abdominal>> getAbdominal() async {
+  Future<List<DistinctCowAb>> getAbdominal() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
-    late List<Abdominal> adb;
+    late List<DistinctCowAb> adb;
     Map data = {
       'farm_id': user?.farm_id.toString(),
       'user_id': user?.user_id.toString()
     };
     final response =
-        await http.post(Uri.http('127.0.0.1:3000', 'farms/abdominal'),
+        await http.post(Uri.http('127.0.0.1:3000', 'farms/abdominal/cows'),
             headers: {
               "Accept": "application/json",
               "Content-Type": "application/x-www-form-urlencoded"
@@ -38,7 +36,7 @@ class _AllRecordBreedingState extends State<AllRecordBreeding> {
     if (response.statusCode == 200) {
       Map<String, dynamic> db = jsonDecode(response.body);
       final List list = db['data']['rows'];
-      adb = list.map((e) => Abdominal.fromMap(e)).toList();
+      adb = list.map((e) => DistinctCowAb.fromMap(e)).toList();
     }
     return adb;
   }
@@ -65,7 +63,7 @@ class _AllRecordBreedingState extends State<AllRecordBreeding> {
           ),
           backgroundColor: Color.fromRGBO(185, 110, 110, 5),
         ),
-        body: FutureBuilder<List<Abdominal>>(
+        body: FutureBuilder<List<DistinctCowAb>>(
             future: getAbdominal(),
             builder: (context, snapshot) {
               if (snapshot.data == null) {
@@ -113,14 +111,14 @@ class _AllRecordBreedingState extends State<AllRecordBreeding> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                '${snapshot.data![i].semen_name} - ${snapshot.data![i].semen_id} กับ ',
+                                                '${snapshot.data![i].cow_name}',
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.w500,
-                                                    fontSize: 16),
+                                                    fontSize: 20),
                                               ),
                                               Text(
-                                                  '${snapshot.data?[i].cow_name} - ${snapshot.data![i].cow_no}',
+                                                  '${snapshot.data?[i].cow_no}',
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
@@ -137,25 +135,23 @@ class _AllRecordBreedingState extends State<AllRecordBreeding> {
                                               topLeft: Radius.circular(20)),
                                           color: Colors.red[100],
                                         ),
-                                        height: 100,
+                                        height: 150,
                                         child: Row(
                                           children: <Widget>[
                                             Container(
-                                              width: 40,
+                                              width: 0,
                                               padding: EdgeInsets.only(
                                                   left: 0, right: 20),
                                               alignment: Alignment.center,
                                             ),
                                             Padding(
-                                              padding:
-                                                  EdgeInsetsDirectional.only(
-                                                      end: 20),
-                                              child: Image.asset(
-                                                "assets/images/love.png",
-                                                height: 50,
-                                                color: Colors.red[200],
-                                              ),
-                                            ),
+                                                padding:
+                                                    EdgeInsetsDirectional.only(
+                                                        end: 0),
+                                                child: CircleAvatar(
+                                                    backgroundImage: NetworkImage(
+                                                        '${snapshot.data![i].cow_image}'),
+                                                    radius: 90.0)),
                                           ],
                                         ),
                                       ),

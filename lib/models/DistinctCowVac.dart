@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class DistinctCow {
+class DistinctCowVac {
   int cow_id;
   String cow_no;
   String cow_name;
@@ -8,7 +8,7 @@ class DistinctCow {
   int vaccine_id;
   String vac_name_th;
   String vac_name_en;
-  DistinctCow({
+  DistinctCowVac({
     required this.cow_id,
     required this.cow_no,
     required this.cow_name,
@@ -19,7 +19,7 @@ class DistinctCow {
   });
   
 
-  DistinctCow copyWith({
+  DistinctCowVac copyWith({
     int? cow_id,
     String? cow_no,
     String? cow_name,
@@ -28,7 +28,7 @@ class DistinctCow {
     String? vac_name_th,
     String? vac_name_en,
   }) {
-    return DistinctCow(
+    return DistinctCowVac(
       cow_id: cow_id ?? this.cow_id,
       cow_no: cow_no ?? this.cow_no,
       cow_name: cow_name ?? this.cow_name,
@@ -51,8 +51,8 @@ class DistinctCow {
     };
   }
 
-  factory DistinctCow.fromMap(Map<String, dynamic> map) {
-    return DistinctCow(
+  factory DistinctCowVac.fromMap(Map<String, dynamic> map) {
+    return DistinctCowVac(
       cow_id: map['cow_id'],
       cow_no: map['cow_no'],
       cow_name: map['cow_name'],
@@ -65,18 +65,18 @@ class DistinctCow {
 
   String toJson() => json.encode(toMap());
 
-  factory DistinctCow.fromJson(String source) => DistinctCow.fromMap(json.decode(source));
+  factory DistinctCowVac.fromJson(String source) => DistinctCowVac.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'DistinctCow(cow_id: $cow_id, cow_no: $cow_no, cow_name: $cow_name, cow_image: $cow_image, vaccine_id: $vaccine_id, vac_name_th: $vac_name_th, vac_name_en: $vac_name_en)';
+    return 'DistinctCowVac(cow_id: $cow_id, cow_no: $cow_no, cow_name: $cow_name, cow_image: $cow_image, vaccine_id: $vaccine_id, vac_name_th: $vac_name_th, vac_name_en: $vac_name_en)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
   
-    return other is DistinctCow &&
+    return other is DistinctCowVac &&
       other.cow_id == cow_id &&
       other.cow_no == cow_no &&
       other.cow_name == cow_name &&

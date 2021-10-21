@@ -109,6 +109,7 @@ class _FarmDataState extends State<FarmData> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     return Scaffold(
         body: Container(
@@ -116,42 +117,24 @@ class _FarmDataState extends State<FarmData> {
         child: Column(
           children: <Widget>[
             Container(
-                height: 100,
-                width: 100,
-                margin: EdgeInsets.only(top: 15),
+                height: size.height * 0.2,
+                width: size.width,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(farm_image), fit: BoxFit.cover)),
                 child: Stack(
                   children: <Widget>[
-                    CircleAvatar(
-                      radius: 120,
-                      backgroundImage: NetworkImage('$url'),
-                    ),
-                    // Align(
-                    //   alignment: Alignment.bottomRight,
-                    //   child: Container(
-                    //     height: 22,
-                    //     width: 22,
-                    //     decoration: BoxDecoration(
-                    //       color: Theme.of(context).accentColor,
-                    //       shape: BoxShape.circle,
-                    //     ),
-                    //     child: Center(
-                    //       heightFactor: 10,
-                    //       widthFactor: 10,
-                    //       child: Icon(
-                    //         Icons.camera_alt_outlined,
-                    //         color: Colors.white,
-                    //         size: 12,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(145, 20, 0, 0),
+                      height: 100,
+                      width: 100,
+                      child: CircleAvatar(
+                        radius: 120,
+                        backgroundImage: NetworkImage('${user?.user_image}'),
+                      ),
+                    )
                   ],
                 )),
-            SizedBox(height: 10),
-            Text(
-              'เจ้าของฟาร์ม',
-            ),
-            SizedBox(height: 20.0),
             DefaultTabController(
                 length: 3,
                 initialIndex: 0,
@@ -162,11 +145,6 @@ class _FarmDataState extends State<FarmData> {
                         margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                         child: TabBar(
                           indicatorColor: Colors.brown,
-                          // unselectedLabelColor: Colors.blueGrey[300],
-                          // indicatorSize: TabBarIndicatorSize.label,
-                          // indicator: BoxDecoration(
-                          //     borderRadius: BorderRadius.circular(50),
-                          //     color: Colors.blueGrey[300]),
                           tabs: [
                             Tab(
                                 child: Row(
@@ -198,7 +176,7 @@ class _FarmDataState extends State<FarmData> {
                                       )),
                                   Padding(padding: EdgeInsets.only(left: 5)),
                                   Text(
-                                    'เพิ่มสมาชิก',
+                                    'สมาชิก',
                                     style: TextStyle(color: Colors.brown),
                                   )
                                 ])),
@@ -235,13 +213,6 @@ class _FarmDataState extends State<FarmData> {
                                 child: SingleChildScrollView(
                                   child: Column(
                                     children: [
-                                      Container(
-                                          width: 300,
-                                          height: 150,
-                                          child: Padding(
-                                            padding: EdgeInsets.all(4.0),
-                                            child: Image.network('$url'),
-                                          )),
                                       Container(
                                         child: Text(
                                           'ข้อมูลฟาร์ม',

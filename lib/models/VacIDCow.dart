@@ -65,7 +65,6 @@ class VacIDCow {
     required this.vac_date,
     required this.next_date,
   });
-  
 
   VacIDCow copyWith({
     int? farm_id,
@@ -203,13 +202,14 @@ class VacIDCow {
       schedule_id: map['schedule_id'],
       vaccine_id: map['vaccine_id'],
       vac_date: map['vac_date'],
-      next_date: map['next_date'],
+      next_date: map['next_date'] ?? '0000-00-00',
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory VacIDCow.fromJson(String source) => VacIDCow.fromMap(json.decode(source));
+  factory VacIDCow.fromJson(String source) =>
+      VacIDCow.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -219,73 +219,73 @@ class VacIDCow {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is VacIDCow &&
-      other.farm_id == farm_id &&
-      other.farm_no == farm_no &&
-      other.farm_code == farm_code &&
-      other.farm_name == farm_name &&
-      other.farm_image == farm_image &&
-      other.address == address &&
-      other.moo == moo &&
-      other.soi == soi &&
-      other.road == road &&
-      other.sub_district == sub_district &&
-      other.district == district &&
-      other.province == province &&
-      other.postcode == postcode &&
-      other.cow_id == cow_id &&
-      other.type_id == type_id &&
-      other.specie_id == specie_id &&
-      other.status_id == status_id &&
-      other.cow_no == cow_no &&
-      other.cow_name == cow_name &&
-      other.cow_birthday == cow_birthday &&
-      other.cow_sex == cow_sex &&
-      other.semen_id == semen_id &&
-      other.semen_specie == semen_specie &&
-      other.mom_id == mom_id &&
-      other.mom_specie == mom_specie &&
-      other.cow_image == cow_image &&
-      other.note == note &&
-      other.schedule_id == schedule_id &&
-      other.vaccine_id == vaccine_id &&
-      other.vac_date == vac_date &&
-      other.next_date == next_date;
+        other.farm_id == farm_id &&
+        other.farm_no == farm_no &&
+        other.farm_code == farm_code &&
+        other.farm_name == farm_name &&
+        other.farm_image == farm_image &&
+        other.address == address &&
+        other.moo == moo &&
+        other.soi == soi &&
+        other.road == road &&
+        other.sub_district == sub_district &&
+        other.district == district &&
+        other.province == province &&
+        other.postcode == postcode &&
+        other.cow_id == cow_id &&
+        other.type_id == type_id &&
+        other.specie_id == specie_id &&
+        other.status_id == status_id &&
+        other.cow_no == cow_no &&
+        other.cow_name == cow_name &&
+        other.cow_birthday == cow_birthday &&
+        other.cow_sex == cow_sex &&
+        other.semen_id == semen_id &&
+        other.semen_specie == semen_specie &&
+        other.mom_id == mom_id &&
+        other.mom_specie == mom_specie &&
+        other.cow_image == cow_image &&
+        other.note == note &&
+        other.schedule_id == schedule_id &&
+        other.vaccine_id == vaccine_id &&
+        other.vac_date == vac_date &&
+        other.next_date == next_date;
   }
 
   @override
   int get hashCode {
     return farm_id.hashCode ^
-      farm_no.hashCode ^
-      farm_code.hashCode ^
-      farm_name.hashCode ^
-      farm_image.hashCode ^
-      address.hashCode ^
-      moo.hashCode ^
-      soi.hashCode ^
-      road.hashCode ^
-      sub_district.hashCode ^
-      district.hashCode ^
-      province.hashCode ^
-      postcode.hashCode ^
-      cow_id.hashCode ^
-      type_id.hashCode ^
-      specie_id.hashCode ^
-      status_id.hashCode ^
-      cow_no.hashCode ^
-      cow_name.hashCode ^
-      cow_birthday.hashCode ^
-      cow_sex.hashCode ^
-      semen_id.hashCode ^
-      semen_specie.hashCode ^
-      mom_id.hashCode ^
-      mom_specie.hashCode ^
-      cow_image.hashCode ^
-      note.hashCode ^
-      schedule_id.hashCode ^
-      vaccine_id.hashCode ^
-      vac_date.hashCode ^
-      next_date.hashCode;
+        farm_no.hashCode ^
+        farm_code.hashCode ^
+        farm_name.hashCode ^
+        farm_image.hashCode ^
+        address.hashCode ^
+        moo.hashCode ^
+        soi.hashCode ^
+        road.hashCode ^
+        sub_district.hashCode ^
+        district.hashCode ^
+        province.hashCode ^
+        postcode.hashCode ^
+        cow_id.hashCode ^
+        type_id.hashCode ^
+        specie_id.hashCode ^
+        status_id.hashCode ^
+        cow_no.hashCode ^
+        cow_name.hashCode ^
+        cow_birthday.hashCode ^
+        cow_sex.hashCode ^
+        semen_id.hashCode ^
+        semen_specie.hashCode ^
+        mom_id.hashCode ^
+        mom_specie.hashCode ^
+        cow_image.hashCode ^
+        note.hashCode ^
+        schedule_id.hashCode ^
+        vaccine_id.hashCode ^
+        vac_date.hashCode ^
+        next_date.hashCode;
   }
 }
