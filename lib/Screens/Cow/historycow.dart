@@ -1,8 +1,9 @@
 import 'dart:convert';
 
-import 'package:dairycattle/models/Parturitions.dart';
-import 'package:dairycattle/models/Vaccine_schedule.dart';
-import 'package:dairycattle/models/Vaccines.dart';
+import '/models/DateAb.dart';
+import '/models/Parturitions.dart';
+import '/models/Vaccine_schedule.dart';
+import '/models/Vaccines.dart';
 
 import '/models/Abdominal.dart';
 import '/models/Cows.dart';
@@ -21,9 +22,9 @@ class HistoryCow extends StatefulWidget {
 }
 
 class _HistoryCowState extends State<HistoryCow> {
-  Future<List<Abdominal>> getAb() async {
+  Future<List<DateAb>> getAb() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
-    List<Abdominal> ab = [];
+    List<DateAb> ab = [];
     Map data = {
       'farm_id': user!.farm_id.toString(),
       'user_id': user.user_id.toString(),
@@ -40,8 +41,8 @@ class _HistoryCowState extends State<HistoryCow> {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> db = jsonDecode(response.body);
-      final List list = db['data']['rows'];
-      ab = list.map((e) => Abdominal.fromMap(e)).toList();
+      final List list = db['data']['all'];
+      ab = list.map((e) => DateAb.fromMap(e)).toList();
     }
     return ab;
   }
@@ -104,63 +105,6 @@ class _HistoryCowState extends State<HistoryCow> {
     getVac();
   }
 
-  getDate1(date) {
-    DateTime dateTime = DateTime.parse(date);
-    var newDate =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day + 21);
-    var date1 =
-        (DateFormat('dd/MM/yyyy').format(DateTime.parse(newDate.toString())));
-    return date1;
-  }
-
-  getDate2(date) {
-    DateTime dateTime = DateTime.parse(date);
-    var newDate =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day + 42);
-    var date2 =
-        (DateFormat('dd/MM/yyyy').format(DateTime.parse(newDate.toString())));
-    return date2;
-  }
-
-  getDate3(date) {
-    DateTime dateTime = DateTime.parse(date);
-    var newDate =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day + 63);
-    var date3 =
-        (DateFormat('dd/MM/yyyy').format(DateTime.parse(newDate.toString())));
-    return date3;
-  }
-
-  getDate4(date) {
-    DateTime dateTime = DateTime.parse(date);
-    var newDate =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day + 210);
-    var date4 =
-        (DateFormat('dd/MM/yyyy').format(DateTime.parse(newDate.toString())));
-    return date4;
-  }
-
-  getDate5(date) {
-    DateTime dateTime = DateTime.parse(date);
-    var newDate =
-        new DateTime(dateTime.year, dateTime.month, dateTime.day + 282);
-    var date5 =
-        (DateFormat('dd/MM/yyyy').format(DateTime.parse(newDate.toString())));
-    return date5;
-  }
-
-  getDiff1(date) {
-    String hotfixYear(String _) =>
-        _.substring(0, _.length - 2) + (_.substring(_.length - 2, _.length));
-    DateFormat inputFormat = DateFormat('dd/MM/yyyy');
-    DateTime dateTime = inputFormat.parse(hotfixYear(date));
-    final now = inputFormat.parse(inputFormat.format(DateTime.now()));
-    print(now.toString());
-    print(dateTime.toString());
-    final difference = dateTime.difference(now).inDays;
-    return difference;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -175,7 +119,7 @@ class _HistoryCowState extends State<HistoryCow> {
               color: Colors.white,
             ),
           ),
-          backgroundColor: Color(0xff62b490),
+          backgroundColor: Colors.brown[500],
         ),
         body: Container(
           child: SingleChildScrollView(
@@ -187,7 +131,6 @@ class _HistoryCowState extends State<HistoryCow> {
                 height: 150,
                 decoration: BoxDecoration(
                   color: Colors.blueGrey[100],
-                  border: Border.all(color: (Colors.blueGrey[300])!, width: 2),
                   borderRadius: BorderRadius.circular(3),
                 ),
                 child: Container(
@@ -263,87 +206,118 @@ class _HistoryCowState extends State<HistoryCow> {
                   future: getPar(),
                   builder: (context, snapshot) {
                     if (snapshot.data == null) {
-                      return Container();
+                      return Container(
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: SingleChildScrollView(
+                              child: Column(children: <Widget>[
+                            ExpansionTile(
+                                collapsedBackgroundColor: Colors.black26,
+                                title: Text('ประวัติการคลอด',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                children: <Widget>[
+                                  Container(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                      child: Text('ไม่มีประวัติการคลอด'))
+                                ])
+                          ])));
                     } else
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, i) {
-                            return Container(
-                                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                child: SingleChildScrollView(
-                                    child: Column(children: <Widget>[
-                                  ExpansionTile(
-                                    collapsedBackgroundColor: Colors.black26,
-                                    title: Text('ประวัติการคลอด',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                    children: <Widget>[
-                                      DataTable(columns: <DataColumn>[
-                                        DataColumn(
-                                            label: Text(
-                                                'จำนวนการคลอดลูกทั้งหมด',
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold))),
-                                        DataColumn(
-                                            label: Text('?',
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold))),
-                                        DataColumn(
-                                            label: Text('ครั้ง',
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold))),
-                                      ], rows: const <DataRow>[
-                                        DataRow(cells: <DataCell>[
-                                          DataCell(
-                                              Text('จำนวนการคลอดลูกสำเร็จ')),
-                                          DataCell(Text('?')),
-                                          DataCell(Text('ครั้ง')),
-                                        ]),
-                                        DataRow(cells: <DataCell>[
-                                          DataCell(
-                                              Text('จำนวนการคลอดลูกไม่สำเร็จ')),
-                                          DataCell(Text('?')),
-                                          DataCell(Text('ครั้ง')),
-                                        ])
+                      return MediaQuery.removePadding(
+                          context: context,
+                          removeTop: true,
+                          removeBottom: true,
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, i) {
+                                return ExpansionTile(
+                                  collapsedBackgroundColor: Colors.teal[200],
+                                  title: Text('ประวัติการคลอด',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  children: <Widget>[
+                                    DataTable(columns: <DataColumn>[
+                                      DataColumn(
+                                          label: Text('จำนวนการคลอดลูกทั้งหมด',
+                                              style: TextStyle(
+                                                  fontWeight:
+                                                      FontWeight.bold))),
+                                      DataColumn(
+                                          label: Text(
+                                              '${snapshot.data![i].count}',
+                                              style: TextStyle(
+                                                  fontWeight:
+                                                      FontWeight.bold))),
+                                      DataColumn(
+                                          label: Text('ครั้ง',
+                                              style: TextStyle(
+                                                  fontWeight:
+                                                      FontWeight.bold))),
+                                    ], rows: <DataRow>[
+                                      DataRow(cells: <DataCell>[
+                                        DataCell(Text('จำนวนการคลอดลูกสำเร็จ')),
+                                        DataCell(Text(
+                                            '${snapshot.data![i].countSuc}')),
+                                        DataCell(Text('ครั้ง')),
                                       ]),
-                                    ],
-                                  )
-                                ])));
-                          });
+                                      DataRow(cells: <DataCell>[
+                                        DataCell(
+                                            Text('จำนวนการคลอดลูกไม่สำเร็จ')),
+                                        DataCell(Text(
+                                            '${snapshot.data![i].countFail}')),
+                                        DataCell(Text('ครั้ง')),
+                                      ])
+                                    ]),
+                                  ],
+                                );
+                              }));
                   }),
-              FutureBuilder<List<Abdominal>>(
+              FutureBuilder<List<DateAb>>(
                   future: getAb(),
                   builder: (context, snapshot) {
                     if (snapshot.data == null) {
-                      return Container();
+                      return Container(
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: SingleChildScrollView(
+                              child: Column(children: <Widget>[
+                            ExpansionTile(
+                                collapsedBackgroundColor: Colors.black26,
+                                title: Text('ประวัติการผสมพันธุ์',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                children: <Widget>[
+                                  Container(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                      child: Text('ไม่มีประวัติการผสมพันธุ์'))
+                                ])
+                          ])));
                     } else
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, i) {
-                            return Container(
-                                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                child: SingleChildScrollView(
-                                    child: Column(children: <Widget>[
-                                  ExpansionTile(
+                      return MediaQuery.removePadding(
+                          context: context,
+                          removeTop: true,
+                          removeBottom: true,
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, i) {
+                                return ExpansionTile(
                                     collapsedBackgroundColor: Colors.teal[200],
-                                    title: Text('ประวัติการผสมพันธ์',
+                                    title: Text('ประวัติการผสมพันธุ์',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold)),
                                     children: <Widget>[
                                       DataTable(columns: <DataColumn>[
                                         DataColumn(
                                             label: Text(
-                                                'จำนวนการผสมพันธ์ทั้งหมด',
+                                                'จำนวนการผสมพันธุ์ทั้งหมด',
                                                 style: TextStyle(
                                                     fontWeight:
                                                         FontWeight.bold))),
                                         DataColumn(
-                                            label: Text('4',
+                                            label: Text(
+                                                '${snapshot.data![i].count}',
                                                 style: TextStyle(
                                                     fontWeight:
                                                         FontWeight.bold))),
@@ -355,19 +329,21 @@ class _HistoryCowState extends State<HistoryCow> {
                                       ], rows: <DataRow>[
                                         DataRow(cells: <DataCell>[
                                           DataCell(Text('ผสมติด')),
-                                          DataCell(Text('4')),
+                                          DataCell(Text(
+                                              '${snapshot.data![i].countSuc}')),
                                           DataCell(Text('ครั้ง')),
                                         ]),
                                         DataRow(cells: <DataCell>[
                                           DataCell(Text('ผสมไม่ติด')),
-                                          DataCell(Text('-')),
+                                          DataCell(Text(
+                                              '${snapshot.data![i].countFail}')),
                                           DataCell(Text('ครั้ง')),
                                         ])
                                       ]),
                                       DataTable(columns: <DataColumn>[
                                         DataColumn(
                                             label: Text(
-                                          'สถานะผสมพันธ์ปัจจุบัน',
+                                          'สถานะผสมพันธุ์ปัจจุบัน',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold),
                                         )),
@@ -384,47 +360,60 @@ class _HistoryCowState extends State<HistoryCow> {
                                         ]),
                                         DataRow(cells: <DataCell>[
                                           DataCell(Text('กลับสัดครั้งที่ 1')),
-                                          DataCell(Text(getDate1(
-                                              '${snapshot.data![i].ab_date}'))),
+                                          DataCell(Text(
+                                              '${DateFormat('dd/MM/yyyy').format(DateTime.parse('${snapshot.data![i].firstHeat}'))}')),
                                         ]),
                                         DataRow(cells: <DataCell>[
                                           DataCell(Text('กลับสัดครั้งที่ 2')),
-                                          DataCell(Text(getDate2(
-                                              '${snapshot.data![i].ab_date}'))),
+                                          DataCell(Text(
+                                              '${DateFormat('dd/MM/yyyy').format(DateTime.parse('${snapshot.data![i].secondHeat}'))}')),
                                         ]),
                                         DataRow(cells: <DataCell>[
                                           DataCell(Text('กลับสัดครั้งที่ 3')),
-                                          DataCell(Text(getDate3(
-                                              '${snapshot.data![i].ab_date}'))),
+                                          DataCell(Text(
+                                              '${DateFormat('dd/MM/yyyy').format(DateTime.parse('${snapshot.data![i].thirdHeat}'))}')),
                                         ]),
                                         DataRow(cells: <DataCell>[
                                           DataCell(Text('พักท้อง')),
-                                          DataCell(Text(getDate4(
-                                              '${snapshot.data![i].ab_date}'))),
+                                          DataCell(Text(
+                                              '${DateFormat('dd/MM/yyyy').format(DateTime.parse('${snapshot.data![i].dryDate}'))}')),
                                         ]),
                                         DataRow(cells: <DataCell>[
                                           DataCell(Text('กำหนดคลอด')),
-                                          DataCell(Text(getDate5(
-                                              '${snapshot.data![i].ab_date}'))),
+                                          DataCell(Text(
+                                              '${DateFormat('dd/MM/yyyy').format(DateTime.parse('${snapshot.data![i].parDate}'))}')),
                                         ]),
                                       ]),
-                                    ],
-                                  )
-                                ])));
-                          });
+                                    ]);
+                              }));
                   }),
-              ExpansionTile(
-                collapsedBackgroundColor: Colors.black26,
-                title: Text('ประวัติการฉีดวัคซีน',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                children: [
-                  FutureBuilder<List<Vaccine_schedule>>(
-                      future: getVac(),
-                      builder: (context, snapshot) {
-                        if (snapshot.data == null) {
-                          return Container();
-                        } else
-                          return SingleChildScrollView(
+              FutureBuilder<List<Vaccine_schedule>>(
+                  future: getVac(),
+                  builder: (context, snapshot) {
+                    if (snapshot.data == null) {
+                      return Container(
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: SingleChildScrollView(
+                              child: Column(children: <Widget>[
+                            ExpansionTile(
+                                collapsedBackgroundColor: Colors.black26,
+                                title: Text('ประวัติการฉีดวัคซีน',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                children: <Widget>[
+                                  Container(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                      child: Text('ไม่มีประวัติการฉีดวัคซีน'))
+                                ])
+                          ])));
+                    } else
+                      return ExpansionTile(
+                        collapsedBackgroundColor: Colors.teal[200],
+                        title: Text('ประวัติการฉีดวัคซีน',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        children: [
+                          SingleChildScrollView(
                               child: DataTable(
                                   columns: <DataColumn>[
                                 DataColumn(
@@ -448,10 +437,10 @@ class _HistoryCowState extends State<HistoryCow> {
                                       DataCell(Text(
                                           '${DateFormat('dd/MM/yyyy').format(DateTime.parse('${e.next_date}'))}')),
                                     ]);
-                                  }).toList()));
-                      }),
-                ],
-              ),
+                                  }).toList()))
+                        ],
+                      );
+                  })
             ]),
           ),
         ));

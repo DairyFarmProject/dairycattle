@@ -51,6 +51,7 @@ class _OneCowState extends State<OneCow> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.cow.cow_name}, ${widget.cow.cow_no}'),
@@ -98,23 +99,20 @@ class _OneCowState extends State<OneCow> {
             child: Column(
           children: <Widget>[
             Container(
-              padding: EdgeInsets.all(0),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(3)),
-              margin: EdgeInsets.all(20),
-              width: 318,
-              height: 150,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(30.0),
-                child: FittedBox(
-                  child: Image.network(widget.cow.cow_image),
-                  //fit: BoxFit.cover,
-                ),
-              ),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: NetworkImage(widget.cow.cow_image),
+                      fit: BoxFit.cover)),
+              width: size.width,
+              height: size.height * 0.3,
             ),
-            Center(
-              child: Text('ข้อมูลวัว',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)),
-            ),
+            Container(
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Center(
+                  child: Text('ข้อมูลวัว',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w600, fontSize: 18)),
+                )),
             Padding(
               padding: const EdgeInsets.fromLTRB(50, 0, 0, 0),
               child: Row(
@@ -207,93 +205,6 @@ class _OneCowState extends State<OneCow> {
                   ),
                 ),
               ),
-            ),
-            ExpansionTile(
-              collapsedBackgroundColor: Colors.yellow[600],
-              tilePadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              title: Text(
-                'เหตุการณ์ที่กำลังจะเกิดขึ้น',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16),
-              ),
-              children: <Widget>[
-                Row(
-                  children: [
-                    Container(
-                        padding: EdgeInsets.all(10),
-                        color: Colors.white70,
-                        child: Container(
-                          height: 80,
-                          width: 355,
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-                            color: Colors.red[50],
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text('วันดรายนม'),
-                                Text('4 ม.ค. 2558'),
-                                Container(
-                                  padding: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      color: Colors.red[800],
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(2),
-                                      )),
-                                  child: Text(
-                                    'อีก 2 วัน',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ))
-                  ],
-                ),
-                Row(
-                  children: [
-                    Container(
-                        padding: EdgeInsets.all(10),
-                        color: Colors.white70,
-                        child: Container(
-                          height: 80,
-                          width: 355,
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-                            color: Colors.red[50],
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text('วันดรายนม'),
-                                Text('4 ม.ค. 2558'),
-                                Container(
-                                  padding: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      color: Colors.red[800],
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(2),
-                                      )),
-                                  child: Text(
-                                    'อีก 2 วัน',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ))
-                  ],
-                )
-              ],
             ),
             Container(
                 margin: EdgeInsets.fromLTRB(0, 15, 0, 20),

@@ -2,6 +2,9 @@ import 'dart:convert';
 
 class DateAb {
   int abdominal_id;
+  String count;
+  String countSuc;
+  String countFail;
   int cow_id;
   int round;
   String ab_date;
@@ -35,6 +38,9 @@ class DateAb {
   int parcount;
   DateAb({
     required this.abdominal_id,
+    required this.count,
+    required this.countSuc,
+    required this.countFail,
     required this.cow_id,
     required this.round,
     required this.ab_date,
@@ -71,6 +77,9 @@ class DateAb {
 
   DateAb copyWith({
     int? abdominal_id,
+    String? count,
+    String? countSuc,
+    String? countFail,
     int? cow_id,
     int? round,
     String? ab_date,
@@ -105,6 +114,9 @@ class DateAb {
   }) {
     return DateAb(
       abdominal_id: abdominal_id ?? this.abdominal_id,
+      count: count ?? this.count,
+      countSuc: countSuc ?? this.countSuc,
+      countFail: countFail ?? this.countFail,
       cow_id: cow_id ?? this.cow_id,
       round: round ?? this.round,
       ab_date: ab_date ?? this.ab_date,
@@ -142,6 +154,9 @@ class DateAb {
   Map<String, dynamic> toMap() {
     return {
       'abdominal_id': abdominal_id,
+      'count': count,
+      'countSuc': countSuc,
+      'countFail': countFail,
       'cow_id': cow_id,
       'round': round,
       'ab_date': ab_date,
@@ -179,6 +194,9 @@ class DateAb {
   factory DateAb.fromMap(Map<String, dynamic> map) {
     return DateAb(
       abdominal_id: map['abdominal_id'],
+      count: map['count'],
+      countSuc: map['countSuc'],
+      countFail: map['countFail'],
       cow_id: map['cow_id'],
       round: map['round'],
       ab_date: map['ab_date'],
@@ -219,7 +237,7 @@ class DateAb {
 
   @override
   String toString() {
-    return 'DateAb(abdominal_id: $abdominal_id, cow_id: $cow_id, round: $round, ab_date: $ab_date, ab_status: $ab_status, ab_caretaker: $ab_caretaker, semen_id: $semen_id, semen_name: $semen_name, semen_specie: $semen_specie, ab_calf: $ab_calf, note: $note, type_id: $type_id, specie_id: $specie_id, farm_id: $farm_id, status_id: $status_id, cow_no: $cow_no, cow_name: $cow_name, cow_birthday: $cow_birthday, cow_sex: $cow_sex, mom_id: $mom_id, mom_specie: $mom_specie, cow_image: $cow_image, firstHeat: $firstHeat, firstcount: $firstcount, secondHeat: $secondHeat, secondcount: $secondcount, thirdHeat: $thirdHeat, thirdcount: $thirdcount, dryDate: $dryDate, drycount: $drycount, parDate: $parDate, parcount: $parcount)';
+    return 'DateAb(abdominal_id: $abdominal_id, count: $count, countSuc: $countSuc, countFail: $countFail, cow_id: $cow_id, round: $round, ab_date: $ab_date, ab_status: $ab_status, ab_caretaker: $ab_caretaker, semen_id: $semen_id, semen_name: $semen_name, semen_specie: $semen_specie, ab_calf: $ab_calf, note: $note, type_id: $type_id, specie_id: $specie_id, farm_id: $farm_id, status_id: $status_id, cow_no: $cow_no, cow_name: $cow_name, cow_birthday: $cow_birthday, cow_sex: $cow_sex, mom_id: $mom_id, mom_specie: $mom_specie, cow_image: $cow_image, firstHeat: $firstHeat, firstcount: $firstcount, secondHeat: $secondHeat, secondcount: $secondcount, thirdHeat: $thirdHeat, thirdcount: $thirdcount, dryDate: $dryDate, drycount: $drycount, parDate: $parDate, parcount: $parcount)';
   }
 
   @override
@@ -228,6 +246,9 @@ class DateAb {
   
     return other is DateAb &&
       other.abdominal_id == abdominal_id &&
+      other.count == count &&
+      other.countSuc == countSuc &&
+      other.countFail == countFail &&
       other.cow_id == cow_id &&
       other.round == round &&
       other.ab_date == ab_date &&
@@ -264,6 +285,9 @@ class DateAb {
   @override
   int get hashCode {
     return abdominal_id.hashCode ^
+      count.hashCode ^
+      countSuc.hashCode ^
+      countFail.hashCode ^
       cow_id.hashCode ^
       round.hashCode ^
       ab_date.hashCode ^
