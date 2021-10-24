@@ -182,6 +182,7 @@ class _AddCowState extends State<AddCow> {
                       padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
                       child: Text(
                         'วันเกิด',
+                        style: TextStyle(fontWeight: FontWeight.w500),
                       ),
                     ),
                     Row(
@@ -226,12 +227,20 @@ class _AddCowState extends State<AddCow> {
                     validator: value_validator,
                     child: Text(
                       'รายละเอียดอื่นๆ',
-                      style: TextStyle(fontSize: 15),
+                      style: TextStyle(fontWeight: FontWeight.w500),
                     ),
                     hintText: "รายละเอียดอื่นๆ"),
+                    
                 Container(
-                  padding: const EdgeInsets.all(20.0),
+                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    alignment: Alignment.topLeft,
+                    child: Text('ประเภทวัว',
+                        style: TextStyle(fontWeight: FontWeight.w500))),
+                Container(
+                  padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  alignment: Alignment.topLeft,
                   child: DropdownButton<Type>(
+                    isExpanded: true,
                     hint: new Text("Select a type"),
                     value: selectStatus == null ? null : types[selectType],
                     onChanged: (newValue) {
@@ -252,8 +261,15 @@ class _AddCowState extends State<AddCow> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(20.0),
+                    padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                    alignment: Alignment.topLeft,
+                    child: Text('ชื่อสายพันธ์',
+                        style: TextStyle(fontWeight: FontWeight.w500))),
+                Container(
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  alignment: Alignment.topLeft,
                   child: DropdownButton<Specie>(
+                    isExpanded: true,
                     hint: new Text("Select a specie"),
                     value: selectSpecie == null ? null : species[selectSpecie],
                     onChanged: (newValue) {
@@ -388,10 +404,11 @@ class _AddCowState extends State<AddCow> {
                             // ignore: deprecated_member_use
                             RaisedButton(
                               onPressed: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return Cow();
-                                }));
+                                Navigator.pop(context);
+                                // Navigator.push(context,
+                                //     MaterialPageRoute(builder: (context) {
+                                //   return Cow();
+                                // }));
                               },
                               color: Colors.blueGrey[50],
                               shape: RoundedRectangleBorder(

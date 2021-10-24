@@ -1,5 +1,5 @@
 import '/Screens/Welcome/login.dart';
-import '/dashboard.dart';
+import '../Dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
 
 class SuccessOTP extends StatefulWidget {

@@ -133,7 +133,7 @@ class _EditProfileState extends State<EditProfile>
                         Container(
                           padding: EdgeInsets.all(20),
                           margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                          child: Text('สร้างบัญชีผู้ใช้งาน',
+                          child: Text('แก้ไขบัญชีผู้ใช้งาน',
                               style: TextStyle(
                                   fontWeight: FontWeight.w500, fontSize: 25)),
                         ),
@@ -283,11 +283,7 @@ class _EditProfileState extends State<EditProfile>
                                   children: [
                                     RaisedButton(
                                       onPressed: () {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return Welcome();
-                                        }));
+                                        Navigator.pop(context);
                                       },
                                       color: Colors.blueGrey[50],
                                       shape: RoundedRectangleBorder(

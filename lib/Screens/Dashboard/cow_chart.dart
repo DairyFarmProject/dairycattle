@@ -7,16 +7,16 @@ import '/Screens/Activity/Calve/allrecordcalve.dart';
 import 'package:flutter/material.dart';
 
 class CowChart extends StatelessWidget {
-  Color Y = Color.fromRGBO(234, 177, 93, 5);
-  Color B = Color.fromRGBO(234, 177, 93, 5);
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: EdgeInsets.only(top: 10),
+      //color: Color.fromRGBO(222, 222, 222, 5),
       decoration: BoxDecoration(color: Colors.white30),
       height: MediaQuery.of(context).size.height * 0.27,
       child: Column(
         children: <Widget>[
+          Text(''),
           Flexible(
             child: Row(
               children: <Widget>[
