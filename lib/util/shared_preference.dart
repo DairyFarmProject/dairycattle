@@ -149,30 +149,30 @@ class UserPreferences {
 
     print('Get User Prefs');
 
-    int? user_id = prefs.getInt("user_id");
-    String? firstname = prefs.getString("firstname");
-    String? lastname = prefs.getString("lastname");
-    String? user_birthday = prefs.getString("user_birthday");
-    String? mobile = prefs.getString("mobile");
-    String? user_image = prefs.getString("user_image");
-    String? email = prefs.getString("email");
-    String? password = prefs.getString("password");
-    int? worker_id = prefs.getInt("worker_id");
-    int? role_id = prefs.getInt("role_id");
-    int? farm_id = prefs.getInt("farm_id");
-    String? startwork = prefs.getString("startwork");
-    String? role_name = prefs.getString("role_name");
-    String? farm_no = prefs.getString("farm_no");
-    String? farm_name = prefs.getString("farm_name");
-    String? farm_image = prefs.getString("farm_image");
-    String? address = prefs.getString("address");
-    int? moo = prefs.getInt("moo");
-    String? soi = prefs.getString("soi");
-    String? road = prefs.getString("road");
-    String? sub_district = prefs.getString("sub_district");
-    String? district = prefs.getString("district");
-    String? province = prefs.getString("province");
-    int? postcode = prefs.getInt("postcode");
+    int user_id = prefs.getInt("user_id") ?? 0;
+    String firstname = prefs.getString("firstname") ?? '';
+    String lastname = prefs.getString("lastname") ?? '';
+    String user_birthday = prefs.getString("user_birthday") ?? '';
+    String mobile = prefs.getString("mobile") ?? '';
+    String user_image = prefs.getString("user_image") ?? '';
+    String email = prefs.getString("email") ?? '';
+    String password = prefs.getString("password") ?? '';
+    int worker_id = prefs.getInt("worker_id") ?? 0;
+    int role_id = prefs.getInt("role_id") ?? 0;
+    int farm_id = prefs.getInt("farm_id") ?? 0;
+    String startwork = prefs.getString("startwork") ?? '';
+    String role_name = prefs.getString("role_name") ?? '';
+    String farm_no = prefs.getString("farm_no") ?? '';
+    String farm_name = prefs.getString("farm_name") ?? '';
+    String farm_image = prefs.getString("farm_image") ?? '';
+    String address = prefs.getString("address") ?? '';
+    int moo = prefs.getInt("moo") ?? 0;
+    String soi = prefs.getString("soi") ?? '';
+    String road = prefs.getString("road") ?? '';
+    String sub_district = prefs.getString("sub_district") ?? '';
+    String district = prefs.getString("district") ?? '';
+    String province = prefs.getString("province") ?? '';
+    int postcode = prefs.getInt("postcode") ?? 0;
 
     return User(
         user_id: user_id,

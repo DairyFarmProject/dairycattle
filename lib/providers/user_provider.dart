@@ -35,56 +35,61 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> isAlreadyAuthenticated() async {
-    bool ans = true;
+  Future<String> isAlreadyAuthenticated() async {
+    String ans = '';
 
-    if(userDairys is UserDairys){
+    if (userDairys is UserDairys) {
       Map data = {'user_id': userDairys?.user_id.toString()};
 
-      final response = await http.post(Uri.http('127.0.0.1:3000', 'farms/check'),
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          body: data,
-          encoding: Encoding.getByName("utf-8"));
-  
+      final response =
+          await http.post(Uri.http('127.0.0.1:3000', 'farms/check'),
+              headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/x-www-form-urlencoded"
+              },
+              body: data,
+              encoding: Encoding.getByName("utf-8"));
+
       if (response.statusCode == 200) {
         Map<String, dynamic> resposne = json.decode(response.body);
-        var user = resposne['data']['rows'];
+        var user = resposne['data']['message'];
         print(user);
-  
-        if (user == 'A') {
-          ans = false;
+
+        if (user == 'B') {
+          ans = 'B';
+        } else if (user == 'C') {
+          ans = 'C';
         } else {
-          ans = true;
+          ans = user;
         }
       }
     } else {
       Map data = {'user_id': user?.user_id.toString()};
 
-      final response = await http.post(Uri.http('127.0.0.1:3000', 'farms/check'),
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          body: data,
-          encoding: Encoding.getByName("utf-8"));
-  
+      final response =
+          await http.post(Uri.http('127.0.0.1:3000', 'farms/check'),
+              headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/x-www-form-urlencoded"
+              },
+              body: data,
+              encoding: Encoding.getByName("utf-8"));
+
       if (response.statusCode == 200) {
         Map<String, dynamic> resposne = json.decode(response.body);
-        var user = resposne['data'];
+        var user = resposne['data']['message'];
         print(user);
-  
+
         if (user == 'A') {
-          ans = false;
+          ans = 'A';
         } else {
-          ans = true;
+          ans = 'D';
         }
       }
     }
-    
-    print(ans);
+
+    print('${user}' + '${ans}');
+    print('------');
 
     return ans;
   }

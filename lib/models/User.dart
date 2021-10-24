@@ -1,56 +1,58 @@
 import 'dart:convert';
 
 class User {
-  int? user_id;
-  String? firstname;
-  String? lastname;
-  String? user_birthday;
-  String? mobile;
-  String? user_image;
-  String? email;
-  String? password;
-  int? worker_id;
-  int? role_id;
-  int? farm_id;
-  String? startwork;
-  String? role_name;
-  String? farm_no;
-  String? farm_name;
-  String? farm_image;
-  String? address;
-  int? moo;
-  String? soi;
-  String? road;
-  String? sub_district;
-  String? district;
-  String? province;
-  int? postcode;
+  int user_id;
+  String firstname;
+  String lastname;
+  String user_birthday;
+  String mobile;
+  String user_image;
+  String email;
+  String password;
+  int worker_id;
+  int role_id;
+  int farm_id;
+  String startwork;
+  String role_name;
+  String farm_no;
+  String farm_name;
+  String farm_image;
+  String address;
+  int moo;
+  String soi;
+  String road;
+  String sub_district;
+  String district;
+  String province;
+  int postcode;
   User({
-    this.user_id,
-    this.firstname,
-    this.lastname,
-    this.user_birthday,
-    this.mobile,
-    this.user_image,
-    this.email,
-    this.password,
-    this.worker_id,
-    this.role_id,
-    this.farm_id,
-    this.startwork,
-    this.role_name,
-    this.farm_no,
-    this.farm_name,
-    this.farm_image,
-    this.address,
-    this.moo,
-    this.soi,
-    this.road,
-    this.sub_district,
-    this.district,
-    this.province,
-    this.postcode,
+    required this.user_id,
+    required this.firstname,
+    required this.lastname,
+    required this.user_birthday,
+    required this.mobile,
+    required this.user_image,
+    required this.email,
+    required this.password,
+    required this.worker_id,
+    required this.role_id,
+    required this.farm_id,
+    required this.startwork,
+    required this.role_name,
+    required this.farm_no,
+    required this.farm_name,
+    required this.farm_image,
+    required this.address,
+    required this.moo,
+    required this.soi,
+    required this.road,
+    required this.sub_district,
+    required this.district,
+    required this.province,
+    required this.postcode,
   });
+ 
+
   
 
   User copyWith({
@@ -232,6 +234,4 @@ class User {
       province.hashCode ^
       postcode.hashCode;
   }
-
-  
 }

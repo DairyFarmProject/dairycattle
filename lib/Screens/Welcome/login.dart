@@ -165,33 +165,28 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   login(email, password) async {
-    String token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE2MzQyMjAzNzcsImV4cCI6MTY0NDU4ODM3N30.fDoUwluiByBovZzRFRD7mIGLrpNWY5Fw6lECMklVZIw';
-    savePref(token);
-    UserPreferences().getToken(token);
-    doLogin(token);
-    // Map data = {'email': email, 'password': password};
-    // print(data.toString());
-    // final response = await http.post(Uri.http('127.0.0.1:3000', 'signin'),
-    //     headers: {
-    //       "Accept": "application/json",
-    //       "Content-Type": "application/x-www-form-urlencoded"
-    //     },
-    //     body: data,
-    //     encoding: Encoding.getByName("utf-8"));
-    // setState(() {
-    //   isLoading = false;
-    // });
-    // if (response.statusCode == 200) {
-    //   Map<String, dynamic> resposne = jsonDecode(response.body);
-    //   Map<String, dynamic> user = resposne['data'];
-    //   savePref(user['token']);
-    //   UserPreferences().getToken(user['token']);
-    //   doLogin(user['token']);
-    // } else {
-    //   _scaffoldKey.currentState
-    //       ?.showSnackBar(SnackBar(content: Text("Please try again!")));
-    // }
+    Map data = {'email': email, 'password': password};
+    print(data.toString());
+    final response = await http.post(Uri.http('127.0.0.1:3000', 'signin'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
+    setState(() {
+      isLoading = false;
+    });
+    if (response.statusCode == 200) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      Map<String, dynamic> user = resposne['data'];
+      savePref(user['token']);
+      UserPreferences().getToken(user['token']);
+      doLogin(user['token']);
+    } else {
+      _scaffoldKey.currentState
+          ?.showSnackBar(SnackBar(content: Text("Please try again!")));
+    }
   }
 
   savePref(String token) async {
@@ -206,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     successfulMessage.then((response) {
       if (response["user"] != null) {
-        if (response['ans'] == 'A') {
+        if (response['ans'] == 'A' || response['ans'] == 'D') {
           User user = response["user"];
           print(user);
           Provider.of<UserProvider>(context, listen: false).setUser(user);

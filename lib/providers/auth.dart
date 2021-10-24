@@ -20,10 +20,7 @@ enum Status {
 
 class AuthProvider with ChangeNotifier {
   Status _loggedInStatus = Status.NotLoggedIn;
-  Status _registeredInStatus = Status.NotRegistered;
-
   Status get loggedInStatus => _loggedInStatus;
-  Status get registeredInStatus => _registeredInStatus;
 
   Future<Map<String, dynamic>> login(String token) async {
     var result;
@@ -49,7 +46,8 @@ class AuthProvider with ChangeNotifier {
 
       print(responseData['data']['message']);
 
-      if (responseData['data']['message'] == 'A') {
+      if (responseData['data']['message'] == 'A' ||
+          responseData['data']['message'] == 'D') {
         List<User> authUser = userData.map((e) => User.fromMap(e)).toList();
 
         UserPreferences().saveUser(
@@ -81,11 +79,17 @@ class AuthProvider with ChangeNotifier {
 
         _loggedInStatus = Status.LoggedIn;
         notifyListeners();
-        print("hi login ath");
+        print("Ath Success");
 
-        result = {"ans": 'A',"user": authUser[0]};
+        if (responseData['data']['message'] == 'A') {
+          result = {"ans": 'A', "user": authUser[0]};
+        } else {
+          result = {"ans": 'D', "user": authUser[0]};
+        }
+
         print(result);
-      } else if (responseData['data']['message'] == 'B') {
+      } else if (responseData['data']['message'] == 'B' ||
+          responseData['data']['message'] == 'C') {
         List<UserDairys> authUser =
             userData.map((e) => UserDairys.fromMap(e)).toList();
 
@@ -102,9 +106,14 @@ class AuthProvider with ChangeNotifier {
 
         _loggedInStatus = Status.LoggedIn;
         notifyListeners();
-        print("hi login ath");
+        print("Ath Success");
 
-        result = {"ans": 'B',"user": authUser[0]};
+        if (responseData['data']['message'] == 'B') {
+          result = {"ans": 'B', "user": authUser[0]};
+        } else {
+          print('ans = C');
+          result = {"ans": 'C', "user": authUser[0]};
+        }
       } else {
         _loggedInStatus = Status.NotLoggedIn;
         notifyListeners();
@@ -117,50 +126,6 @@ class AuthProvider with ChangeNotifier {
 
     return result;
   }
-
-  // Future<Map<String, dynamic>> register(String email, String password, String passwordConfirmation) async {
-
-  //   final Map<String, dynamic> registrationData = {
-  //     'user': {
-  //       'email': email,
-  //       'password': password,
-  //       'password_confirmation': passwordConfirmation
-  //     }
-  //   };
-  //   return await post(Uri.http('127.0.0.1:3000', 'login'),
-  //       body: json.encode(registrationData),
-  //       headers: {'Content-Type': 'application/json'})
-  //       .then(onValue)
-  //       .catchError(onError);
-  // }
-
-//   static Future<FutureOr> onValue(Response response) async {
-//     var result;
-//     final Map<String, dynamic> responseData = json.decode(response.body);
-
-//     print(response.statusCode);
-//     if (response.statusCode == 200) {
-//       var userData = responseData['data'];
-
-//       User authUser = User.fromJson(userData);
-
-//       UserPreferences().saveUser(authUser);
-//       result = {
-//         'status': true,
-//         'message': 'Successfully registered',
-//         'data': authUser
-//       };
-//     } else {
-// //      if (response.statusCode == 401) Get.toNamed("/login");
-//       result = {
-//         'status': false,
-//         'message': 'Registration failed',
-//         'data': responseData
-//       };
-//     }
-
-//     return result;
-//   }
 
   static onError(error) {
     print("the error is $error.detail");
