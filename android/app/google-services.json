@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "1078674833801",
+    "firebase_url": "https://examplesenior-default-rtdb.firebaseio.com",
+    "project_id": "examplesenior",
+    "storage_bucket": "examplesenior.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1078674833801:android:b98a4731200b2c4df12158",
+        "android_client_info": {
+          "package_name": "com.example.finaldairy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1078674833801-0dc1j8sfeoelersm0maneko3qofhp0a9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.finaldairy",
+            "certificate_hash": "d59f7dadedd5831a53993cb4757062d62b961ae0"
+          }
+        },
+        {
+          "client_id": "1078674833801-ufcofrhai9rg9di54r43a7r7s0rue4t0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCj27LMD3RqAEjxavNonqglIzT-BURKeQY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1078674833801-ufcofrhai9rg9di54r43a7r7s0rue4t0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1078674833801-12sjldrdcj39l377di2utuq9qc0bv1dn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.senior.dairycattle"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1078674833801:android:45209716fe79c160f12158",
+        "android_client_info": {
+          "package_name": "com.senior.dairycattle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1078674833801-314vppu98c6catkgfereeauh9t2dflf4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.senior.dairycattle",
+            "certificate_hash": "c75ef3e6af08d6a82d5e63e39c9ea922d271a6ea"
+          }
+        },
+        {
+          "client_id": "1078674833801-ufcofrhai9rg9di54r43a7r7s0rue4t0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCj27LMD3RqAEjxavNonqglIzT-BURKeQY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1078674833801-ufcofrhai9rg9di54r43a7r7s0rue4t0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1078674833801-12sjldrdcj39l377di2utuq9qc0bv1dn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.senior.dairycattle"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
