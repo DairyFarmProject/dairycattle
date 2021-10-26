@@ -1,11 +1,7 @@
-import 'package:dairycattle/Screens/Activity/addactivity.dart';
-import 'package:dairycattle/Screens/Cow/cow1.dart';
-import 'package:dairycattle/Screens/member/farm_data_member.dart';
-
-import '/Screens/Profile/Farm_data.dart';
-import '/dashboard.dart';
+import '/Screens/Activity/addactivity.dart';
+import '/Screens/Cow/cow1.dart';
+import '/Screens/member/farm_data_member.dart';
 import '/notification.dart';
-import '/Screens/Profile/profile.dart';
 import 'package:flutter/material.dart';
 
 class Homepage_Member extends StatefulWidget {

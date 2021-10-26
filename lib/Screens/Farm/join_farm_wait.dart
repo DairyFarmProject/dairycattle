@@ -23,13 +23,13 @@ class _JoinFarmWaitState extends State<JoinFarmWait> {
               Expanded(
                 child: GestureDetector(
                     onTap: () {
-                      Navigator.pop(context);
+                      // Navigator.pop(context);
                     },
                     child: Align(
                         alignment: Alignment.centerLeft,
                         child: Icon(
                           Icons.arrow_back_ios_outlined,
-                          color: Colors.white,
+                          color: Colors.brown,
                         ))),
               ),
               Center(
@@ -48,7 +48,7 @@ class _JoinFarmWaitState extends State<JoinFarmWait> {
             child: Container(
               margin: EdgeInsets.only(top: 40),
               width: 350,
-              height: 150,
+              height: 190,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
                 color: Colors.blueGrey[50],
@@ -56,9 +56,9 @@ class _JoinFarmWaitState extends State<JoinFarmWait> {
               child: Column(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 20),
+                    margin: EdgeInsets.only(top: 20, bottom: 20),
                     child: Text(
-                      'ส่งคำขอเข้าร่วม”มีชัย”ฟาร์มเรียบร้อยแล้ว',
+                      'ส่งคำขอเข้าร่วมฟาร์มเรียบร้อยแล้ว',
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
@@ -67,7 +67,9 @@ class _JoinFarmWaitState extends State<JoinFarmWait> {
                     size: 62,
                     color: Colors.brown[700],
                   ),
-                  Text('สถานะ : รอเจ้าของฟาร์มอนุมัติ')
+                  Container(
+                      margin: EdgeInsets.only(top: 20, bottom: 20),
+                      child: Text('สถานะ : รอเจ้าของฟาร์มอนุมัติ'))
                 ],
               ),
             ),

@@ -1,6 +1,6 @@
+import '/Screens/Dashboard/dashboard.dart';
 import '/Screens/Activity/addactivity.dart';
 import '/Screens/Cow/cow1.dart';
-import '/dashboard.dart';
 import 'package:flutter/material.dart';
 
 class OwnerAcceptJoin extends StatefulWidget {

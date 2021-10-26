@@ -1,13 +1,10 @@
 import '/Screens/Profile/Farm_data.dart';
 import 'Screens/Dashboard/dashboard.dart';
 import '/notification.dart';
-import '/Screens/Profile/profile.dart';
 import 'package:flutter/material.dart';
-
 import 'Screens/Activity/addactivity.dart';
 import 'Screens/Cow/addcow1.dart';
 import 'Screens/Cow/cow1.dart';
-import 'Screens/Cow/onecow.dart';
 
 class Homepage extends StatefulWidget {
   @override

@@ -23,7 +23,7 @@ void showInSnackBar(String value) {
 class _NotificationsState extends State<Notifications> {
   Future<List<JoinFarm>> getJoinFarm() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
-    late List<JoinFarm> vacs;
+    List<JoinFarm> vacs = [];
     Map data = {
       'farm_id': user?.farm_id.toString(),
       'user_id': user?.user_id.toString()
@@ -64,23 +64,30 @@ class _NotificationsState extends State<Notifications> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    child: Text(
-                      'ตอบรับคำขอเข้าร่วม',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                    ),
-                    margin: EdgeInsets.only(top: 10),
-                  ),
+                      child: Column(children: [
+                    if (user?.role_id == 1)
+                      Container(
+                        child: Text(
+                          'ตอบรับคำขอเข้าร่วม',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
+                        margin: EdgeInsets.only(top: 10),
+                      ),
+                    if (user?.role_id == 2) Container()
+                  ])),
                   Container(
                       child: FutureBuilder<List<JoinFarm>>(
                           future: getJoinFarm(),
                           builder: (context, snapshot) {
-                            if (snapshot.data == null) {
-                              return Container(
-                                child: Card(
-                                  child: Text('ไม่มีรายการ'),
-                                ),
-                              );
+                            if (snapshot.data?.length == null) {
+                              return SingleChildScrollView(
+                                  child: Container(
+                                      child: Text(
+                                'ไม่มีรายการ',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w500),
+                              )));
                             } else
                               return ListView.builder(
                                   shrinkWrap: true,

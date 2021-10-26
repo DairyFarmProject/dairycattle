@@ -1,5 +1,6 @@
-import '/navigator.dart';
+
 import 'package:flutter/material.dart';
+import '../../navigator.dart';
 import 'cow1.dart';
 
 class SuccessDeleteCow extends StatefulWidget {

@@ -173,9 +173,9 @@ class Parturition {
   factory Parturition.fromMap(Map<String, dynamic> map) {
     return Parturition(
       parturition_id: map['parturition_id'],
-      count: map['count'],
-      countSuc: map['countSuc'],
-      countFail: map['countFail'],
+      count: map['count'] ?? '',
+      countSuc: map['countSuc'] ?? '',
+      countFail: map['countFail'] ?? '',
       ab_id: map['ab_id'],
       par_date: map['par_date'],
       calf_name: map['calf_name'],

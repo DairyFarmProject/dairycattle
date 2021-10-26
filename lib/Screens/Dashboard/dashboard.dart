@@ -1,18 +1,12 @@
-import 'package:dairycattle/Screens/Cow/cow1.dart';
 import 'package:dairycattle/Screens/Dashboard/cow_chart.dart';
-import 'package:dairycattle/Screens/Dashboard/ref.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../navigator.dart';
 import '../../providers/user_provider.dart';
 import '../../models/User.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 import 'milk_chart.dart';
 
 class Dashboard extends StatefulWidget {
-  // final User user;
-  //Dashboard({Key? key, required this.user}) : super(key: key);
   @override
   _DashboardState createState() => _DashboardState();
 }

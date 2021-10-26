@@ -88,9 +88,6 @@ class UserProvider with ChangeNotifier {
       }
     }
 
-    print('${user}' + '${ans}');
-    print('------');
-
     return ans;
   }
 }
