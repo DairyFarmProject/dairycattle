@@ -314,7 +314,8 @@ class _RecordMilkState extends State<RecordMilk> {
       "user_id": user_id.toString()
     };
     print(data.toString());
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'milks/create'),
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'milks/create'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"

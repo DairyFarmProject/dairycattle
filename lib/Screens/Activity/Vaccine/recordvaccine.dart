@@ -24,7 +24,8 @@ class _RecordVacineState extends State<RecordVacine> {
       'farm_id': user?.farm_id.toString(),
       'user_id': user?.user_id.toString()
     };
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'farms/cow'),
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'farms/cow'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
@@ -269,7 +270,6 @@ class _RecordVacineState extends State<RecordVacine> {
             checkBox.value = value!;
             allowNotifications.value =
                 notifications.every((Notification) => Notification.value);
-          
           }));
 
   Widget buildGroupCheckBox(CheckBoxState checkbox) => CheckboxListTile(
@@ -292,7 +292,7 @@ class _RecordVacineState extends State<RecordVacine> {
   }
 
   userRecordVaccine() async {
-    // final response = await http.post(Uri.http('127.0.0.1:3000', 'schedules/create'),
+    // final response = await http.post(Uri.https('heroku-diarycattle.herokuapp.com', 'schedules/create'),
     //     headers: {
     //       "Accept": "application/json",
     //       "Content-Type": "application/x-www-form-urlencoded"

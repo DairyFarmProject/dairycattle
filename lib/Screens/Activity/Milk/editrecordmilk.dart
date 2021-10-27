@@ -359,7 +359,8 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
       "user_id": user_id.toString()
     };
     print(data.toString());
-    final response = await http.put(Uri.http('127.0.0.1:3000', 'milks/edit'),
+    final response = await http.put(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'milks/edit'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"

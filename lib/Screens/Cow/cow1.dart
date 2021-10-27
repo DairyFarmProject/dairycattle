@@ -21,7 +21,8 @@ class _CowState extends State<Cow> {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     late List<Cows> cows;
     Map data = {'user_id': user?.user_id.toString()};
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'users/cow'),
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'users/cow'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"

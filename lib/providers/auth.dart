@@ -31,7 +31,7 @@ class AuthProvider with ChangeNotifier {
     print('Token : ${token}');
 
     Response response = await get(
-      Uri.http('127.0.0.1:3000', 'me'),
+      Uri.https('heroku-diarycattle.herokuapp.com', 'me'),
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/x-www-form-urlencoded",

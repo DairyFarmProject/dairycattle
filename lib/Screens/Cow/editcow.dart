@@ -49,8 +49,7 @@ class _EditCowState extends State<EditCow> {
         this.isLoading = true;
       });
       Reference ref = FirebaseStorage.instance.ref();
-      TaskSnapshot addImg =
-          await ref.child("Cow/$image").putFile(_image!);
+      TaskSnapshot addImg = await ref.child("Cow/$image").putFile(_image!);
       if (addImg.state == TaskState.success) {
         setState(() {
           this.isLoading = false;
@@ -573,7 +572,8 @@ class _EditCowState extends State<EditCow> {
 
     print(data);
 
-    final response = await http.put(Uri.http('127.0.0.1:3000', 'cows/edit'),
+    final response = await http.put(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'cows/edit'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"

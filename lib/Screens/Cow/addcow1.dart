@@ -230,7 +230,6 @@ class _AddCowState extends State<AddCow> {
                       style: TextStyle(fontWeight: FontWeight.w500),
                     ),
                     hintText: "รายละเอียดอื่นๆ"),
-                    
                 Container(
                     padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                     alignment: Alignment.topLeft,
@@ -502,7 +501,8 @@ class _AddCowState extends State<AddCow> {
 
     print(data);
 
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'cows/create'),
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'cows/create'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"

@@ -171,7 +171,8 @@ abstract class RegisterStoreBase with Store {
       'password': password,
     };
     print(data.toString());
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'register'),
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'register'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"

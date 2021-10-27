@@ -22,7 +22,8 @@ class EditRecordVaccine extends StatefulWidget {
 
 class _EditRecordVaccineState extends State<EditRecordVaccine> {
   Future<List<Vaccines>> getVaccines() async {
-    final response = await http.get(Uri.http('127.0.0.1:3000', 'vaccines'));
+    final response = await http
+        .get(Uri.https('heroku-diarycattle.herokuapp.com', 'vaccines'));
 
     Map<String, dynamic> data = jsonDecode(response.body);
     final List list = data['data']['rows'];
@@ -254,14 +255,14 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
 
     print(data);
 
-    final response =
-        await http.put(Uri.http('127.0.0.1:3000', 'schedules/edit'),
-            headers: {
-              "Accept": "application/json",
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: data,
-            encoding: Encoding.getByName("utf-8"));
+    final response = await http.put(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'schedules/edit'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
 
     if (response.statusCode == 200) {
       Map<String, dynamic> resposne = jsonDecode(response.body);

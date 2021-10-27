@@ -167,13 +167,14 @@ class _LoginScreenState extends State<LoginScreen> {
   login(email, password) async {
     Map data = {'email': email, 'password': password};
     print(data.toString());
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'signin'),
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: data,
-        encoding: Encoding.getByName("utf-8"));
+    final response =
+        await http.post(Uri.https('heroku-diarycattle.herokuapp.com', 'signin'),
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: data,
+            encoding: Encoding.getByName("utf-8"));
     setState(() {
       isLoading = false;
     });

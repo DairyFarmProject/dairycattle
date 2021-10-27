@@ -1,20 +1,19 @@
+import 'dart:convert';
 import 'dart:io';
+import '/Screens/Cow/successrecord.dart';
+import '/providers/user_provider.dart';
 import '/Screens/Welcome/welcome.dart';
-//import '/models/CheckEmail.dart';
+import '/models/User.dart';
+import 'package:http/http.dart' as http;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
-//import '../../models/CheckEmail.dart';
 import '../Farm/text_field_container.dart';
-
 import '../../util/register_store.dart';
-import '../../util/shared_preference.dart';
 
 class EditProfile extends StatefulWidget {
   bool _isInit = true;
@@ -35,11 +34,11 @@ class _EditProfileState extends State<EditProfile>
   late String email;
   late String password;
   bool isLoading = false;
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  User? firebaseUser;
   late String actualCode;
   late String _verificationId;
   File? _image;
+  var image;
+  var urls;
   String _uploadedFileURL = '';
   String? imageName;
   final firstnameController = TextEditingController();
@@ -52,12 +51,27 @@ class _EditProfileState extends State<EditProfile>
   final _smsController = TextEditingController();
   final value_validator = RequiredValidator(errorText: "X Invalid");
 
-  Future getImage() async {
-    final _picker = ImagePicker();
-    var image = await _picker.getImage(source: ImageSource.gallery);
+  List<File> _images = [];
+
+  Future getImage(bool gallery) async {
+    ImagePicker picker = ImagePicker();
+    PickedFile pickedFile;
+    if (gallery) {
+      pickedFile = (await picker.getImage(
+        source: ImageSource.gallery,
+      ))!;
+    } else {
+      pickedFile = (await picker.getImage(
+        source: ImageSource.camera,
+      ))!;
+    }
 
     setState(() {
-      _image = File(image!.path);
+      if (pickedFile != null) {
+        _images.add(File(pickedFile.path));
+      } else {
+        print('No image selected.');
+      }
     });
   }
 
@@ -66,32 +80,41 @@ class _EditProfileState extends State<EditProfile>
       setState(() {
         this.isLoading = true;
       });
-      Reference ref = FirebaseStorage.instance.ref();
-      TaskSnapshot addImg = await ref.child("User/$_image").putFile(_image!);
-      if (addImg.state == TaskState.success) {
-        setState(() {
-          this.isLoading = false;
-        });
-        print("added to Firebase Storage");
-      }
+
+      Reference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child("User/$_image");
+      UploadTask uploadTask = firebaseStorageRef.putFile(_image!);
+      var downloadURL = await (await uploadTask.whenComplete(() => setState(() {
+                this.isLoading = false;
+              })))
+          .ref
+          .getDownloadURL();
+      var url = downloadURL.toString();
+      setState(() {
+        urls = url;
+      });
+      print("added to Firebase Storage");
+      // Reference ref = FirebaseStorage.instance.ref();
+      // TaskSnapshot addImg = await ref.child("User/$_image").putFile(_image!);
+
+      // if (uploadTask.state == TaskState.success) {
+      //   setState(() {
+      //     this.isLoading = false;
+      //   });
+      //   print("added to Firebase Storage");
+      // }
     }
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // if (widget._isInit) {
-    //   args = ModalRoute.of(context)!.settings.arguments as CheckEmail;
-    //   user_id = args.user_id!;
-    //   email = args.email!;
-    //   password = args.password!;
-    //   widget._isInit = false;
-    // }
   }
 
   DateTime? _dateTime;
   @override
   Widget build(BuildContext context) {
+    User? user = Provider.of<UserProvider>(context, listen: false).user;
     return Consumer<RegisterStore>(builder: (_, loginStore, __) {
       return Observer(
           builder: (_) => (Scaffold(
@@ -151,17 +174,17 @@ class _EditProfileState extends State<EditProfile>
                                           shape: BoxShape.circle,
                                           color: Colors.brown[50]),
                                       child: Padding(
-                                          padding: EdgeInsets.all(4.0),
+                                          padding: EdgeInsets.all(0),
                                           child: Center(
                                               child: Container(
                                                   child: IconButton(
-                                            icon: Icon(
-                                              Icons.add_a_photo_outlined,
-                                              size: 30,
-                                              color: Colors.brown,
-                                            ),
+                                            iconSize: 200,
+                                            icon: CircleAvatar(
+                                                radius: 200,
+                                                backgroundImage: NetworkImage(
+                                                    user?.user_image ?? '')),
                                             onPressed: () {
-                                              getImage();
+                                              // getImage();
                                             },
                                           )))))
                                   : CircleAvatar(
@@ -179,7 +202,7 @@ class _EditProfileState extends State<EditProfile>
                               'ชื่อ',
                               style: TextStyle(fontSize: 15),
                             ),
-                            hintText: "ชื่อ"),
+                            hintText: "${user!.firstname}"),
                         TextFieldContainer(
                             controller: lastnameController,
                             keyboardType: TextInputType.text,
@@ -189,7 +212,7 @@ class _EditProfileState extends State<EditProfile>
                               'นามสกุล',
                               style: TextStyle(fontSize: 15),
                             ),
-                            hintText: "นามสกุล"),
+                            hintText: "${user.lastname}"),
                         Container(
                           child: Row(
                             children: [
@@ -214,7 +237,7 @@ class _EditProfileState extends State<EditProfile>
                                             EdgeInsets.fromLTRB(40, 20, 0, 20),
                                         child: Text(
                                           _dateTime == null
-                                              ? 'วัน/เดือน/ปี'
+                                              ? '${DateFormat('dd-MM-yyyy').format(DateTime.parse(user.user_birthday.toString()))}'
                                               : '${DateFormat('dd-MM-yyyy').format(DateTime.parse(_dateTime.toString()))}',
                                         ),
                                       ),
@@ -341,20 +364,14 @@ class _EditProfileState extends State<EditProfile>
                                         }
 
                                         if (mobileController.text.isNotEmpty) {
-                                          String d =
-                                              '${DateFormat('yyyy-MM-dd').format(DateTime.parse(_dateTime.toString()))}';
-                                          print('------' + d);
-                                          // UserPreferences().saveRegister(
-                                          //     //args.user_id,
-                                          //     firstnameController.text,
-                                          //     lastnameController.text,
-                                          //     '${DateFormat('yyyy-MM-dd').format(DateTime.parse(_dateTime.toString()))}',
-                                          //     mobileController.text.toString(),
-                                          //     _image.toString(),
-                                          //     args.email,
-                                          //     args.password);
-                                          loginStore.getCodeWithPhoneNumber(
-                                              context, mobileController.text);
+                                          userEditProfile(
+                                              user.user_id,
+                                              firstnameController.text,
+                                              lastnameController.text,
+                                              _dateTime.toString(),
+                                              mobileController.text,
+                                              image.toString(),
+                                              urls);
                                         } else {
                                           loginStore
                                               .loginScaffoldKey.currentState
@@ -393,5 +410,44 @@ class _EditProfileState extends State<EditProfile>
                 ),
               ))));
     });
+  }
+
+  userEditProfile(
+      user_id, firstname, lastname, birthday, mobile, image, urls) async {
+    Map data = {
+      'user_id': user_id.toString(),
+      'firstname': firstname,
+      'lastname': lastname,
+      'user_birthday': birthday,
+      'mobile': mobile,
+      'user_image': image,
+      'url': urls
+    };
+
+    print(data);
+
+    // final response = await http.put(
+    //     Uri.https('heroku-diarycattle.herokuapp.com', 'users/edit'),
+    //     headers: {
+    //       "Accept": "application/json",
+    //       "Content-Type": "application/x-www-form-urlencoded"
+    //     },
+    //     body: data,
+    //     encoding: Encoding.getByName("utf-8"));
+
+    // if (response.statusCode == 200) {
+    //   Map<String, dynamic> resposne = jsonDecode(response.body);
+    //   Map<String, dynamic> user = resposne['data'];
+    //   print(user['message']);
+    //   Navigator.push(
+    //     context,
+    //     new MaterialPageRoute(
+    //       builder: (context) => new SuccessRecord(),
+    //     ),
+    //   );
+    // } else {
+    //   _scaffoldKey.currentState
+    //       ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+    // }
   }
 }

@@ -32,7 +32,8 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
       'farm_id': user?.farm_id.toString(),
       'user_id': user?.user_id.toString()
     };
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'farms/cow'),
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'farms/cow'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
@@ -447,14 +448,14 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
 
     print(data);
 
-    final response =
-        await http.put(Uri.http('127.0.0.1:3000', 'abdominal/edit'),
-            headers: {
-              "Accept": "application/json",
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: data,
-            encoding: Encoding.getByName("utf-8"));
+    final response = await http.put(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'abdominal/edit'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
 
     if (response.statusCode == 200) {
       Map<String, dynamic> resposne = jsonDecode(response.body);
@@ -518,7 +519,8 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
     final queryParameters = {'filter': filter};
 
     final response = await http.post(
-        Uri.http('127.0.0.1:3000', 'farms/cow', queryParameters),
+        Uri.https(
+            'heroku-diarycattle.herokuapp.com', 'farms/cow', queryParameters),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"

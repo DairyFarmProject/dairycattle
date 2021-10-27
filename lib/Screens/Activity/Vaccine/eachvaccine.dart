@@ -35,14 +35,14 @@ class _EachVaccineState extends State<EachVaccine> {
       'cow_id': widget.vac.cow_id.toString(),
       'vaccine_id': widget.vac.vaccine_id.toString()
     };
-    final response =
-        await http.post(Uri.http('127.0.0.1:3000', 'cows/shedules/vac'),
-            headers: {
-              "Accept": "application/json",
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: data,
-            encoding: Encoding.getByName("utf-8"));
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'cows/shedules/vac'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
 
     if (response.statusCode == 200) {
       Map<String, dynamic> db = jsonDecode(response.body);
@@ -305,14 +305,14 @@ deleteVac(context, user_id, farm_id, schedule_id) async {
   };
   print(data.toString());
 
-  final response =
-      await http.delete(Uri.http('127.0.0.1:3000', 'schedules/delete'),
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          body: data,
-          encoding: Encoding.getByName("utf-8"));
+  final response = await http.delete(
+      Uri.https('heroku-diarycattle.herokuapp.com', 'schedules/delete'),
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: data,
+      encoding: Encoding.getByName("utf-8"));
 
   if (response.statusCode == 200) {
     Map<String, dynamic> resposne = jsonDecode(response.body);

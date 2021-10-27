@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dairycattle/Screens/Farm/home.dart';
 import 'package:dairycattle/Screens/Farm/join_farm.dart';
 import 'package:dairycattle/Screens/Profile/editfarm.dart';
 
@@ -17,6 +18,11 @@ class FarmData_member extends StatefulWidget {
   const FarmData_member({Key? key}) : super(key: key);
   @override
   _FarmData_memberState createState() => _FarmData_memberState();
+}
+
+final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+void showInSnackBar(String value) {
+  _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text(value)));
 }
 
 class _FarmData_memberState extends State<FarmData_member> {
@@ -40,7 +46,8 @@ class _FarmData_memberState extends State<FarmData_member> {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     late List<Farms> cows;
     Map data = {'farm_id': user?.farm_id.toString()};
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'farms/id'),
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'farms/id'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
@@ -80,7 +87,8 @@ class _FarmData_memberState extends State<FarmData_member> {
   Future getCow() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     Map data = {'farm_id': user?.farm_id.toString()};
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'farms/id'),
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'farms/id'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
@@ -232,12 +240,9 @@ class _FarmData_memberState extends State<FarmData_member> {
                                         ),
                                       ),
                                       RaisedButton(
-                                        onPressed: () {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return JoinFarm();
-                                          }));
+                                        onPressed: () async {
+                                          userExitFarm(
+                                              user?.user_id, user?.farm_id);
                                         },
                                         color: Colors.blueGrey[50],
                                         shape: RoundedRectangleBorder(
@@ -266,5 +271,37 @@ class _FarmData_memberState extends State<FarmData_member> {
         ),
       ),
     ));
+  }
+
+  userExitFarm(user_id, farm_id) async {
+    Map data = {'user_id': user_id.toString(), 'farm_id': farm_id.toString()};
+    print(data.toString());
+
+    final response = await http.delete(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'worker/delete'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        print("Delete Success");
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return Home();
+        }));
+      } else {
+        _scaffoldKey.currentState
+            ?.showSnackBar(SnackBar(content: Text("${resposne['message']}")));
+      }
+      _scaffoldKey.currentState
+          ?.showSnackBar(SnackBar(content: Text("${resposne['message']}")));
+    } else {
+      _scaffoldKey.currentState
+          ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+    }
   }
 }

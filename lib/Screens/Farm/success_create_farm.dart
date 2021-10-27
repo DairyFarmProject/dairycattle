@@ -1,6 +1,6 @@
-import 'package:dairycattle/dashboard.dart';
 
-import '/Screens/Cow/cow1.dart';
+
+import '/Screens/Dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
 
 class SuccessCreateFarm extends StatefulWidget {

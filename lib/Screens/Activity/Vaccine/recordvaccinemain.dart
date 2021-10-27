@@ -26,14 +26,14 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
       'farm_id': user?.farm_id.toString(),
       'user_id': user?.user_id.toString()
     };
-    final response =
-        await http.post(Uri.http('127.0.0.1:3000', 'farm/distinct/vac'),
-            headers: {
-              "Accept": "application/json",
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: data,
-            encoding: Encoding.getByName("utf-8"));
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'farm/distinct/vac'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
 
     if (response.statusCode == 200) {
       Map<String, dynamic> db = jsonDecode(response.body);

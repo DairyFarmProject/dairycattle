@@ -41,14 +41,14 @@ class UserProvider with ChangeNotifier {
     if (userDairys is UserDairys) {
       Map data = {'user_id': userDairys?.user_id.toString()};
 
-      final response =
-          await http.post(Uri.http('127.0.0.1:3000', 'farms/check'),
-              headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/x-www-form-urlencoded"
-              },
-              body: data,
-              encoding: Encoding.getByName("utf-8"));
+      final response = await http.post(
+          Uri.https('heroku-diarycattle.herokuapp.com', 'farms/check'),
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: data,
+          encoding: Encoding.getByName("utf-8"));
 
       if (response.statusCode == 200) {
         Map<String, dynamic> resposne = json.decode(response.body);
@@ -66,14 +66,14 @@ class UserProvider with ChangeNotifier {
     } else {
       Map data = {'user_id': user?.user_id.toString()};
 
-      final response =
-          await http.post(Uri.http('127.0.0.1:3000', 'farms/check'),
-              headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/x-www-form-urlencoded"
-              },
-              body: data,
-              encoding: Encoding.getByName("utf-8"));
+      final response = await http.post(
+          Uri.https('heroku-diarycattle.herokuapp.com', 'farms/check'),
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: data,
+          encoding: Encoding.getByName("utf-8"));
 
       if (response.statusCode == 200) {
         Map<String, dynamic> resposne = json.decode(response.body);

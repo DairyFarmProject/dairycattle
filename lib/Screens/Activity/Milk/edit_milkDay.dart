@@ -28,7 +28,8 @@ class _EditMilkDayState extends State<EditMilkDay> {
       'user_id': user?.user_id.toString(),
     };
 
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'milks/today'),
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'milks/today'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
@@ -436,7 +437,8 @@ class _EditMilkDayState extends State<EditMilkDay> {
       "user_id": user_id.toString()
     };
     print(data.toString());
-    final response = await http.put(Uri.http('127.0.0.1:3000', 'milks/edit'),
+    final response = await http.put(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'milks/edit'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"

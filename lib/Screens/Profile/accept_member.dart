@@ -21,7 +21,8 @@ class _AcceptMemberState extends State<AcceptMember> {
       'farm_id': user?.farm_id.toString(),
       'user_id': user?.user_id.toString()
     };
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'farm/workers'),
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'farm/workers'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"

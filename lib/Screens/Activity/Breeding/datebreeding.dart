@@ -34,14 +34,14 @@ class _DateBreedingState extends State<DateBreeding> {
       'cow_id': widget.ab.cow_id.toString()
     };
 
-    final response =
-        await http.post(Uri.http('127.0.0.1:3000', 'cows/abdominals'),
-            headers: {
-              "Accept": "application/json",
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: data,
-            encoding: Encoding.getByName("utf-8"));
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'cows/abdominals'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
 
     if (response.statusCode == 200) {
       Map<String, dynamic> db = jsonDecode(response.body);
@@ -617,14 +617,14 @@ deleteAb(context, user_id, farm_id, abdominal_id) async {
   };
   print(data.toString());
 
-  final response =
-      await http.delete(Uri.http('127.0.0.1:3000', 'abdominal/delete'),
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          body: data,
-          encoding: Encoding.getByName("utf-8"));
+  final response = await http.delete(
+      Uri.https('heroku-diarycattle.herokuapp.com', 'abdominal/delete'),
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: data,
+      encoding: Encoding.getByName("utf-8"));
 
   if (response.statusCode == 200) {
     Map<String, dynamic> resposne = jsonDecode(response.body);

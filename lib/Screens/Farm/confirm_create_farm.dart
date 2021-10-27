@@ -289,7 +289,8 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
 
     print(data);
 
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'farms/create'),
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'farms/create'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"

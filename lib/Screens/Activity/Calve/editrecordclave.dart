@@ -309,14 +309,14 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
 
     print(data);
 
-    final response =
-        await http.put(Uri.http('127.0.0.1:3000', 'parturition/edit'),
-            headers: {
-              "Accept": "application/json",
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: data,
-            encoding: Encoding.getByName("utf-8"));
+    final response = await http.put(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'parturition/edit'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
 
     if (response.statusCode == 200) {
       Map<String, dynamic> resposne = jsonDecode(response.body);

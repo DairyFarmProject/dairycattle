@@ -40,7 +40,8 @@ class _FarmDataState extends State<FarmData> {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     late List<Farms> cows;
     Map data = {'farm_id': user?.farm_id.toString()};
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'farms/id'),
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'farms/id'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
@@ -80,7 +81,8 @@ class _FarmDataState extends State<FarmData> {
   Future getCow() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     Map data = {'farm_id': user?.farm_id.toString()};
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'farms/id'),
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'farms/id'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"

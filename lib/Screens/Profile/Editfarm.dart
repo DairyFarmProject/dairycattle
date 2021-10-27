@@ -1,18 +1,13 @@
-import 'package:dairycattle/Screens/Farm/home.dart';
-import 'package:dairycattle/Screens/Farm/text_field_container.dart';
-import 'package:dairycattle/Screens/Profile/Farm_data.dart';
-//import '../Dashboard/dashboard.dart;;
+import '/Screens/Farm/text_field_container.dart';
+import '/Screens/Profile/Farm_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-//import 'home.dart';
 import '../../models/ScreenArguments.dart';
-//import 'text_field_container.dart';
 
 class EditFarm extends StatefulWidget {
   EditFarm({Key? key}) : super(key: key);
@@ -278,7 +273,10 @@ class _EditFarmState extends State<EditFarm> with TickerProviderStateMixin {
                               // ignore: deprecated_member_use
                               RaisedButton(
                                 onPressed: () {
-                                  Navigator.pop(context);
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return FarmData();
+                                  }));
                                 },
                                 color: Colors.blueGrey[50],
                                 shape: RoundedRectangleBorder(

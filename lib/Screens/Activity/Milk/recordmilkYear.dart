@@ -34,7 +34,8 @@ class _RecordMilkYearState extends State<RecordMilkYear> {
       'farm_id': user?.farm_id.toString(),
       'user_id': user?.user_id.toString()
     };
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'milks/year'),
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'milks/year'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
@@ -57,7 +58,8 @@ class _RecordMilkYearState extends State<RecordMilkYear> {
       'farm_id': user?.farm_id.toString(),
       'user_id': user?.user_id.toString()
     };
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'milks/year'),
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'milks/year'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"

@@ -279,7 +279,8 @@ deleteCow(context, status, user_id, farm_id, cow_id) async {
   };
   print(data.toString());
 
-  final response = await http.delete(Uri.http('127.0.0.1:3000', 'cows/delete'),
+  final response = await http.delete(
+      Uri.https('heroku-diarycattle.herokuapp.com', 'cows/delete'),
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/x-www-form-urlencoded"

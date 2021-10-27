@@ -152,7 +152,8 @@ class _JoinFarmState extends State<JoinFarm> {
 
     print(data);
 
-    final response = await http.post(Uri.http('127.0.0.1:3000', 'requests/add'),
+    final response = await http.post(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'requests/add'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
