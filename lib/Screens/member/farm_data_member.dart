@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dairycattle/Screens/Farm/home.dart';
 import 'package:dairycattle/Screens/Farm/join_farm.dart';
 import 'package:dairycattle/Screens/Profile/editfarm.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import '/Screens/Profile/accept_member.dart';
 import '/Screens/Profile/profile.dart';
@@ -41,6 +42,8 @@ class _FarmData_memberState extends State<FarmData_member> {
   int? postcode;
   String? countCow;
   Uri? url;
+  String file = '';
+  String file2 = '';
 
   Future<List<Farms>> getFarm() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
@@ -102,10 +105,31 @@ class _FarmData_memberState extends State<FarmData_member> {
 
       setState(() {
         countCow = cows[0]['count'];
-        ;
       });
       return cows;
     }
+  }
+
+  Future<String> userImage(var imageFile) async {
+    Reference ref = FirebaseStorage.instance.ref().child("User/$imageFile");
+    String urls = (await ref.getDownloadURL()).toString();
+    setState(() {
+      file = urls;
+    });
+    print(url);
+
+    return urls;
+  }
+
+  Future<String> farmImage(var imageFile) async {
+    Reference ref = FirebaseStorage.instance.ref().child("Farm/$imageFile");
+    String urls = (await ref.getDownloadURL()).toString();
+    setState(() {
+      file2 = urls;
+    });
+    print(url);
+
+    return urls;
   }
 
   @override
@@ -119,6 +143,8 @@ class _FarmData_memberState extends State<FarmData_member> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     User? user = Provider.of<UserProvider>(context, listen: false).user;
+    userImage(user?.user_image);
+    farmImage(user?.farm_image);
     return Scaffold(
         body: Container(
       child: SingleChildScrollView(
@@ -129,7 +155,7 @@ class _FarmData_memberState extends State<FarmData_member> {
                 width: size.width,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: NetworkImage(farm_image), fit: BoxFit.cover)),
+                        image: NetworkImage(file2), fit: BoxFit.cover)),
                 child: Stack(
                   children: <Widget>[
                     Container(
@@ -137,9 +163,7 @@ class _FarmData_memberState extends State<FarmData_member> {
                       height: 100,
                       width: 100,
                       child: CircleAvatar(
-                        radius: 120,
-                        backgroundImage: NetworkImage('${user?.user_image}'),
-                      ),
+                          radius: 120, backgroundImage: NetworkImage(file)),
                     )
                   ],
                 )),
@@ -229,7 +253,7 @@ class _FarmData_memberState extends State<FarmData_member> {
                                           children: [
                                             Text(
                                                 'ชื่อฟาร์ม : ${user?.farm_name}'),
-                                            Text('ตำแหน่ง : เจ้าของฟาร์ม'),
+                                            Text('ตำแหน่ง : พนักงาน'),
                                             Text('เลขทะเบียนฟาร์ม'),
                                             Text('${user?.farm_no}'),
                                             Text(
@@ -241,8 +265,9 @@ class _FarmData_memberState extends State<FarmData_member> {
                                       ),
                                       RaisedButton(
                                         onPressed: () async {
-                                          userExitFarm(
-                                              user?.user_id, user?.farm_id);
+                                          final ConfirmAction? action =
+                                              await _asyncConfirmDialog(context,
+                                                  user?.user_id, user?.farm_id);
                                         },
                                         color: Colors.blueGrey[50],
                                         shape: RoundedRectangleBorder(
@@ -272,36 +297,101 @@ class _FarmData_memberState extends State<FarmData_member> {
       ),
     ));
   }
+}
 
-  userExitFarm(user_id, farm_id) async {
-    Map data = {'user_id': user_id.toString(), 'farm_id': farm_id.toString()};
-    print(data.toString());
+userExitFarm(context, user_id, farm_id) async {
+  Map data = {'user_id': user_id.toString(), 'farm_id': farm_id.toString()};
+  print(data.toString());
 
-    final response = await http.delete(
-        Uri.https('heroku-diarycattle.herokuapp.com', 'worker/delete'),
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: data,
-        encoding: Encoding.getByName("utf-8"));
+  final response = await http.delete(
+      Uri.https('heroku-diarycattle.herokuapp.com', 'worker/delete'),
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: data,
+      encoding: Encoding.getByName("utf-8"));
 
+  if (response.statusCode == 200) {
+    Map<String, dynamic> resposne = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      Map<String, dynamic> resposne = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        print("Delete Success");
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return Home();
-        }));
-      } else {
-        _scaffoldKey.currentState
-            ?.showSnackBar(SnackBar(content: Text("${resposne['message']}")));
-      }
-      _scaffoldKey.currentState
-          ?.showSnackBar(SnackBar(content: Text("${resposne['message']}")));
+      print("Delete Success");
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return Home();
+      }));
     } else {
       _scaffoldKey.currentState
-          ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+          ?.showSnackBar(SnackBar(content: Text("${resposne['message']}")));
     }
+    _scaffoldKey.currentState
+        ?.showSnackBar(SnackBar(content: Text("${resposne['message']}")));
+  } else {
+    _scaffoldKey.currentState
+        ?.showSnackBar(SnackBar(content: Text("Please Try again")));
   }
+}
+
+enum ConfirmAction { Cancle, Accept }
+Future<ConfirmAction?> _asyncConfirmDialog(context, user_id, farm_id) async {
+  return showDialog<ConfirmAction>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          insetPadding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+          title: Text(
+            'ยืนยันที่จะออกจากฟาร์ม',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          content: Text(
+            'เมื่อคุณกดปุ่ม "ยืนยัน" แล้ว คุณจะออกฟาร์มทันที ',
+            textAlign: TextAlign.center,
+          ),
+          actions: <Widget>[
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                // width: 130,
+                child: RaisedButton(
+                  child: const Text(
+                    'ยกเลิก',
+                    style: TextStyle(color: Color(0xFF3F2723)),
+                  ),
+                  padding: const EdgeInsets.fromLTRB(50, 12, 50, 12),
+                  color: Colors.blueGrey[50],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(39)),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(ConfirmAction.Cancle);
+                  },
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                // width: 130,
+                child: RaisedButton(
+                  child: const Text(
+                    'ยืนยัน',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  padding: const EdgeInsets.fromLTRB(50, 12, 50, 12),
+                  color: Colors.brown[900],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(39)),
+                  ),
+                  onPressed: () {
+                    userExitFarm(context, user_id, farm_id);
+                  },
+                ),
+              ),
+            ])
+          ],
+        );
+      });
 }

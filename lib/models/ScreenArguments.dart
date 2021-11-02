@@ -12,6 +12,7 @@ class ScreenArguments {
   final String district;
   final String province;
   final String postcode;
+  final String url;
   ScreenArguments({
     required this.farm_no,
     required this.farm_name,
@@ -24,6 +25,7 @@ class ScreenArguments {
     required this.district,
     required this.province,
     required this.postcode,
+    required this.url,
   });
   
 
@@ -39,6 +41,7 @@ class ScreenArguments {
     String? district,
     String? province,
     String? postcode,
+    String? url,
   }) {
     return ScreenArguments(
       farm_no: farm_no ?? this.farm_no,
@@ -52,6 +55,7 @@ class ScreenArguments {
       district: district ?? this.district,
       province: province ?? this.province,
       postcode: postcode ?? this.postcode,
+      url: url ?? this.url,
     );
   }
 
@@ -68,6 +72,7 @@ class ScreenArguments {
       'district': district,
       'province': province,
       'postcode': postcode,
+      'url': url,
     };
   }
 
@@ -84,6 +89,7 @@ class ScreenArguments {
       district: map['district'],
       province: map['province'],
       postcode: map['postcode'],
+      url: map['url'],
     );
   }
 
@@ -93,7 +99,7 @@ class ScreenArguments {
 
   @override
   String toString() {
-    return 'ScreenArguments(farm_no: $farm_no, farm_name: $farm_name, farm_code: $farm_code, address: $address, moo: $moo, soi: $soi, road: $road, sub_district: $sub_district, district: $district, province: $province, postcode: $postcode)';
+    return 'ScreenArguments(farm_no: $farm_no, farm_name: $farm_name, farm_code: $farm_code, address: $address, moo: $moo, soi: $soi, road: $road, sub_district: $sub_district, district: $district, province: $province, postcode: $postcode, url: $url)';
   }
 
   @override
@@ -111,7 +117,8 @@ class ScreenArguments {
       other.sub_district == sub_district &&
       other.district == district &&
       other.province == province &&
-      other.postcode == postcode;
+      other.postcode == postcode &&
+      other.url == url;
   }
 
   @override
@@ -126,6 +133,7 @@ class ScreenArguments {
       sub_district.hashCode ^
       district.hashCode ^
       province.hashCode ^
-      postcode.hashCode;
+      postcode.hashCode ^
+      url.hashCode;
   }
 }

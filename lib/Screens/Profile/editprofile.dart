@@ -1,19 +1,23 @@
 import 'dart:convert';
 import 'dart:io';
-import '/Screens/Cow/successrecord.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dairycattle/Screens/Cow/successrecord.dart';
+
 import '/providers/user_provider.dart';
-import '/Screens/Welcome/welcome.dart';
-import '/models/User.dart';
-import 'package:http/http.dart' as http;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
+import '/models/User.dart' as DairyUser;
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import '../Farm/text_field_container.dart';
+
 import '../../util/register_store.dart';
+import '../../util/shared_preference.dart';
 
 class EditProfile extends StatefulWidget {
   bool _isInit = true;
@@ -29,18 +33,11 @@ class _EditProfileState extends State<EditProfile>
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  //late CheckEmail args;
-  late String user_id;
   late String email;
   late String password;
   bool isLoading = false;
+  User? firebaseUser;
   late String actualCode;
-  late String _verificationId;
-  File? _image;
-  var image;
-  var urls;
-  String _uploadedFileURL = '';
-  String? imageName;
   final firstnameController = TextEditingController();
   final lastnameController = TextEditingController();
   //final birthdayController = TextEditingController();
@@ -48,10 +45,13 @@ class _EditProfileState extends State<EditProfile>
   // final user_imageController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final _smsController = TextEditingController();
   final value_validator = RequiredValidator(errorText: "X Invalid");
 
+  File? _image;
   List<File> _images = [];
+  String url = '';
+  String imageURL = '';
+  String downloadURL = '';
 
   Future getImage(bool gallery) async {
     ImagePicker picker = ImagePicker();
@@ -68,42 +68,28 @@ class _EditProfileState extends State<EditProfile>
 
     setState(() {
       if (pickedFile != null) {
-        _images.add(File(pickedFile.path));
+        _image = File(pickedFile.path);
       } else {
         print('No image selected.');
       }
     });
   }
 
-  Future saveImage() async {
-    if (_image != null) {
-      setState(() {
-        this.isLoading = true;
-      });
-
-      Reference firebaseStorageRef =
-          FirebaseStorage.instance.ref().child("User/$_image");
-      UploadTask uploadTask = firebaseStorageRef.putFile(_image!);
-      var downloadURL = await (await uploadTask.whenComplete(() => setState(() {
-                this.isLoading = false;
-              })))
-          .ref
-          .getDownloadURL();
-      var url = downloadURL.toString();
-      setState(() {
-        urls = url;
-      });
-      print("added to Firebase Storage");
-      // Reference ref = FirebaseStorage.instance.ref();
-      // TaskSnapshot addImg = await ref.child("User/$_image").putFile(_image!);
-
-      // if (uploadTask.state == TaskState.success) {
-      //   setState(() {
-      //     this.isLoading = false;
-      //   });
-      //   print("added to Firebase Storage");
-      // }
-    }
+  Future uploadFile(File _image) async {
+    FirebaseStorage storageReference = FirebaseStorage.instance;
+    String fileName = _image.path.split('/').last;
+    Reference ref = storageReference.ref().child('User/' + fileName);
+    UploadTask uploadTask = ref.putFile(_image);
+    uploadTask.whenComplete(() async {
+      try {
+        String urls = await ref.getDownloadURL();
+        setState(() {
+          url = urls;
+        });
+      } catch (onError) {
+        print("Error");
+      }
+    });
   }
 
   @override
@@ -114,7 +100,8 @@ class _EditProfileState extends State<EditProfile>
   DateTime? _dateTime;
   @override
   Widget build(BuildContext context) {
-    User? user = Provider.of<UserProvider>(context, listen: false).user;
+    DairyUser.User? user =
+        Provider.of<UserProvider>(context, listen: false).user;
     return Consumer<RegisterStore>(builder: (_, loginStore, __) {
       return Observer(
           builder: (_) => (Scaffold(
@@ -135,7 +122,7 @@ class _EditProfileState extends State<EditProfile>
                               ))),
                     ),
                     Center(
-                      child: Text('DairyCattle'),
+                      child: Text('แก้ไขบัญชีผู้ใช้งาน'),
                     ),
                     Expanded(
                         child: Align(
@@ -153,13 +140,6 @@ class _EditProfileState extends State<EditProfile>
                     padding: const EdgeInsets.only(bottom: 100),
                     child: Column(
                       children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(20),
-                          margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                          child: Text('แก้ไขบัญชีผู้ใช้งาน',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 25)),
-                        ),
                         Column(
                           children: [
                             Container(
@@ -174,7 +154,7 @@ class _EditProfileState extends State<EditProfile>
                                           shape: BoxShape.circle,
                                           color: Colors.brown[50]),
                                       child: Padding(
-                                          padding: EdgeInsets.all(0),
+                                          padding: EdgeInsets.all(4.0),
                                           child: Center(
                                               child: Container(
                                                   child: IconButton(
@@ -184,7 +164,7 @@ class _EditProfileState extends State<EditProfile>
                                                 backgroundImage: NetworkImage(
                                                     user?.user_image ?? '')),
                                             onPressed: () {
-                                              // getImage();
+                                              getImage(true);
                                             },
                                           )))))
                                   : CircleAvatar(
@@ -330,7 +310,7 @@ class _EditProfileState extends State<EditProfile>
                                   children: [
                                     // ignore: deprecated_member_use
                                     RaisedButton(
-                                      onPressed: () {
+                                      onPressed: () async {
                                         if (isLoading) {
                                           return;
                                         }
@@ -364,14 +344,14 @@ class _EditProfileState extends State<EditProfile>
                                         }
 
                                         if (mobileController.text.isNotEmpty) {
+                                          uploadFile(_image!);
                                           userEditProfile(
                                               user.user_id,
                                               firstnameController.text,
                                               lastnameController.text,
                                               _dateTime.toString(),
                                               mobileController.text,
-                                              image.toString(),
-                                              urls);
+                                              url);
                                         } else {
                                           loginStore
                                               .loginScaffoldKey.currentState
@@ -413,7 +393,13 @@ class _EditProfileState extends State<EditProfile>
   }
 
   userEditProfile(
-      user_id, firstname, lastname, birthday, mobile, image, urls) async {
+    user_id,
+    firstname,
+    lastname,
+    birthday,
+    mobile,
+    image,
+  ) async {
     Map data = {
       'user_id': user_id.toString(),
       'firstname': firstname,
@@ -421,33 +407,32 @@ class _EditProfileState extends State<EditProfile>
       'user_birthday': birthday,
       'mobile': mobile,
       'user_image': image,
-      'url': urls
     };
 
     print(data);
 
-    // final response = await http.put(
-    //     Uri.https('heroku-diarycattle.herokuapp.com', 'users/edit'),
-    //     headers: {
-    //       "Accept": "application/json",
-    //       "Content-Type": "application/x-www-form-urlencoded"
-    //     },
-    //     body: data,
-    //     encoding: Encoding.getByName("utf-8"));
+    final response = await http.put(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'users/edit'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
 
-    // if (response.statusCode == 200) {
-    //   Map<String, dynamic> resposne = jsonDecode(response.body);
-    //   Map<String, dynamic> user = resposne['data'];
-    //   print(user['message']);
-    //   Navigator.push(
-    //     context,
-    //     new MaterialPageRoute(
-    //       builder: (context) => new SuccessRecord(),
-    //     ),
-    //   );
-    // } else {
-    //   _scaffoldKey.currentState
-    //       ?.showSnackBar(SnackBar(content: Text("Please Try again")));
-    // }
+    if (response.statusCode == 200) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      Map<String, dynamic> user = resposne['data'];
+      print(user['message']);
+      Navigator.push(
+        context,
+        new MaterialPageRoute(
+          builder: (context) => new SuccessRecord(),
+        ),
+      );
+    } else {
+      _scaffoldKey.currentState
+          ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+    }
   }
 }

@@ -34,8 +34,9 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
 
   File? _image;
   List<File> _images = [];
-  DocumentReference sightingRef =
-      FirebaseFirestore.instance.collection("Farm").doc();
+  String url = '';
+  String imageURL = '';
+  String downloadURL = '';
 
   Future getImage(bool gallery) async {
     ImagePicker picker = ImagePicker();
@@ -52,31 +53,27 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
 
     setState(() {
       if (pickedFile != null) {
-        _images.add(File(pickedFile.path));
+        _image = File(pickedFile.path);
       } else {
         print('No image selected.');
       }
     });
   }
 
-  Future saveImages(List<File> _images, DocumentReference ref) async {
-    _images.forEach((image) async {
-      String imageURL = await uploadFile(image);
-      ref.update({
-        "images": FieldValue.arrayUnion([imageURL])
-      });
-    });
-  }
-
   Future uploadFile(File _image) async {
     FirebaseStorage storageReference = FirebaseStorage.instance;
-    Reference ref =
-        storageReference.ref().child('Farm/image' + DateTime.now().toString());
+    String fileName = _image.path.split('/').last;
+    Reference ref = storageReference.ref().child('Farm/' + fileName);
     UploadTask uploadTask = ref.putFile(_image);
     uploadTask.whenComplete(() async {
-      String url = await ref.getDownloadURL();
-    }).catchError((onError) {
-      print(onError);
+      try {
+        String urls = await ref.getDownloadURL();
+        setState(() {
+          url = urls;
+        });
+      } catch (onError) {
+        print("Error");
+      }
     });
   }
 
@@ -100,7 +97,7 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                         ))),
               ),
               Center(
-                child: Text('DairyCattle'),
+                child: Text('สร้างฟาร์ม'),
               ),
               Expanded(
                   child: Align(
@@ -122,12 +119,38 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
               padding: const EdgeInsets.only(bottom: 100),
               child: Column(
                 children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                    child: Text('สร้างฟาร์ม',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 25)),
+                  Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.all(0),
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        child: _image == null
+                            ? Container(
+                                width: 200,
+                                height: 200,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.brown[50]),
+                                child: Padding(
+                                    padding: EdgeInsets.all(4.0),
+                                    child: Center(
+                                        child: Container(
+                                            child: IconButton(
+                                      icon: Icon(
+                                        Icons.add_a_photo_outlined,
+                                        size: 30,
+                                        color: Colors.brown,
+                                      ),
+                                      onPressed: () {
+                                        getImage(true);
+                                      },
+                                    )))))
+                            : CircleAvatar(
+                                backgroundImage: FileImage(_image!),
+                                radius: 100.0),
+                      )
+                    ],
                   ),
                   TextFieldContainer(
                       controller: nameFarmController,
@@ -159,37 +182,6 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                         style: TextStyle(fontSize: 15),
                       ),
                       hintText: "ไอดีฟาร์ม"),
-                  Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.topLeft,
-                        margin: EdgeInsets.all(0),
-                        padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
-                        child: Text(
-                          'เพิ่มรูปภาพฟาร์ม',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      ),
-                      Container(
-                          alignment: Alignment.topLeft,
-                          margin: EdgeInsets.all(0),
-                          padding: const EdgeInsets.fromLTRB(30, 10, 0, 10),
-                          child: RawMaterialButton(
-                            fillColor: Colors.green[400],
-                            child: Icon(
-                              Icons.add_photo_alternate_rounded,
-                              size: 30,
-                              color: Colors.blueGrey,
-                            ),
-                            elevation: 8,
-                            onPressed: () {
-                              getImage(true);
-                            },
-                            padding: EdgeInsets.all(15),
-                            shape: CircleBorder(),
-                          )),
-                    ],
-                  ),
                   TextFieldContainer(
                       controller: addressFarmController,
                       keyboardType: TextInputType.text,
@@ -311,6 +303,7 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                               RaisedButton(
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
+                                    uploadFile(_image!);
                                     Navigator.pushNamed(
                                         context, "/confirmCreateFarm",
                                         arguments: ScreenArguments(
@@ -323,6 +316,7 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                                           road: roadFarmController.text,
                                           sub_district:
                                               sub_districtFarmController.text,
+                                          url: url,
                                           district: districtFarmController.text,
                                           province: provinceFarmController.text,
                                           postcode: postcodeFarmController.text,

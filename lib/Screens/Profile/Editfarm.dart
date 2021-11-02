@@ -1,13 +1,19 @@
+import 'dart:convert';
+
+import '/Screens/Farm/success_create_farm.dart';
+import '/models/User.dart';
+import '/providers/user_provider.dart';
+import 'package:provider/provider.dart';
+
 import '/Screens/Farm/text_field_container.dart';
 import '/Screens/Profile/Farm_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import '../../models/ScreenArguments.dart';
 
 class EditFarm extends StatefulWidget {
   EditFarm({Key? key}) : super(key: key);
@@ -18,6 +24,7 @@ class EditFarm extends StatefulWidget {
 
 class _EditFarmState extends State<EditFarm> with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final nameFarmController = TextEditingController();
   final numberFarmController = TextEditingController();
   final codeFarmController = TextEditingController();
@@ -33,8 +40,9 @@ class _EditFarmState extends State<EditFarm> with TickerProviderStateMixin {
 
   File? _image;
   List<File> _images = [];
-  DocumentReference sightingRef =
-      FirebaseFirestore.instance.collection("Farm").doc();
+  String url = '';
+  String imageURL = '';
+  String downloadURL = '';
 
   Future getImage(bool gallery) async {
     ImagePicker picker = ImagePicker();
@@ -51,36 +59,33 @@ class _EditFarmState extends State<EditFarm> with TickerProviderStateMixin {
 
     setState(() {
       if (pickedFile != null) {
-        _images.add(File(pickedFile.path));
+        _image = File(pickedFile.path);
       } else {
         print('No image selected.');
       }
     });
   }
 
-  Future saveImages(List<File> _images, DocumentReference ref) async {
-    _images.forEach((image) async {
-      String imageURL = await uploadFile(image);
-      ref.update({
-        "images": FieldValue.arrayUnion([imageURL])
-      });
-    });
-  }
-
   Future uploadFile(File _image) async {
     FirebaseStorage storageReference = FirebaseStorage.instance;
-    Reference ref =
-        storageReference.ref().child('Farm/image' + DateTime.now().toString());
+    String fileName = _image.path.split('/').last;
+    Reference ref = storageReference.ref().child('Farm/' + fileName);
     UploadTask uploadTask = ref.putFile(_image);
     uploadTask.whenComplete(() async {
-      String url = await ref.getDownloadURL();
-    }).catchError((onError) {
-      print(onError);
+      try {
+        String urls = await ref.getDownloadURL();
+        setState(() {
+          url = urls;
+        });
+      } catch (onError) {
+        print("Error");
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    User? user = Provider.of<UserProvider>(context, listen: false).user;
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -120,6 +125,39 @@ class _EditFarmState extends State<EditFarm> with TickerProviderStateMixin {
                     padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
                     margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
                   ),
+                  Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.all(0),
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        child: _image == null
+                            ? Container(
+                                width: 200,
+                                height: 200,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.brown[50]),
+                                child: Padding(
+                                    padding: EdgeInsets.all(4.0),
+                                    child: Center(
+                                        child: Container(
+                                            child: IconButton(
+                                      icon: Icon(
+                                        Icons.add_a_photo_outlined,
+                                        size: 30,
+                                        color: Colors.brown,
+                                      ),
+                                      onPressed: () {
+                                        getImage(true);
+                                      },
+                                    )))))
+                            : CircleAvatar(
+                                backgroundImage: FileImage(_image!),
+                                radius: 100.0),
+                      )
+                    ],
+                  ),
                   TextFieldContainer(
                       controller: nameFarmController,
                       keyboardType: TextInputType.text,
@@ -150,37 +188,6 @@ class _EditFarmState extends State<EditFarm> with TickerProviderStateMixin {
                         style: TextStyle(fontSize: 15),
                       ),
                       hintText: "ไอดีฟาร์ม"),
-                  Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.topLeft,
-                        margin: EdgeInsets.all(0),
-                        padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
-                        child: Text(
-                          'เพิ่มรูปภาพฟาร์ม',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      ),
-                      Container(
-                          alignment: Alignment.topLeft,
-                          margin: EdgeInsets.all(0),
-                          padding: const EdgeInsets.fromLTRB(30, 10, 0, 10),
-                          child: RawMaterialButton(
-                            fillColor: Colors.brown,
-                            child: Icon(
-                              Icons.add_photo_alternate_rounded,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                            elevation: 8,
-                            onPressed: () {
-                              getImage(true);
-                            },
-                            padding: EdgeInsets.all(15),
-                            shape: CircleBorder(),
-                          )),
-                    ],
-                  ),
                   TextFieldContainer(
                       controller: addressFarmController,
                       keyboardType: TextInputType.text,
@@ -302,22 +309,23 @@ class _EditFarmState extends State<EditFarm> with TickerProviderStateMixin {
                               RaisedButton(
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
-                                    Navigator.pushNamed(
-                                        context, "/confirmCreateFarm",
-                                        arguments: ScreenArguments(
-                                          farm_name: nameFarmController.text,
-                                          farm_no: numberFarmController.text,
-                                          farm_code: codeFarmController.text,
-                                          address: addressFarmController.text,
-                                          moo: mooFarmController.text,
-                                          soi: soiFarmController.text,
-                                          road: roadFarmController.text,
-                                          sub_district:
-                                              sub_districtFarmController.text,
-                                          district: districtFarmController.text,
-                                          province: provinceFarmController.text,
-                                          postcode: postcodeFarmController.text,
-                                        ));
+                                    uploadFile(_image!);
+                                    userEditFarm(
+                                      user?.user_id,
+                                      user?.farm_id,
+                                      nameFarmController.text,
+                                      numberFarmController.text,
+                                      codeFarmController.text,
+                                      addressFarmController.text,
+                                      mooFarmController.text,
+                                      soiFarmController.text,
+                                      roadFarmController.text,
+                                      sub_districtFarmController.text,
+                                      districtFarmController.text,
+                                      provinceFarmController.text,
+                                      postcodeFarmController.text,
+                                      url,
+                                    );
                                   }
                                 },
                                 color: Colors.brown,
@@ -343,5 +351,51 @@ class _EditFarmState extends State<EditFarm> with TickerProviderStateMixin {
             ),
           ),
         ));
+  }
+
+  userEditFarm(user_id, farm_id, farm_name, farm_no, farm_code, address, moo,
+      soi, road, sub_district, district, province, postcode, url) async {
+    Map data = {
+      'user_id': user_id.toString(),
+      'farm_id': farm_id.toString(),
+      'farm_name': farm_name,
+      'farm_no': farm_no,
+      'farm_code': farm_code,
+      'address': address,
+      'moo': moo,
+      'soi': soi,
+      'road': road,
+      'sub_district': sub_district,
+      'district': district,
+      'province': province,
+      'postcode': postcode.toString(),
+      'farm_image': url
+    };
+
+    print(data);
+
+    final response = await http.put(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'farms/edit'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      Map<String, dynamic> user = resposne['data'];
+      print(user['message']);
+      Navigator.push(
+        context,
+        new MaterialPageRoute(
+          builder: (context) => new SuccessCreateFarm(),
+        ),
+      );
+    } else {
+      _scaffoldKey.currentState
+          ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+    }
   }
 }

@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dairycattle/Screens/Cow/successrecord.dart';
-
+import '/Screens/Cow/successrecord.dart';
 import '/models/User.dart';
 import '/providers/user_provider.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -27,9 +26,6 @@ class AddCow extends StatefulWidget {
 
 class _AddCowState extends State<AddCow> {
   bool isLoading = false;
-  File? _image;
-  String _uploadedFileURL = '';
-  String? imageName;
 
   int selectStatus = 1;
   int selectType = 1;
@@ -48,35 +44,49 @@ class _AddCowState extends State<AddCow> {
   DateTime? _dateTime;
   final value_validator = RequiredValidator(errorText: "X Invalid");
 
-  Future getImage() async {
-    final _picker = ImagePicker();
-    var image = await _picker.getImage(source: ImageSource.gallery);
+  File? _image;
+  List<File> _images = [];
+  String url = '';
+  String imageURL = '';
+  String downloadURL = '';
+
+  Future getImage(bool gallery) async {
+    ImagePicker picker = ImagePicker();
+    PickedFile pickedFile;
+    if (gallery) {
+      pickedFile = (await picker.getImage(
+        source: ImageSource.gallery,
+      ))!;
+    } else {
+      pickedFile = (await picker.getImage(
+        source: ImageSource.camera,
+      ))!;
+    }
 
     setState(() {
-      _image = File(image!.path);
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
     });
   }
 
-  Future saveImage() async {
-    if (_image != null) {
-      setState(() {
-        this.isLoading = true;
-      });
-      Reference ref = FirebaseStorage.instance.ref();
-      TaskSnapshot addImg = await ref.child("Cow/$_image").putFile(_image!);
-      if (addImg.state == TaskState.success) {
+  Future uploadFile(File _image) async {
+    FirebaseStorage storageReference = FirebaseStorage.instance;
+    String fileName = _image.path.split('/').last;
+    Reference ref = storageReference.ref().child('Cow/' + fileName);
+    UploadTask uploadTask = ref.putFile(_image);
+    uploadTask.whenComplete(() async {
+      try {
+        String urls = await ref.getDownloadURL();
         setState(() {
-          this.isLoading = false;
+          url = urls;
         });
-        print("added to Firebase Storage");
+      } catch (onError) {
+        print("Error");
       }
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getImage();
+    });
   }
 
   int _selectIndex = 0;
@@ -145,7 +155,7 @@ class _AddCowState extends State<AddCow> {
                                       color: Colors.blueGrey,
                                     ),
                                     onPressed: () {
-                                      getImage();
+                                      getImage(true);
                                     },
                                   )))))
                           : CircleAvatar(
@@ -432,14 +442,14 @@ class _AddCowState extends State<AddCow> {
                             // ignore: deprecated_member_use
                             RaisedButton(
                               onPressed: () {
-                                saveImage();
+                                uploadFile(_image!);
                                 userAddCow(
                                     user?.user_id,
                                     user?.farm_id,
                                     nameCowController.text,
                                     tagCowController.text,
                                     _dateTime,
-                                    _image,
+                                    url,
                                     noteCowController.text,
                                     selectType,
                                     selectSpecie,
@@ -448,10 +458,7 @@ class _AddCowState extends State<AddCow> {
                                     idMomController.text,
                                     selectDadSpecie,
                                     selectMomSpecie);
-                                // Navigator.push(context,
-                                //     MaterialPageRoute(builder: (context) {
-                                //   return SuccessAddCow();
-                                // }));
+                              
                               },
                               color: Color(0xff62b490),
                               shape: RoundedRectangleBorder(

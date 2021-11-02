@@ -40,9 +40,6 @@ class _RegisterScreenState extends State<RegisterScreen>
   User? firebaseUser;
   late String actualCode;
   late String _verificationId;
-  File? _image;
-  String _uploadedFileURL = '';
-  String? imageName;
   final firstnameController = TextEditingController();
   final lastnameController = TextEditingController();
   //final birthdayController = TextEditingController();
@@ -53,29 +50,49 @@ class _RegisterScreenState extends State<RegisterScreen>
   final _smsController = TextEditingController();
   final value_validator = RequiredValidator(errorText: "X Invalid");
 
-  Future getImage() async {
-    final _picker = ImagePicker();
-    var image = await _picker.getImage(source: ImageSource.gallery);
+  File? _image;
+  List<File> _images = [];
+  String url = '';
+  String imageURL = '';
+  String downloadURL = '';
+
+  Future getImage(bool gallery) async {
+    ImagePicker picker = ImagePicker();
+    PickedFile pickedFile;
+    if (gallery) {
+      pickedFile = (await picker.getImage(
+        source: ImageSource.gallery,
+      ))!;
+    } else {
+      pickedFile = (await picker.getImage(
+        source: ImageSource.camera,
+      ))!;
+    }
 
     setState(() {
-      _image = File(image!.path);
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
     });
   }
 
-  Future saveImage() async {
-    if (_image != null) {
-      setState(() {
-        this.isLoading = true;
-      });
-      Reference ref = FirebaseStorage.instance.ref();
-      TaskSnapshot addImg = await ref.child("User/$_image").putFile(_image!);
-      if (addImg.state == TaskState.success) {
+  Future uploadFile(File _image) async {
+    FirebaseStorage storageReference = FirebaseStorage.instance;
+    String fileName = _image.path.split('/').last;
+    Reference ref = storageReference.ref().child('User/' + fileName);
+    UploadTask uploadTask = ref.putFile(_image);
+    uploadTask.whenComplete(() async {
+      try {
+        String urls = await ref.getDownloadURL();
         setState(() {
-          this.isLoading = false;
+          url = urls;
         });
-        print("added to Firebase Storage");
+      } catch (onError) {
+        print("Error");
       }
-    }
+    });
   }
 
   @override
@@ -113,7 +130,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                               ))),
                     ),
                     Center(
-                      child: Text('DairyCattle'),
+                      child: Text('สร้างบัญชีผู้ใช้งาน'),
                     ),
                     Expanded(
                         child: Align(
@@ -131,13 +148,6 @@ class _RegisterScreenState extends State<RegisterScreen>
                     padding: const EdgeInsets.only(bottom: 100),
                     child: Column(
                       children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(20),
-                          margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                          child: Text('สร้างบัญชีผู้ใช้งาน',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 25)),
-                        ),
                         Column(
                           children: [
                             Container(
@@ -162,7 +172,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                               color: Colors.brown,
                                             ),
                                             onPressed: () {
-                                              getImage();
+                                              getImage(true);
                                             },
                                           )))))
                                   : CircleAvatar(
@@ -346,16 +356,14 @@ class _RegisterScreenState extends State<RegisterScreen>
                                         }
 
                                         if (mobileController.text.isNotEmpty) {
-                                          String d =
-                                              '${DateFormat('yyyy-MM-dd').format(DateTime.parse(_dateTime.toString()))}';
-                                          print('------' + d);
+                                          uploadFile(_image!);
                                           UserPreferences().saveRegister(
                                               args.user_id,
                                               firstnameController.text,
                                               lastnameController.text,
                                               '${DateFormat('yyyy-MM-dd').format(DateTime.parse(_dateTime.toString()))}',
                                               mobileController.text.toString(),
-                                              _image.toString(),
+                                              url,
                                               args.email,
                                               args.password);
                                           loginStore.getCodeWithPhoneNumber(

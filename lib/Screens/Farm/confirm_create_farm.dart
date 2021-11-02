@@ -23,6 +23,7 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
   late ScreenArguments args;
   late String farm_no = '';
   late String farm_code = '';
+  late String url = '';
   late String farm_name = '';
   late String address = '';
   late String moo = '';
@@ -49,6 +50,7 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
       district = args.district;
       province = args.province;
       postcode = args.postcode;
+      url = args.url;
       widget._isInit = false;
     }
   }
@@ -239,7 +241,8 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
                                       args.sub_district,
                                       args.district,
                                       args.province,
-                                      args.postcode);
+                                      args.postcode,
+                                      args.url);
                                 },
                                 color: Color(0xff62b490),
                                 shape: RoundedRectangleBorder(
@@ -267,9 +270,7 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
   }
 
   userCreateFarm(user_id, farm_name, farm_no, farm_code, address, moo, soi,
-      road, sub_district, district, province, postcode) async {
-    String farm_image =
-        'https://www.organicfarmthailand.com/wp-content/uploads/2016/09/Farm-from-a-Box-SMA.jpg';
+      road, sub_district, district, province, postcode, url) async {
 
     Map data = {
       'user_id': user_id.toString(),
@@ -284,33 +285,33 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
       'district': district,
       'province': province,
       'postcode': postcode.toString(),
-      'farm_image': farm_image
+      'farm_image': url
     };
 
     print(data);
 
-    final response = await http.post(
-        Uri.https('heroku-diarycattle.herokuapp.com', 'farms/create'),
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: data,
-        encoding: Encoding.getByName("utf-8"));
+    // final response = await http.post(
+    //     Uri.https('heroku-diarycattle.herokuapp.com', 'farms/create'),
+    //     headers: {
+    //       "Accept": "application/json",
+    //       "Content-Type": "application/x-www-form-urlencoded"
+    //     },
+    //     body: data,
+    //     encoding: Encoding.getByName("utf-8"));
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> resposne = jsonDecode(response.body);
-      Map<String, dynamic> user = resposne['data'];
-      print(user['message']);
-      Navigator.push(
-        context,
-        new MaterialPageRoute(
-          builder: (context) => new SuccessCreateFarm(),
-        ),
-      );
-    } else {
-      _scaffoldKey.currentState
-          ?.showSnackBar(SnackBar(content: Text("Please Try again")));
-    }
+    // if (response.statusCode == 200) {
+    //   Map<String, dynamic> resposne = jsonDecode(response.body);
+    //   Map<String, dynamic> user = resposne['data'];
+    //   print(user['message']);
+    //   Navigator.push(
+    //     context,
+    //     new MaterialPageRoute(
+    //       builder: (context) => new SuccessCreateFarm(),
+    //     ),
+    //   );
+    // } else {
+    //   _scaffoldKey.currentState
+    //       ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+    // }
   }
 }

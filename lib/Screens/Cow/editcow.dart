@@ -28,35 +28,49 @@ void showInSnackBar(String value) {
 }
 
 class _EditCowState extends State<EditCow> {
-  bool isLoading = false;
   File? _image;
-  String _uploadedFileURL = '';
-  var image;
+  List<File> _images = [];
+  String url = '';
+  String imageURL = '';
+  String downloadURL = '';
 
-  Future getImage() async {
-    final _picker = ImagePicker();
-    image = await _picker.getImage(source: ImageSource.gallery);
+  Future getImage(bool gallery) async {
+    ImagePicker picker = ImagePicker();
+    PickedFile pickedFile;
+    if (gallery) {
+      pickedFile = (await picker.getImage(
+        source: ImageSource.gallery,
+      ))!;
+    } else {
+      pickedFile = (await picker.getImage(
+        source: ImageSource.camera,
+      ))!;
+    }
 
     setState(() {
-      // _image = File(image!.path);
-      _image = File(image!.path);
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
     });
   }
 
-  Future saveImage() async {
-    if (_image != null) {
-      setState(() {
-        this.isLoading = true;
-      });
-      Reference ref = FirebaseStorage.instance.ref();
-      TaskSnapshot addImg = await ref.child("Cow/$image").putFile(_image!);
-      if (addImg.state == TaskState.success) {
+  Future uploadFile(File _image) async {
+    FirebaseStorage storageReference = FirebaseStorage.instance;
+    String fileName = _image.path.split('/').last;
+    Reference ref = storageReference.ref().child('Cow/' + fileName);
+    UploadTask uploadTask = ref.putFile(_image);
+    uploadTask.whenComplete(() async {
+      try {
+        String urls = await ref.getDownloadURL();
         setState(() {
-          this.isLoading = false;
+          url = urls;
         });
-        print("added to Firebase Storage");
+      } catch (onError) {
+        print("Error");
       }
-    }
+    });
   }
 
   int selectStatus = 1;
@@ -78,13 +92,6 @@ class _EditCowState extends State<EditCow> {
     setState(() {
       _selectIndex = index;
     });
-  }
-
-  @override
-  _EditCowState createState() => _EditCowState();
-  void initState() {
-    super.initState();
-    getImage();
   }
 
   DateTime? _dateTime;
@@ -146,7 +153,7 @@ class _EditCowState extends State<EditCow> {
                                         //backgroundColor: Colors.transparent,
                                       ),
                                       onPressed: () {
-                                        getImage();
+                                        getImage(true);
                                       },
                                     )))))
                             : CircleAvatar(
@@ -491,14 +498,14 @@ class _EditCowState extends State<EditCow> {
                               RaisedButton(
                                 onPressed: () {
                                   print('Edit cow');
-                                  saveImage();
+                                  uploadFile(_image!);
                                   userEditCow(
                                     widget.cow.cow_id,
                                     cowNoController.text,
                                     nameCowController.text,
                                     '${DateFormat('yyyy-MM-dd').format(DateTime.parse(date.toString()))}',
                                     selectSex,
-                                    image.toString(),
+                                    url,
                                     cowNoteController.text,
                                     selectSpecie,
                                     selectType,
