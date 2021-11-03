@@ -14,8 +14,8 @@ int _selectIndex = 0;
 class _Homepage_MemberState extends State<Homepage_Member> {
   int _selectedIndex = 0;
   List<Widget> _widgetOptions = <Widget>[
-    Text('วัวของฉัน'),
-    Text('เพิ่มกิจกรรม'),
+    Text('วัว'),
+    Text('กิจกรรม'),
     Text('แจ้งเตือน'),
     Text('ฉัน'),
   ];

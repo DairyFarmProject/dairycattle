@@ -174,46 +174,46 @@ class _FarmData_memberState extends State<FarmData_member> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        // margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                         child: TabBar(
-                          indicatorColor: Colors.brown,
-                          tabs: [
-                            Tab(
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                  Align(
-                                      alignment: Alignment.center,
-                                      child: Image.asset(
-                                        "assets/images/icon_farm.png",
-                                        color: Colors.brown,
-                                        height: 20,
-                                      )),
-                                  Padding(padding: EdgeInsets.only(left: 5)),
-                                  Text(
-                                    'ฟาร์ม',
-                                    style: TextStyle(color: Colors.brown),
-                                  )
-                                ])),
-                            Tab(
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                  Align(
-                                      alignment: Alignment.center,
-                                      child: Icon(
-                                        Icons.person_outline_sharp,
-                                        color: Colors.brown,
-                                        size: 20,
-                                      )),
-                                  Padding(padding: EdgeInsets.only(left: 5)),
-                                  Text(
-                                    'โปรไฟล์',
-                                    style: TextStyle(color: Colors.brown),
-                                  )
-                                ])),
-                          ],
-                        )),
+                      indicatorColor: Colors.brown,
+                      tabs: [
+                        Tab(
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                              Align(
+                                  alignment: Alignment.center,
+                                  child: Image.asset(
+                                    "assets/images/icon_farm.png",
+                                    color: Colors.brown,
+                                    height: 20,
+                                  )),
+                              Padding(padding: EdgeInsets.only(left: 5)),
+                              Text(
+                                'ฟาร์ม',
+                                style: TextStyle(color: Colors.brown),
+                              )
+                            ])),
+                        Tab(
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                              Align(
+                                  alignment: Alignment.center,
+                                  child: Icon(
+                                    Icons.person_outline_sharp,
+                                    color: Colors.brown,
+                                    size: 20,
+                                  )),
+                              Padding(padding: EdgeInsets.only(left: 5)),
+                              Text(
+                                'โปรไฟล์',
+                                style: TextStyle(color: Colors.brown),
+                              )
+                            ])),
+                      ],
+                    )),
 
                     Container(
                         height: 600, //height of TabBarView
@@ -241,7 +241,7 @@ class _FarmData_memberState extends State<FarmData_member> {
                                         margin: EdgeInsets.only(
                                             top: 10, bottom: 10),
                                         width: 420,
-                                        height: 160,
+                                        height: 200,
                                         padding:
                                             EdgeInsets.fromLTRB(30, 10, 30, 10),
                                         decoration: BoxDecoration(
@@ -256,8 +256,9 @@ class _FarmData_memberState extends State<FarmData_member> {
                                             Text('ตำแหน่ง : พนักงาน'),
                                             Text('เลขทะเบียนฟาร์ม'),
                                             Text('${user?.farm_no}'),
+                                            Text('ที่อยู่ฟาร์ม '),
                                             Text(
-                                                'ที่อยู่ฟาร์ม : ${address} ${sub_district} ${district} ${province} ${postcode}'),
+                                                '${address} ${sub_district} ${district} ${province} ${postcode}'),
                                             Text(
                                                 'จำนวนวัวทั้งหมด : ${countCow} ตัว')
                                           ],
