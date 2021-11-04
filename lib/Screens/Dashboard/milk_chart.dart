@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
-import 'dart:math';
 import 'package:intl/intl.dart';
-
 import '/models/MilkWeek.dart';
 import '/models/User.dart';
 import '/providers/user_provider.dart';
@@ -11,7 +8,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-//import 'package:example/utils/color_extensions.dart';
 
 class MilkChart extends StatefulWidget {
   const MilkChart({Key? key}) : super(key: key);
@@ -31,8 +27,6 @@ class MilkChartState extends State<MilkChart> {
   List list = [];
   Map<String, dynamic>? db;
 
-  double milk1 = 0;
-
   Future<List<MilkWeek>> getMilk() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     Map data = {
@@ -51,7 +45,10 @@ class MilkChartState extends State<MilkChart> {
     if (response.statusCode == 200) {
       db = jsonDecode(response.body);
       list = db?['data']['rows'];
-      milks = list.map((e) => MilkWeek.fromMap(e)).toList();
+      List<MilkWeek> milk = list.map((e) => MilkWeek.fromMap(e)).toList();
+      setState(() {
+        milks = milk;
+      });
     }
     return milks;
   }
@@ -69,58 +66,66 @@ class MilkChartState extends State<MilkChart> {
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         color: Colors.grey[300],
-        child: Stack(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
+        child: (milks.isEmpty)
+            ? Container(
+                padding: const EdgeInsets.all(150),
+                child: const CircularProgressIndicator(
+                  color: Colors.brown,
+                ),
+              )
+            : Stack(
                 children: <Widget>[
-                  Text(
-                    'จำนวนน้ำนมวัว',
-                    style: TextStyle(
-                        color: Colors.brown,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  Text(
-                    'วันที่ ${DateFormat('dd/MM/yyyy').format(DateTime.parse(milks[0].date))} - ${DateFormat('dd/MM/yyyy').format(DateTime.parse(milks[6].date))}',
-                    style: TextStyle(
-                        color: Colors.brown,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 38,
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: BarChart(
-                        mainBarData(),
-                        swapAnimationDuration: animDuration,
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        const Text(
+                          'จำนวนน้ำนมวัว',
+                          style: TextStyle(
+                              color: Colors.brown,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          'วันที่ ${DateFormat('dd/MM/yyyy').format(DateTime.parse(milks[0].date))} - ${DateFormat('dd/MM/yyyy').format(DateTime.parse(milks[6].date))}',
+                          style: const TextStyle(
+                              color: Colors.brown,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 38,
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: BarChart(
+                              mainBarData(),
+                              swapAnimationDuration: animDuration,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 12,
-                  ),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                    ),
+                  )
                 ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Align(
-                alignment: Alignment.topRight,
-              ),
-            )
-          ],
-        ),
       ),
     );
   }
@@ -141,7 +146,7 @@ class MilkChartState extends State<MilkChart> {
           colors: isTouched ? [Colors.yellow] : [barColor],
           width: width,
           borderSide: isTouched
-              ? BorderSide(color: Colors.yellow, width: 1)
+              ? const BorderSide(color: Colors.yellow, width: 1)
               : const BorderSide(color: Colors.white, width: 0),
           backDrawRodData: BackgroundBarChartRodData(
             show: true,
