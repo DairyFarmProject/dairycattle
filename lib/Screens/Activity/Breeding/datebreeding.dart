@@ -74,17 +74,17 @@ class _DateBreedingState extends State<DateBreeding> {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     return Scaffold(
         appBar: AppBar(
-          title: Text("บันทึกการผสมพันธุ์"),
+          title: const Text("บันทึกการผสมพันธุ์"),
           leading: GestureDetector(
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back,
               color: Colors.white,
             ),
           ),
-          backgroundColor: Color.fromRGBO(185, 110, 110, 5),
+          backgroundColor: const Color.fromRGBO(185, 110, 110, 5),
         ),
         body: FutureBuilder<List<DateAb>>(
             future: getDateAb(),
