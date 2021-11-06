@@ -216,7 +216,7 @@ class _AllRecordCalveState extends State<AllRecordCalve> {
                                         )),
                                     Container(
                                       margin:
-                                          EdgeInsets.fromLTRB(10, 10, 10, 20),
+                                          EdgeInsets.fromLTRB(10, 20, 0, 20),
                                       child: RaisedButton(
                                         onPressed: () {
                                           Navigator.push(
@@ -228,15 +228,28 @@ class _AllRecordCalveState extends State<AllRecordCalve> {
                                                           par: snapshot
                                                               .data![i])));
                                         },
-                                        child: Center(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Icon(Icons.edit),
-                                              Text('แก้ไข')
-                                            ],
-                                          ),
+                                        color: Colors.brown,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(39))),
+                                        child: Row(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 5),
+                                              child: Icon(
+                                                Icons.edit,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            Text(
+                                              'แก้ไข',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 14),
+                                            )
+                                          ],
                                         ),
                                       ),
                                     )

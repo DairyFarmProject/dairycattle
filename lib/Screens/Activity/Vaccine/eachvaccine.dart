@@ -90,8 +90,8 @@ class _EachVaccineState extends State<EachVaccine> {
             backgroundColor: Color.fromRGBO(111, 193, 148, 5)),
         body: Form(
             key: _formKey,
-            child: Container(
-                child: SingleChildScrollView(
+            //child: Container(
+            child: SingleChildScrollView(
               child: Column(
                 children: [
                   Container(
@@ -129,7 +129,7 @@ class _EachVaccineState extends State<EachVaccine> {
                                           itemBuilder: (context, i) {
                                             return Container(
                                               padding: EdgeInsets.fromLTRB(
-                                                  0, 5, 0, 0),
+                                                  0, 10, 0, 0),
                                               margin: EdgeInsets.fromLTRB(
                                                   10, 10, 10, 10),
                                               height: 120,
@@ -285,7 +285,7 @@ class _EachVaccineState extends State<EachVaccine> {
                                                         width: 5,
                                                         color: Colors.brown),
                                                   ),
-                                                  color: Colors.white),
+                                                  color: Colors.brown[50]),
                                             );
                                           });
                                   }))
@@ -293,7 +293,7 @@ class _EachVaccineState extends State<EachVaccine> {
                       )),
                 ],
               ),
-            ))));
+            )));
   }
 }
 

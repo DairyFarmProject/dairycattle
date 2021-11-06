@@ -13,7 +13,7 @@ class CowChart extends StatelessWidget {
       margin: EdgeInsets.only(top: 10),
       //color: Color.fromRGBO(222, 222, 222, 5),
       decoration: BoxDecoration(color: Colors.white30),
-      height: MediaQuery.of(context).size.height * 0.27,
+      height: MediaQuery.of(context).size.height * 0.3,
       child: Column(
         children: <Widget>[
           Text(''),
