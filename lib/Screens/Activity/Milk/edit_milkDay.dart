@@ -201,7 +201,7 @@ class _EditMilkDayState extends State<EditMilkDay> {
                                                 EdgeInsets>(EdgeInsets.all(10)),
                                             backgroundColor:
                                                 MaterialStateProperty.all<
-                                                    Color>(Color(0xff62b490)),
+                                                    Color>(Colors.brown),
                                             shape: MaterialStateProperty.all<
                                                     RoundedRectangleBorder>(
                                                 RoundedRectangleBorder(
@@ -288,7 +288,7 @@ class _EditMilkDayState extends State<EditMilkDay> {
                                                 EdgeInsets>(EdgeInsets.all(10)),
                                             backgroundColor:
                                                 MaterialStateProperty.all<
-                                                    Color>(Color(0xff62b490)),
+                                                    Color>(Colors.brown),
                                             shape: MaterialStateProperty.all<
                                                     RoundedRectangleBorder>(
                                                 RoundedRectangleBorder(
@@ -327,7 +327,7 @@ class _EditMilkDayState extends State<EditMilkDay> {
                                     padding: EdgeInsets.all(20),
                                     margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
                                     decoration: BoxDecoration(
-                                        color: Color(0xffd6786e),
+                                        color: Colors.brown,
                                         shape: BoxShape.rectangle,
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10))),
@@ -364,7 +364,7 @@ class _EditMilkDayState extends State<EditMilkDay> {
                                                 child: Text(
                                                   'ยกเลิก',
                                                   style: TextStyle(
-                                                      color: Color(0xffd6786e),
+                                                      color: Colors.brown,
                                                       fontWeight:
                                                           FontWeight.w600,
                                                       fontSize: 14),
@@ -390,7 +390,7 @@ class _EditMilkDayState extends State<EditMilkDay> {
                                                       user?.farm_id,
                                                       user?.user_id);
                                                 },
-                                                color: Color(0xff62b490),
+                                                color: Colors.brown,
                                                 shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.all(

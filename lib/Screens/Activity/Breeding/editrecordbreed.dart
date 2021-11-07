@@ -300,11 +300,29 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                                           ),
                                           onPressed: () {
                                             showDatePicker(
-                                              context: context,
-                                              initialDate: DateTime.now(),
-                                              firstDate: DateTime(1970),
-                                              lastDate: DateTime(2022),
-                                            ).then((date) {
+                                                context: context,
+                                                initialDate: DateTime.now(),
+                                                firstDate: DateTime(1970),
+                                                lastDate: DateTime(2022),
+                                                builder: (context, picker) {
+                                                  return Theme(
+                                                    data: ThemeData.light()
+                                                        .copyWith(
+                                                      colorScheme:
+                                                          ColorScheme.dark(
+                                                        primary: Colors
+                                                            .brown.shade200,
+                                                        onPrimary: Colors.white,
+                                                        surface: Colors
+                                                            .brown.shade200,
+                                                        onSurface: Colors.brown,
+                                                      ),
+                                                      dialogBackgroundColor:
+                                                          Colors.white,
+                                                    ),
+                                                    child: picker!,
+                                                  );
+                                                }).then((date) {
                                               setState(() {
                                                 _dateTime = date;
                                               });

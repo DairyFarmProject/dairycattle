@@ -83,7 +83,7 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
               color: Colors.white,
             ),
           ),
-          backgroundColor: Color(0xff59aca9),
+          backgroundColor: Color.fromRGBO(111, 193, 148, 5),
         ),
         body: Form(
             key: _formKey,
@@ -95,7 +95,7 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
                   return Container(
                     child: Center(
                         child: CircularProgressIndicator(
-                      color: Colors.green[400],
+                      color: Colors.brown,
                     )),
                   );
                 } else
@@ -153,15 +153,31 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
                                   child: IconButton(
                                     icon: Icon(
                                       Icons.calendar_today_sharp,
-                                      color: Colors.blueGrey,
+                                      color: Colors.brown,
                                     ),
                                     onPressed: () {
                                       showDatePicker(
-                                              context: context,
-                                              initialDate: DateTime.now(),
-                                              firstDate: DateTime(1970),
-                                              lastDate: DateTime(2022))
-                                          .then((date) {
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(1970),
+                                          lastDate: DateTime(2022),
+                                          builder: (context, picker) {
+                                            return Theme(
+                                              data: ThemeData.light().copyWith(
+                                                colorScheme: ColorScheme.dark(
+                                                  primary:
+                                                      Colors.brown.shade200,
+                                                  onPrimary: Colors.white,
+                                                  surface:
+                                                      Colors.brown.shade200,
+                                                  onSurface: Colors.brown,
+                                                ),
+                                                dialogBackgroundColor:
+                                                    Colors.white,
+                                              ),
+                                              child: picker!,
+                                            );
+                                          }).then((date) {
                                         setState(() {
                                           _dateTime = date;
                                         });
@@ -191,7 +207,7 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
                                           child: Text(
                                             'ยกเลิก',
                                             style: TextStyle(
-                                                color: Color(0xffd6786e),
+                                                color: Colors.brown,
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 14),
                                           ),
@@ -213,7 +229,8 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
                                                 '${DateFormat('yyyy-MM-dd').format(DateTime.parse(_dateTime.toString()))}',
                                                 getDate(_dateTime.toString()));
                                           },
-                                          color: Color(0xff62b490),
+                                          color:
+                                              Color.fromRGBO(111, 193, 148, 5),
                                           shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(39))),

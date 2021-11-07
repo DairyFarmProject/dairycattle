@@ -154,7 +154,7 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
                               padding: MaterialStateProperty.all<EdgeInsets>(
                                   EdgeInsets.all(10)),
                               backgroundColor: MaterialStateProperty.all<Color>(
-                                  Color(0xff62b490)),
+                                  Colors.brown),
                               shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
@@ -230,7 +230,7 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
                               padding: MaterialStateProperty.all<EdgeInsets>(
                                   EdgeInsets.all(10)),
                               backgroundColor: MaterialStateProperty.all<Color>(
-                                  Color(0xff62b490)),
+                                  Colors.brown),
                               shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
@@ -294,7 +294,7 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
                                   child: Text(
                                     'ยกเลิก',
                                     style: TextStyle(
-                                        color: Color(0xffd6786e),
+                                        color: Colors.brown,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 14),
                                   ),
@@ -318,7 +318,7 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
                                         user?.user_id,
                                         widget.milk.milk_date);
                                   },
-                                  color: Color(0xff62b490),
+                                  color: Colors.brown,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(39))),

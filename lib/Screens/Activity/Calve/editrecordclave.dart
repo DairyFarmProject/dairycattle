@@ -180,15 +180,28 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                             child: IconButton(
                               icon: Icon(
                                 Icons.calendar_today_sharp,
-                                color: Colors.blueGrey,
+                                color: Colors.brown,
                               ),
                               onPressed: () {
                                 showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1970),
-                                  lastDate: DateTime(2022),
-                                ).then((date) {
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1970),
+                                    lastDate: DateTime(2022),
+                                    builder: (context, picker) {
+                                      return Theme(
+                                        data: ThemeData.light().copyWith(
+                                          colorScheme: ColorScheme.dark(
+                                            primary: Colors.brown.shade200,
+                                            onPrimary: Colors.white,
+                                            surface: Colors.brown.shade200,
+                                            onSurface: Colors.brown,
+                                          ),
+                                          dialogBackgroundColor: Colors.white,
+                                        ),
+                                        child: picker!,
+                                      );
+                                    }).then((date) {
                                   setState(() {
                                     _dateTime = date;
                                   });
@@ -267,7 +280,7 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                                           user?.user_id,
                                           user?.farm_id);
                                     },
-                                    color: Color(0xff62b490),
+                                    color: Colors.brown,
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(39))),

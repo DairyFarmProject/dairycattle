@@ -150,8 +150,8 @@ class _RecordMilkState extends State<RecordMilk> {
                       style: ButtonStyle(
                           padding: MaterialStateProperty.all<EdgeInsets>(
                               EdgeInsets.all(10)),
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Color(0xff62b490)),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.brown),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
@@ -205,8 +205,8 @@ class _RecordMilkState extends State<RecordMilk> {
                       style: ButtonStyle(
                           padding: MaterialStateProperty.all<EdgeInsets>(
                               EdgeInsets.all(10)),
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Color(0xff62b490)),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.brown),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(

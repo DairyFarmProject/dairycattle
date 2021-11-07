@@ -62,7 +62,7 @@ class _UpdateBreedingState extends State<UpdateBreeding> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            color: Color(0xff62b490),
+                            color: Colors.brown,
                             shape: RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(39))),
@@ -302,7 +302,7 @@ class _UpdateBreedingState extends State<UpdateBreeding> {
                 color: Colors.white, fontWeight: FontWeight.w200, fontSize: 14),
           ),
           icon: Icon(Icons.add),
-          backgroundColor: Color(0xff62b490),
+          backgroundColor: Colors.brown,
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return RecordBreeding();

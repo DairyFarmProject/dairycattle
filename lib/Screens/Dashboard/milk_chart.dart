@@ -1,13 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:intl/intl.dart';
-import '/models/MilkWeek.dart';
-import '/models/User.dart';
-import '/providers/user_provider.dart';
+import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+//import 'package:example/utils/color_extensions.dart';
 
 class MilkChart extends StatefulWidget {
   const MilkChart({Key? key}) : super(key: key);
@@ -23,41 +18,6 @@ class MilkChartState extends State<MilkChart> {
   int touchedIndex = -1;
 
   bool isPlaying = false;
-  List<MilkWeek> milks = [];
-  List list = [];
-  Map<String, dynamic>? db;
-
-  Future<List<MilkWeek>> getMilk() async {
-    User? user = Provider.of<UserProvider>(context, listen: false).user;
-    Map data = {
-      'farm_id': user?.farm_id.toString(),
-      'user_id': user?.user_id.toString()
-    };
-    final response = await http.post(
-        Uri.https('heroku-diarycattle.herokuapp.com', 'milks/week'),
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: data,
-        encoding: Encoding.getByName("utf-8"));
-
-    if (response.statusCode == 200) {
-      db = jsonDecode(response.body);
-      list = db?['data']['rows'];
-      List<MilkWeek> milk = list.map((e) => MilkWeek.fromMap(e)).toList();
-      setState(() {
-        milks = milk;
-      });
-    }
-    return milks;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getMilk();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,66 +26,58 @@ class MilkChartState extends State<MilkChart> {
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         color: Colors.grey[300],
-        child: (milks.isEmpty)
-            ? Container(
-                padding: const EdgeInsets.all(150),
-                child: const CircularProgressIndicator(
-                  color: Colors.brown,
-                ),
-              )
-            : Stack(
+        child: Stack(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        const Text(
-                          'จำนวนน้ำนมวัว',
-                          style: TextStyle(
-                              color: Colors.brown,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          'วันที่ ${DateFormat('dd/MM/yyyy').format(DateTime.parse(milks[0].date))} - ${DateFormat('dd/MM/yyyy').format(DateTime.parse(milks[6].date))}',
-                          style: const TextStyle(
-                              color: Colors.brown,
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 38,
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: BarChart(
-                              mainBarData(),
-                              swapAnimationDuration: animDuration,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                      ],
+                  const Text(
+                    'จำนวนน้ำนมวัว',
+                    style: TextStyle(
+                        color: Colors.brown,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  const Text(
+                    'วันที่ 1/2/2564 - 7/2/2564',
+                    style: TextStyle(
+                        color: Colors.brown,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 38,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: BarChart(
+                        mainBarData(),
+                        swapAnimationDuration: animDuration,
+                      ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Align(
-                      alignment: Alignment.topRight,
-                    ),
-                  )
+                  const SizedBox(
+                    height: 12,
+                  ),
                 ],
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.topRight,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -146,11 +98,11 @@ class MilkChartState extends State<MilkChart> {
           colors: isTouched ? [Colors.yellow] : [barColor],
           width: width,
           borderSide: isTouched
-              ? const BorderSide(color: Colors.yellow, width: 1)
+              ? BorderSide(color: Colors.yellow, width: 1)
               : const BorderSide(color: Colors.white, width: 0),
           backDrawRodData: BackgroundBarChartRodData(
             show: true,
-            y: 100,
+            y: 20,
             colors: [barBackgroundColor],
           ),
         ),
@@ -162,26 +114,19 @@ class MilkChartState extends State<MilkChart> {
   List<BarChartGroupData> showingGroups() => List.generate(7, (i) {
         switch (i) {
           case 0:
-            return makeGroupData(0, milks[0].total.toDouble(),
-                isTouched: i == touchedIndex);
+            return makeGroupData(0, 5, isTouched: i == touchedIndex);
           case 1:
-            return makeGroupData(1, milks[1].total.toDouble(),
-                isTouched: i == touchedIndex);
+            return makeGroupData(1, 6.5, isTouched: i == touchedIndex);
           case 2:
-            return makeGroupData(2, milks[2].total.toDouble(),
-                isTouched: i == touchedIndex);
+            return makeGroupData(2, 5, isTouched: i == touchedIndex);
           case 3:
-            return makeGroupData(3, milks[3].total.toDouble(),
-                isTouched: i == touchedIndex);
+            return makeGroupData(3, 7.5, isTouched: i == touchedIndex);
           case 4:
-            return makeGroupData(4, milks[4].total.toDouble(),
-                isTouched: i == touchedIndex);
+            return makeGroupData(4, 9, isTouched: i == touchedIndex);
           case 5:
-            return makeGroupData(5, milks[5].total.toDouble(),
-                isTouched: i == touchedIndex);
+            return makeGroupData(5, 11.5, isTouched: i == touchedIndex);
           case 6:
-            return makeGroupData(6, milks[6].total.toDouble(),
-                isTouched: i == touchedIndex);
+            return makeGroupData(6, 6.5, isTouched: i == touchedIndex);
           default:
             return throw Error();
         }
@@ -196,25 +141,25 @@ class MilkChartState extends State<MilkChart> {
               String weekDay;
               switch (group.x.toInt()) {
                 case 0:
-                  weekDay = 'อาทิตย์';
+                  weekDay = 'Monday';
                   break;
                 case 1:
-                  weekDay = 'จันทร์';
+                  weekDay = 'Tuesday';
                   break;
                 case 2:
-                  weekDay = 'อังคาร';
+                  weekDay = 'Wednesday';
                   break;
                 case 3:
-                  weekDay = 'พุธ';
+                  weekDay = 'Thursday';
                   break;
                 case 4:
-                  weekDay = 'พฤหัสบดี';
+                  weekDay = 'Friday';
                   break;
                 case 5:
-                  weekDay = 'ศุกร์';
+                  weekDay = 'Saturday';
                   break;
                 case 6:
-                  weekDay = 'เสาร์';
+                  weekDay = 'Sunday';
                   break;
                 default:
                   throw Error();
@@ -262,19 +207,19 @@ class MilkChartState extends State<MilkChart> {
           getTitles: (double value) {
             switch (value.toInt()) {
               case 0:
-                return '${DateFormat('dd').format(DateTime.parse(milks[0].date))}';
+                return '1/2';
               case 1:
-                return '${DateFormat('dd').format(DateTime.parse(milks[1].date))}';
+                return '2/2';
               case 2:
-                return '${DateFormat('dd').format(DateTime.parse(milks[2].date))}';
+                return '3/2';
               case 3:
-                return '${DateFormat('dd').format(DateTime.parse(milks[3].date))}';
+                return '4/2';
               case 4:
-                return '${DateFormat('dd').format(DateTime.parse(milks[4].date))}';
+                return '5/2';
               case 5:
-                return '${DateFormat('dd').format(DateTime.parse(milks[5].date))}';
+                return '6/2';
               case 6:
-                return '${DateFormat('dd').format(DateTime.parse(milks[6].date))}';
+                return '7/2';
               default:
                 return '';
             }

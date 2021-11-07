@@ -34,21 +34,21 @@ class _SuccessOTPState extends State<SuccessOTP> {
                   child: Align(
                 alignment: Alignment.centerRight,
                 child: IconButton(
-                  icon: Icon(Icons.account_circle,
-                      color: Colors.green[400], size: 30),
+                  icon:
+                      Icon(Icons.account_circle, color: Colors.brown, size: 30),
                   onPressed: () {},
                 ),
               )),
             ],
           ),
-          backgroundColor: Colors.green[400],
+          backgroundColor: Colors.brown,
         ),
         body: Column(children: [
           Container(
             padding: const EdgeInsets.fromLTRB(0, 150, 0, 40),
             child: Icon(
               Icons.check_circle,
-              color: Colors.green[400],
+              color: Colors.brown,
               size: 80,
             ),
           ),
@@ -86,7 +86,7 @@ class _SuccessOTPState extends State<SuccessOTP> {
                         return LoginScreen();
                       }));
                     },
-                    color: Colors.green[400],
+                    color: Colors.brown,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(39))),
                     child: Text(

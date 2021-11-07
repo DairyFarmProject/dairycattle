@@ -74,7 +74,7 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
                 return Container(
                   child: Center(
                     child: CircularProgressIndicator(
-                      color: Colors.green[400],
+                      color: Colors.brown,
                     ),
                   ),
                 );

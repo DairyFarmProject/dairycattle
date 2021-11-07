@@ -89,7 +89,7 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
               )),
             ],
           ),
-          backgroundColor: Colors.green[400],
+          backgroundColor: Colors.brown,
         ),
         body: Form(
           key: _formKey,
@@ -214,7 +214,7 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
                                 child: Text(
                                   'ยกเลิก',
                                   style: TextStyle(
-                                      color: Color(0xffd6786e),
+                                      color: Colors.brown,
                                       fontWeight: FontWeight.w600,
                                       fontSize: 14),
                                 ),
@@ -244,7 +244,7 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
                                       args.postcode,
                                       args.url);
                                 },
-                                color: Color(0xff62b490),
+                                color: Colors.brown,
                                 shape: RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(39))),
@@ -271,7 +271,6 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
 
   userCreateFarm(user_id, farm_name, farm_no, farm_code, address, moo, soi,
       road, sub_district, district, province, postcode, url) async {
-
     Map data = {
       'user_id': user_id.toString(),
       'farm_name': farm_name,

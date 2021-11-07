@@ -1,10 +1,8 @@
-
-
 import '/Screens/Dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
 
 class SuccessCreateFarm extends StatefulWidget {
-@override
+  @override
   _SuccessCreateFarmState createState() => _SuccessCreateFarmState();
 }
 
@@ -17,14 +15,14 @@ class _SuccessCreateFarmState extends State<SuccessCreateFarm> {
           leading: GestureDetector(
             onTap: () {},
           ),
-          backgroundColor: Color(0xff62b490),
+          backgroundColor: Colors.brown,
         ),
         body: Column(children: [
           Container(
             padding: const EdgeInsets.fromLTRB(0, 150, 0, 40),
             child: Icon(
               Icons.check_circle,
-              color: Color(0xff62b490),
+              color: Colors.brown,
               size: 80,
             ),
           ),
@@ -71,7 +69,6 @@ class _SuccessCreateFarmState extends State<SuccessCreateFarm> {
                   )
                 ],
               )),
-              
             ],
           ),
         ]));

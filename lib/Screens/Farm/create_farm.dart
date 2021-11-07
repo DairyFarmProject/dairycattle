@@ -110,7 +110,7 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
               )),
             ],
           ),
-          backgroundColor: Colors.green[400],
+          backgroundColor: Colors.brown,
         ),
         body: Form(
           key: _formKey,
@@ -286,7 +286,7 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                                 child: Text(
                                   'ยกเลิก',
                                   style: TextStyle(
-                                      color: Color(0xffd6786e),
+                                      color: Colors.brown,
                                       fontWeight: FontWeight.w600,
                                       fontSize: 14),
                                 ),
@@ -323,7 +323,7 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                                         ));
                                   }
                                 },
-                                color: Color(0xff62b490),
+                                color: Colors.brown,
                                 shape: RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(39))),

@@ -120,7 +120,7 @@ class _EditCowState extends State<EditCow> {
               color: Colors.white,
             ),
           ),
-          backgroundColor: Color(0xff62b490),
+          backgroundColor: Colors.brown,
         ),
         body: Form(
             key: _formKey,
@@ -482,7 +482,7 @@ class _EditCowState extends State<EditCow> {
                                 child: Text(
                                   'ยกเลิก',
                                   style: TextStyle(
-                                      color: Color(0xffd6786e),
+                                      color: Colors.brown,
                                       fontWeight: FontWeight.w600,
                                       fontSize: 14),
                                 ),
@@ -517,7 +517,7 @@ class _EditCowState extends State<EditCow> {
                                     user?.farm_id,
                                   );
                                 },
-                                color: Color(0xff62b490),
+                                color: Colors.brown,
                                 shape: RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(39))),

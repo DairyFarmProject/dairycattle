@@ -96,13 +96,13 @@ class _OTPState extends State<OTP> with TickerProviderStateMixin {
                           alignment: Alignment.centerRight,
                           child: IconButton(
                             icon: Icon(Icons.account_circle,
-                                color: Colors.green[400], size: 30),
+                                color: Colors.brown, size: 30),
                             onPressed: () {},
                           ),
                         )),
                       ],
                     ),
-                    backgroundColor: Colors.green[400],
+                    backgroundColor: Colors.brown,
                     key: loginStore.otpScaffoldKey),
                 body: Column(
                   children: <Widget>[
@@ -118,10 +118,10 @@ class _OTPState extends State<OTP> with TickerProviderStateMixin {
                       pinTheme: PinTheme(
                           shape: PinCodeFieldShape.box,
                           //activeColor: Colors.green[100],
-                          selectedColor: Colors.green[100],
-                          inactiveFillColor: Colors.green[100],
+                          selectedColor: Colors.brown[100],
+                          inactiveFillColor: Colors.brown[100],
                           selectedFillColor: Colors.white,
-                          inactiveColor: Colors.green[100],
+                          inactiveColor: Colors.brown[100],
                           borderRadius: BorderRadius.circular(5),
                           fieldHeight: 50,
                           fieldWidth: 30,
@@ -150,7 +150,7 @@ class _OTPState extends State<OTP> with TickerProviderStateMixin {
                       },
                       appContext: context,
                       pastedTextStyle: TextStyle(
-                        color: Colors.green.shade600,
+                        color: Colors.brown.shade600,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -170,7 +170,7 @@ class _OTPState extends State<OTP> with TickerProviderStateMixin {
                               mobile,
                               user_image);
                         },
-                        color: Color(0xff62b490),
+                        color: Colors.brown,
                         shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(39))),

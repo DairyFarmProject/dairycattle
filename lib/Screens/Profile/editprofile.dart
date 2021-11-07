@@ -241,11 +241,12 @@ class _EditProfileState extends State<EditProfile>
                                                         .copyWith(
                                                       colorScheme:
                                                           ColorScheme.dark(
-                                                        primary: Colors.green,
+                                                        primary: Colors
+                                                            .brown.shade200,
                                                         onPrimary: Colors.white,
-                                                        surface: Colors.green,
-                                                        onSurface:
-                                                            Color(0xFF77dd77),
+                                                        surface: Colors
+                                                            .brown.shade200,
+                                                        onSurface: Colors.brown,
                                                       ),
                                                       dialogBackgroundColor:
                                                           Colors.white,

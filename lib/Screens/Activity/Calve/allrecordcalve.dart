@@ -88,7 +88,7 @@ class _AllRecordCalveState extends State<AllRecordCalve> {
               if (snapshot.data == null) {
                 return Container(
                   child: Center(
-                    child: CircularProgressIndicator(color: Colors.green[400]),
+                    child: CircularProgressIndicator(color: Colors.brown),
                   ),
                 );
               } else

@@ -20,8 +20,7 @@ class CowChart extends StatelessWidget {
           Flexible(
             child: Row(
               children: <Widget>[
-                _buildStatCard(
-                    'จำนวนวัวทั้งหมด', '50 ตัว', Colors.brown.shade300),
+                _buildStatCard('จำนวนวัวทั้งหมด', '50 ตัว', Colors.brown),
                 _buildStatCard(
                   'แม่โค',
                   '30 ตัว',
