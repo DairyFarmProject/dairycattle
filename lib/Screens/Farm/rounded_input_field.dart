@@ -26,6 +26,7 @@ class RoundedInputField extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextFormField(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: validator,
           keyboardType: keyboardType,
           controller: controller,

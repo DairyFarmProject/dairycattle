@@ -56,6 +56,8 @@ class _RegisterScreenState extends State<RegisterScreen>
   String imageURL = '';
   String downloadURL = '';
 
+  String? firstname;
+
   Future getImage(bool gallery) async {
     ImagePicker picker = ImagePicker();
     PickedFile pickedFile;
@@ -113,6 +115,7 @@ class _RegisterScreenState extends State<RegisterScreen>
     return Consumer<RegisterStore>(builder: (_, loginStore, __) {
       return Observer(
           builder: (_) => (Scaffold(
+              key: _scaffoldKey,
               appBar: AppBar(
                 automaticallyImplyLeading: false,
                 title: Row(
@@ -185,7 +188,10 @@ class _RegisterScreenState extends State<RegisterScreen>
                             controller: firstnameController,
                             keyboardType: TextInputType.text,
                             onChanged: (value) {},
-                            validator: value_validator,
+                            validator: (value) {
+                              if (value!.isEmpty) return 'กรุณากรอกชื่อ';
+                              return null;
+                            },
                             child: Text(
                               'ชื่อ',
                               style: TextStyle(fontSize: 15),
@@ -195,7 +201,10 @@ class _RegisterScreenState extends State<RegisterScreen>
                             controller: lastnameController,
                             keyboardType: TextInputType.text,
                             onChanged: (value) {},
-                            validator: value_validator,
+                            validator: (value) {
+                              if (value!.isEmpty) return 'กรุณากรอกนามสกุล';
+                              return null;
+                            },
                             child: Text(
                               'นามสกุล',
                               style: TextStyle(fontSize: 15),
@@ -278,7 +287,10 @@ class _RegisterScreenState extends State<RegisterScreen>
                             controller: mobileController,
                             keyboardType: TextInputType.number,
                             onChanged: (value) {},
-                            validator: value_validator,
+                            validator: (value) {
+                              if (value!.isEmpty) return 'กรุณากรอกเบอร์มือถือ';
+                              return null;
+                            },
                             child: Text(
                               'เบอร์มือถือ',
                               style: TextStyle(fontSize: 15),
