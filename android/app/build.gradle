@@ -50,13 +50,31 @@ android {
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+        resConfigs "en", "th"
+        applicationVariants.all { variant ->
+             if(variant.buildType.name == "release") {
+                 variant.outputs.each { output ->
+                     output.versionNameOverride = "8.84"
+                     }
+                 }
+        }
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            ext.enableCrashlytics = false
+            ext.enableStability = false
+            minifyEnabled true
+            shrinkResources true
             signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            splits.abi.enable = false
+            splits.density.enable = false
+            aaptOptions.cruncherEnabled = false
+            ext.alwaysUpdateBuildId = false
         }
     }
 }
@@ -66,7 +84,7 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin"
     implementation("androidx.multidex:multidex:2.0.1")
     implementation platform('com.google.firebase:firebase-bom:28.4.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'
