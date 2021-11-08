@@ -16,36 +16,17 @@ class Background extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
-          Positioned(
-            bottom: -70,
-            child: Image.asset('assets/images/BGlogin.png'),
-            //height: 100,
-            width: size.width * 1.5,
+          Container(
+            height: double.infinity,
+            width: double.infinity,
+            child: FittedBox(
+              fit: BoxFit.cover,
+              child: Image.network(
+                'https://1.bp.blogspot.com/-LuIPepS4J1Q/X1DzycHljEI/AAAAAAAAaew/5k5f6Z9h0KwRFyDVqyVCZuK5kqqkL8hSwCLcBGAsYHQ/s16000/farm-landscape-illustration-wallpaper-hd.png',
+              ),
+            ),
           ),
           child,
-          // Positioned(
-          //   bottom: -100,
-          //   left: -50,
-          //   child: Image.asset(
-          //     "assets/images/welcome1.png",
-          //     width: size.width * 0.5,
-          //   ),
-          // ),
-          // Positioned(
-          //   bottom: 0,
-          //   child: Image.asset(
-          //     "assets/images/welcome2.png",
-          //     width: size.width * 0.2,
-          //   ),
-          // ),
-          // Positioned(
-          //   bottom: -100,
-          //   right: -50,
-          //   child: Image.asset(
-          //     "assets/images/welcome.png",
-          //     width: size.width * 0.5,
-          //   ),
-          // ),
         ],
       ),
     );
