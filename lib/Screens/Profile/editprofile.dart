@@ -1,23 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dairycattle/Screens/Cow/successrecord.dart';
-
+import '/Screens/Cow/successrecord.dart';
 import '/providers/user_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
 import '/models/User.dart' as DairyUser;
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import '../Farm/text_field_container.dart';
-
 import '../../util/register_store.dart';
-import '../../util/shared_preference.dart';
 
 class EditProfile extends StatefulWidget {
   bool _isInit = true;
@@ -47,7 +42,6 @@ class _EditProfileState extends State<EditProfile>
   final passwordController = TextEditingController();
 
   File? _image;
-  List<File> _images = [];
   String url = '';
   String imageURL = '';
   String downloadURL = '';
@@ -114,7 +108,7 @@ class _EditProfileState extends State<EditProfile>
                           onTap: () {
                             Navigator.pop(context);
                           },
-                          child: Align(
+                          child: const Align(
                               alignment: Alignment.centerLeft,
                               child: Icon(
                                 Icons.arrow_back_ios_outlined,
@@ -144,7 +138,7 @@ class _EditProfileState extends State<EditProfile>
                           children: [
                             Container(
                               alignment: Alignment.center,
-                              margin: EdgeInsets.all(0),
+                              margin: const EdgeInsets.all(0),
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                               child: _image == null
                                   ? Container(
@@ -181,11 +175,11 @@ class _EditProfileState extends State<EditProfile>
                               if (value!.isEmpty) return 'กรุณากรอกชื่อ';
                               return null;
                             },
-                            child: Text(
+                            child: const Text(
                               'ชื่อ',
                               style: TextStyle(fontSize: 15),
                             ),
-                            hintText: "${user!.firstname}"),
+                            hintText: user!.firstname),
                         TextFieldContainer(
                             controller: lastnameController,
                             keyboardType: TextInputType.text,
@@ -194,19 +188,18 @@ class _EditProfileState extends State<EditProfile>
                               if (value!.isEmpty) return 'กรุณากรอกนามสกุล';
                               return null;
                             },
-                            child: Text(
+                            child: const Text(
                               'นามสกุล',
                               style: TextStyle(fontSize: 15),
                             ),
-                            hintText: "${user.lastname}"),
-                        Container(
-                          child: Row(
+                            hintText: user.lastname),
+                        Row(
                             children: [
                               Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      children: [
+                                      children: const [
                                         Padding(
                                           padding:
                                               EdgeInsets.fromLTRB(20, 20, 0, 0),
@@ -220,18 +213,18 @@ class _EditProfileState extends State<EditProfile>
                                     Row(children: [
                                       Padding(
                                         padding:
-                                            EdgeInsets.fromLTRB(40, 20, 0, 20),
+                                            const EdgeInsets.fromLTRB(40, 20, 0, 20),
                                         child: Text(
                                           _dateTime == null
-                                              ? '${DateFormat('dd-MM-yyyy').format(DateTime.parse(user.user_birthday.toString()))}'
-                                              : '${DateFormat('dd-MM-yyyy').format(DateTime.parse(_dateTime.toString()))}',
+                                              ? DateFormat('dd-MM-yyyy').format(DateTime.parse(user.user_birthday.toString()))
+                                              : DateFormat('dd-MM-yyyy').format(DateTime.parse(_dateTime.toString())),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             10, 15, 0, 10),
                                         child: IconButton(
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.calendar_today_sharp,
                                             color: Colors.brown,
                                           ),
@@ -271,13 +264,13 @@ class _EditProfileState extends State<EditProfile>
                                   ]),
                             ],
                           ),
-                        ),
+                        
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Container(
-                                margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -286,10 +279,10 @@ class _EditProfileState extends State<EditProfile>
                                         Navigator.pop(context);
                                       },
                                       color: Colors.blueGrey[50],
-                                      shape: RoundedRectangleBorder(
+                                      shape: const RoundedRectangleBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(39))),
-                                      child: Text(
+                                      child: const Text(
                                         'ยกเลิก',
                                         style: TextStyle(
                                             color: Colors.brown,
@@ -302,10 +295,9 @@ class _EditProfileState extends State<EditProfile>
                                   ],
                                 )),
                             Container(
-                                margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                                 child: Column(
                                   children: [
-                                    // ignore: deprecated_member_use
                                     RaisedButton(
                                       onPressed: () async {
                                         if (isLoading) {
@@ -329,10 +321,11 @@ class _EditProfileState extends State<EditProfile>
                                                 user.user_birthday);
                                           });
                                         }
-                                        if (_image == null)
+                                        if (_image == null) {
                                           setState(() {
                                             url = user.farm_image;
                                           });
+                                        }
                                         if (_image != null) {
                                           uploadFile(_image!);
                                         }
@@ -347,7 +340,7 @@ class _EditProfileState extends State<EditProfile>
                                         } else {
                                           loginStore
                                               .loginScaffoldKey.currentState
-                                              ?.showSnackBar(SnackBar(
+                                              ?.showSnackBar(const SnackBar(
                                             behavior: SnackBarBehavior.floating,
                                             backgroundColor: Colors.red,
                                             content: Text(
@@ -359,10 +352,10 @@ class _EditProfileState extends State<EditProfile>
                                         }
                                       },
                                       color: Colors.brown,
-                                      shape: RoundedRectangleBorder(
+                                      shape: const RoundedRectangleBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(39))),
-                                      child: Text(
+                                      child: const Text(
                                         'บันทึกข้อมูล',
                                         style: TextStyle(
                                             color: Colors.white,
@@ -388,7 +381,7 @@ class _EditProfileState extends State<EditProfile>
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(
+        title: const Text(
           'กรุณาตรวจสอบความถูกต้อง',
           style: TextStyle(fontSize: 17),
         ),
@@ -398,7 +391,7 @@ class _EditProfileState extends State<EditProfile>
         ),
         actions: <Widget>[
           FlatButton(
-            child: Text('OK'),
+            child: const Text('OK'),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -442,8 +435,8 @@ class _EditProfileState extends State<EditProfile>
       print(user['message']);
       Navigator.push(
         context,
-        new MaterialPageRoute(
-          builder: (context) => new SuccessRecord(),
+        MaterialPageRoute(
+          builder: (context) => SuccessRecord(),
         ),
       );
     }
@@ -454,7 +447,7 @@ class _EditProfileState extends State<EditProfile>
       _showerrorDialog(mess);
     } else {
       _scaffoldKey.currentState
-          ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+          ?.showSnackBar(const SnackBar(content: Text("Please Try again")));
     }
   }
 }

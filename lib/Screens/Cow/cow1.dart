@@ -15,14 +15,16 @@ class Cow extends StatefulWidget {
 }
 
 class _CowState extends State<Cow> {
-  // final FirebaseFirestore fb = FirebaseFirestore.instance;
-  String? url_image;
+  List<Cows> cow = [];
+
   Future<List<Cows>> getCow() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
-    late List<Cows> cows;
-    Map data = {'user_id': user?.user_id.toString()};
+    Map data = {
+      'user_id': user?.user_id.toString(),
+      'farm_id': user?.farm_id.toString()
+    };
     final response = await http.post(
-        Uri.https('heroku-diarycattle.herokuapp.com', 'users/cow'),
+        Uri.https('heroku-diarycattle.herokuapp.com', 'farms/cow'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
@@ -32,11 +34,14 @@ class _CowState extends State<Cow> {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> db = jsonDecode(response.body);
-      print(db);
       final List list = db['data']['rows'];
-      cows = list.map((e) => Cows.fromMap(e)).toList();
+      List<Cows> cows = list.map((e) => Cows.fromMap(e)).toList();
+
+      setState(() {
+        cow = cows;
+      });
     }
-    return cows;
+    return cow;
   }
 
   @override
@@ -51,76 +56,93 @@ class _CowState extends State<Cow> {
     return Scaffold(
         body: Padding(
             padding: const EdgeInsets.all(0),
-            child: Container(
-              child: FutureBuilder<List<Cows>>(
-                  future: getCow(),
-                  builder: (context, snapshot) {
-                    if (snapshot.data == null) {
-                      return Container();
-                    } else
-                      return GridView.builder(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2),
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, i) {
-                            return Padding(
-                                padding: const EdgeInsets.all(0),
-                                child: Center(
-                                    child: Column(
-                                  children: [
-                                    Center(
-                                        child: Card(
-                                      elevation: 1,
-                                      margin: EdgeInsets.only(top: 3),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              new BorderRadius.circular(15)),
-                                      child: InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => OneCow(
-                                                      cow: snapshot.data![i])));
-                                        },
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Hero(
-                                                tag: i.toString(),
-                                                child: Column(children: [
-                                                  Image.network(
-                                                    snapshot.data?[i]
-                                                            .cow_image ??
-                                                        "",
-                                                    width: 180,
-                                                    height: 140,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                  SizedBox.fromSize(
-                                                      size: Size(180, 8)),
-                                                  Padding(
-                                                      padding: const EdgeInsets
-                                                              .fromLTRB(
-                                                          10, 0, 0, 12),
-                                                      child: Text(
-                                                        '${snapshot.data?[i].cow_name ?? ""}, ${snapshot.data?[i].cow_no}',
-                                                        style: TextStyle(
-                                                          fontSize: 14,
+            child: (cow.isEmpty)
+                ? Center(
+                    child: Container(
+                    width: MediaQuery.of(context).size.height * 0.1,
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: const CircularProgressIndicator(
+                      color: Colors.brown,
+                    ),
+                  ))
+                : Container(
+                    child: FutureBuilder<List<Cows>>(
+                        future: getCow(),
+                        builder: (context, snapshot) {
+                          if (snapshot.data == null) {
+                            return Container();
+                          } else
+                            return GridView.builder(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2),
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, i) {
+                                  return Padding(
+                                      padding: const EdgeInsets.all(0),
+                                      child: Center(
+                                          child: Column(
+                                        children: [
+                                          Center(
+                                              child: Card(
+                                            elevation: 1,
+                                            margin: EdgeInsets.only(top: 3),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        15)),
+                                            child: InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            OneCow(
+                                                                cow: snapshot
+                                                                        .data![
+                                                                    i])));
+                                              },
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Hero(
+                                                      tag: i.toString(),
+                                                      child: Column(children: [
+                                                        Image.network(
+                                                          snapshot.data?[i]
+                                                                  .cow_image ??
+                                                              "",
+                                                          width: 180,
+                                                          height: 140,
+                                                          fit: BoxFit.cover,
                                                         ),
-                                                      )),
-                                                ]))
-                                          ],
-                                        ),
-                                      ),
-                                    ))
-                                  ],
-                                )));
-                          });
-                  }),
-            )));
+                                                        SizedBox.fromSize(
+                                                            size: Size(180, 8)),
+                                                        Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .fromLTRB(
+                                                                    10,
+                                                                    0,
+                                                                    0,
+                                                                    12),
+                                                            child: Text(
+                                                              '${snapshot.data?[i].cow_name ?? ""}, ${snapshot.data?[i].cow_no}',
+                                                              style: TextStyle(
+                                                                fontSize: 14,
+                                                              ),
+                                                            )),
+                                                      ]))
+                                                ],
+                                              ),
+                                            ),
+                                          ))
+                                        ],
+                                      )));
+                                });
+                        }),
+                  )));
   }
 
   @override
