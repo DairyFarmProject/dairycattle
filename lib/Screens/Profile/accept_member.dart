@@ -56,8 +56,10 @@ class _AcceptMemberState extends State<AcceptMember> {
               child: Column(
                 children: <Widget>[
                   Container(
+                    alignment: Alignment.center,
                     padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           'สมาชิกทั้งหมด',
@@ -70,7 +72,9 @@ class _AcceptMemberState extends State<AcceptMember> {
                             future: getWorker(),
                             builder: (context, snapshot) {
                               if (snapshot.data == null) {
-                                return Container();
+                                return Container(
+                                  padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
+                                  child: CircularProgressIndicator(color: Colors.brown,));
                               } else
                                 return SingleChildScrollView(
                                     child: DataTable(

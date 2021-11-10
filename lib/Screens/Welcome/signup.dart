@@ -258,9 +258,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
     if (response.statusCode == 500) {
       Map<String, dynamic> resposne = json.decode(response.body);
-      String user = resposne['message'];
-      // String mess = user['message'];
-      _showerrorDialog(user);
+      Map<String, dynamic> user = resposne['data'];
+      String mess = user['message'];
+      _showerrorDialog(mess);
     } else {
       _scaffoldKey.currentState
           ?.showSnackBar(SnackBar(content: Text("Please Try again!")));

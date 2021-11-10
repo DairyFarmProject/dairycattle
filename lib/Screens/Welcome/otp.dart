@@ -72,6 +72,7 @@ class _OTPState extends State<OTP> with TickerProviderStateMixin {
     return Consumer<RegisterStore>(builder: (_, loginStore, __) {
       return Observer(
           builder: (_) => (Scaffold(
+            key: _scaffoldKey,
                 appBar: AppBar(
                     automaticallyImplyLeading: false,
                     title: Row(

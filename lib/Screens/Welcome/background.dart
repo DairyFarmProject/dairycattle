@@ -22,7 +22,7 @@ class Background extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.cover,
               child: Image.network(
-                'https://1.bp.blogspot.com/-LuIPepS4J1Q/X1DzycHljEI/AAAAAAAAaew/5k5f6Z9h0KwRFyDVqyVCZuK5kqqkL8hSwCLcBGAsYHQ/s16000/farm-landscape-illustration-wallpaper-hd.png',
+                'https://us.123rf.com/450wm/merggy/merggy1308/merggy130800017/21736152-vector-illustration-of-an-autumn-farm-landscape.jpg?ver=6',
               ),
             ),
           ),

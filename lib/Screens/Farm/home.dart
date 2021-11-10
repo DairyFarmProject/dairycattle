@@ -55,11 +55,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                               fontWeight: FontWeight.w500, fontSize: 18),
                         ),
                         SizedBox(height: size.height * 0.05),
-                        Image.asset(
-                          "assets/images/cow2.png",
-                          height: size.height * 0.3,
-                        ),
-                        SizedBox(height: size.height * 0.05),
                         RoundedButton(
                           text: "สร้างฟาร์มใหม่",
                           press: () {

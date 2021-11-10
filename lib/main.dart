@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '/Screens/Welcome/otp.dart';
 import '/Screens/Welcome/register.dart';
 import '/Screens/Welcome/welcome.dart';
@@ -14,8 +16,17 @@ import 'util/shared_preference.dart';
 import 'util/register_store.dart';
 import 'Screens/Farm/confirm_create_farm.dart';
 
+class MyHttpoverrides extends HttpOverrides{
+  @override 
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+    ..badCertificateCallback = (X509Certificate cert, String host, int port)=>true;
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  HttpOverrides.global = MyHttpoverrides();
   await Firebase.initializeApp();
   runApp(MyApp());
 }

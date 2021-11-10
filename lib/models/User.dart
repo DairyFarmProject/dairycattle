@@ -15,6 +15,7 @@ class User {
   String startwork;
   String role_name;
   String farm_no;
+  String farm_code;
   String farm_name;
   String farm_image;
   String address;
@@ -40,6 +41,7 @@ class User {
     required this.startwork,
     required this.role_name,
     required this.farm_no,
+    required this.farm_code,
     required this.farm_name,
     required this.farm_image,
     required this.address,
@@ -51,8 +53,6 @@ class User {
     required this.province,
     required this.postcode,
   });
- 
-
   
 
   User copyWith({
@@ -70,6 +70,7 @@ class User {
     String? startwork,
     String? role_name,
     String? farm_no,
+    String? farm_code,
     String? farm_name,
     String? farm_image,
     String? address,
@@ -96,6 +97,7 @@ class User {
       startwork: startwork ?? this.startwork,
       role_name: role_name ?? this.role_name,
       farm_no: farm_no ?? this.farm_no,
+      farm_code: farm_code ?? this.farm_code,
       farm_name: farm_name ?? this.farm_name,
       farm_image: farm_image ?? this.farm_image,
       address: address ?? this.address,
@@ -125,6 +127,7 @@ class User {
       'startwork': startwork,
       'role_name': role_name,
       'farm_no': farm_no,
+      'farm_code': farm_code,
       'farm_name': farm_name,
       'farm_image': farm_image,
       'address': address,
@@ -154,6 +157,7 @@ class User {
       startwork: map['startwork'],
       role_name: map['role_name'],
       farm_no: map['farm_no'],
+      farm_code: map['farm_code'],
       farm_name: map['farm_name'],
       farm_image: map['farm_image'],
       address: map['address'],
@@ -173,7 +177,7 @@ class User {
 
   @override
   String toString() {
-    return 'User(user_id: $user_id, firstname: $firstname, lastname: $lastname, user_birthday: $user_birthday, mobile: $mobile, user_image: $user_image, email: $email, password: $password, worker_id: $worker_id, role_id: $role_id, farm_id: $farm_id, startwork: $startwork, role_name: $role_name, farm_no: $farm_no, farm_name: $farm_name, farm_image: $farm_image, address: $address, moo: $moo, soi: $soi, road: $road, sub_district: $sub_district, district: $district, province: $province, postcode: $postcode)';
+    return 'User(user_id: $user_id, firstname: $firstname, lastname: $lastname, user_birthday: $user_birthday, mobile: $mobile, user_image: $user_image, email: $email, password: $password, worker_id: $worker_id, role_id: $role_id, farm_id: $farm_id, startwork: $startwork, role_name: $role_name, farm_no: $farm_no, farm_code: $farm_code, farm_name: $farm_name, farm_image: $farm_image, address: $address, moo: $moo, soi: $soi, road: $road, sub_district: $sub_district, district: $district, province: $province, postcode: $postcode)';
   }
 
   @override
@@ -195,6 +199,7 @@ class User {
       other.startwork == startwork &&
       other.role_name == role_name &&
       other.farm_no == farm_no &&
+      other.farm_code == farm_code &&
       other.farm_name == farm_name &&
       other.farm_image == farm_image &&
       other.address == address &&
@@ -223,6 +228,7 @@ class User {
       startwork.hashCode ^
       role_name.hashCode ^
       farm_no.hashCode ^
+      farm_code.hashCode ^
       farm_name.hashCode ^
       farm_image.hashCode ^
       address.hashCode ^

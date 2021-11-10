@@ -22,15 +22,6 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       body: Column(
         children: [
-          // Container(
-          //   width: 200,
-          //   height: 200,
-          //   decoration:
-          //       BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-          //   // child: CircleAvatar(
-          //   //                 backgroundImage: NetworkImage('$url'),
-          //   //                 radius: 100.0)
-          // ),
           Container(
             child: Text(
               'โปรไฟล์',

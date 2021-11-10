@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:dairycattle/models/Address.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+
 import '/Screens/Farm/success_create_farm.dart';
 import '/models/User.dart';
 import '/providers/user_provider.dart';
@@ -44,6 +47,16 @@ class _EditFarmState extends State<EditFarm> with TickerProviderStateMixin {
   String imageURL = '';
   String downloadURL = '';
 
+  List<Tombon> tombons = [];
+  List<Amphure> amphures = [];
+  List<Province> provinces = [];
+  Tombon? selectItemTombon;
+  Amphure? selectItemAmphure;
+  Province? selectItemProvince;
+  String province = '';
+  String amphure = '';
+  String tombon = '';
+
   Future getImage(bool gallery) async {
     ImagePicker picker = ImagePicker();
     PickedFile pickedFile;
@@ -83,10 +96,52 @@ class _EditFarmState extends State<EditFarm> with TickerProviderStateMixin {
     });
   }
 
+  Future<List<Province>> getProvince() async {
+    final response = await http.get(Uri.https('raw.githubusercontent.com',
+        'kongvut/thai-province-data/master/api_province.json'));
+    var data = jsonDecode(response.body);
+    for (var u in data) {
+      Province test = Province(u['name_th']);
+      provinces.add(test);
+    }
+    return provinces;
+  }
+
+  Future<List<Amphure>> getAmphure() async {
+    final response = await http.get(Uri.https('raw.githubusercontent.com',
+        'kongvut/thai-province-data/master/api_amphure.json'));
+    var data = jsonDecode(response.body);
+    for (var u in data) {
+      Amphure test = Amphure(u['name_th']);
+      amphures.add(test);
+    }
+    return amphures;
+  }
+
+  Future<List<Tombon>> getTombon() async {
+    final response = await http.get(Uri.https('raw.githubusercontent.com',
+        'kongvut/thai-province-data/master/api_tombon.json'));
+    var data = jsonDecode(response.body);
+    for (var u in data) {
+      Tombon test = Tombon(u['name_th']);
+      tombons.add(test);
+    }
+    return tombons;
+  }
+
+  @override
+  _EditFarmState createState() => _EditFarmState();
+  void initState() {
+    super.initState();
+    getProvince();
+    getAmphure();
+  }
+
   @override
   Widget build(BuildContext context) {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Row(
@@ -143,11 +198,11 @@ class _EditFarmState extends State<EditFarm> with TickerProviderStateMixin {
                                     child: Center(
                                         child: Container(
                                             child: IconButton(
-                                      icon: Icon(
-                                        Icons.add_a_photo_outlined,
-                                        size: 30,
-                                        color: Colors.brown,
-                                      ),
+                                      iconSize: 200,
+                                      icon: CircleAvatar(
+                                          radius: 200,
+                                          backgroundImage: NetworkImage(
+                                              user?.farm_image ?? '')),
                                       onPressed: () {
                                         getImage(true);
                                       },
@@ -162,112 +217,213 @@ class _EditFarmState extends State<EditFarm> with TickerProviderStateMixin {
                       controller: nameFarmController,
                       keyboardType: TextInputType.text,
                       onChanged: (value) {},
-                      validator: value_validator,
+                      validator: (value) {
+                        if (value!.isEmpty) return 'กรุณากรอกชื่อฟาร์ม';
+                        return null;
+                      },
                       child: Text(
                         'ชื่อฟาร์ม',
                         style: TextStyle(fontSize: 15),
                       ),
-                      hintText: "ชื่อฟาร์ม"),
+                      hintText: "${user?.farm_name}"),
                   TextFieldContainer(
                       controller: numberFarmController,
                       keyboardType: TextInputType.text,
                       onChanged: (value) {},
-                      validator: value_validator,
+                      validator: (value) {
+                        if (value!.isEmpty) return 'กรุณากรอกเลขทะเบียนฟาร์ม';
+                        return null;
+                      },
                       child: Text(
                         'เลขทะเบียนฟาร์ม',
                         style: TextStyle(fontSize: 15),
                       ),
-                      hintText: "เลขทะเบียนฟาร์ม"),
-                  TextFieldContainer(
-                      controller: codeFarmController,
-                      keyboardType: TextInputType.text,
-                      onChanged: (value) {},
-                      validator: value_validator,
-                      child: Text(
-                        'ไอดีฟาร์ม',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                      hintText: "ไอดีฟาร์ม"),
+                      hintText: "${user?.farm_no}"),
                   TextFieldContainer(
                       controller: addressFarmController,
                       keyboardType: TextInputType.text,
                       onChanged: (value) {},
-                      validator: value_validator,
+                      validator: (value) {
+                        if (value!.isEmpty) return 'กรุณากรอกบ้านเลขที่';
+                        return null;
+                      },
                       child: Text(
                         'บ้านเลขที่',
                         style: TextStyle(fontSize: 15),
                       ),
-                      hintText: "บ้านเลขที่"),
+                      hintText: "${user?.address}"),
                   TextFieldContainer(
                       controller: mooFarmController,
                       keyboardType: TextInputType.number,
                       onChanged: (value) {},
-                      validator: value_validator,
+                      validator: (value) {
+                        if (value!.isEmpty)
+                          return 'กรุณากรอกหมู่ หากไม่มีให้ -';
+                        return null;
+                      },
                       child: Text(
                         'หมู่',
                         style: TextStyle(fontSize: 15),
                       ),
-                      hintText: "หมู่"),
+                      hintText: "${user?.moo}"),
                   TextFieldContainer(
                       controller: soiFarmController,
                       keyboardType: TextInputType.text,
                       onChanged: (value) {},
-                      validator: value_validator,
+                      validator: (value) {
+                        if (value!.isEmpty) return 'กรุณากรอกซอย หากไม่มีให้ -';
+                        return null;
+                      },
                       child: Text(
                         'ซอย',
                         style: TextStyle(fontSize: 15),
                       ),
-                      hintText: "ซอย"),
+                      hintText: "${user?.soi}"),
                   TextFieldContainer(
                       controller: roadFarmController,
                       keyboardType: TextInputType.text,
                       onChanged: (value) {},
-                      validator: value_validator,
+                      validator: (value) {
+                        if (value!.isEmpty) return 'กรุณากรอกถนน';
+                        return null;
+                      },
                       child: Text(
                         'ถนน',
                         style: TextStyle(fontSize: 15),
                       ),
-                      hintText: "ถนน"),
-                  TextFieldContainer(
-                      controller: sub_districtFarmController,
-                      keyboardType: TextInputType.text,
-                      onChanged: (value) {},
-                      validator: value_validator,
-                      child: Text(
-                        'ตำบล',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                      hintText: "ตำบล"),
-                  TextFieldContainer(
-                      controller: districtFarmController,
-                      keyboardType: TextInputType.text,
-                      onChanged: (value) {},
-                      validator: value_validator,
-                      child: Text(
-                        'อำเภอ',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                      hintText: "อำเภอ"),
-                  TextFieldContainer(
-                      controller: provinceFarmController,
-                      keyboardType: TextInputType.text,
-                      onChanged: (value) {},
-                      validator: value_validator,
-                      child: Text(
-                        'จังหวัด',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                      hintText: "จังหวัด"),
+                      hintText: "${user?.soi}"),
+                  Container(
+                      alignment: Alignment.centerLeft,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                                child: FutureBuilder<List<Tombon>>(
+                                    future: getTombon(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.data == null) {
+                                        return Container(
+                                          child: Center(
+                                              child: CircularProgressIndicator(
+                                            color: Colors.brown,
+                                          )),
+                                        );
+                                      } else
+                                        return Container(
+                                          margin: EdgeInsets.fromLTRB(
+                                              20, 30, 20, 20),
+                                          child: DropdownSearch<Tombon>(
+                                            mode: Mode.DIALOG,
+                                            showSearchBox: true,
+                                            maxHeight: 300,
+                                            selectedItem: selectItemTombon,
+                                            items: tombons,
+                                            label: 'ตำบล',
+                                            hint: '${user?.sub_district}',
+                                            itemAsString: (value) =>
+                                                value!.name_th,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                amphure = value!.name_th;
+                                              });
+                                            },
+                                          ),
+                                        );
+                                    }))
+                          ])),
+                  Container(
+                      alignment: Alignment.centerLeft,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                                child: FutureBuilder<List<Amphure>>(
+                                    future: getAmphure(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.data == null) {
+                                        return Container(
+                                          child: Center(
+                                              child: CircularProgressIndicator(
+                                            color: Colors.brown,
+                                          )),
+                                        );
+                                      } else
+                                        return Container(
+                                          margin: EdgeInsets.fromLTRB(
+                                              20, 30, 20, 20),
+                                          child: DropdownSearch<Amphure>(
+                                            mode: Mode.DIALOG,
+                                            showSearchBox: true,
+                                            maxHeight: 300,
+                                            selectedItem: selectItemAmphure,
+                                            items: amphures,
+                                            hint: '${user?.district}',
+                                            label: 'อำเภอ',
+                                            itemAsString: (value) =>
+                                                value!.name_th,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                amphure = value!.name_th;
+                                              });
+                                            },
+                                          ),
+                                        );
+                                    }))
+                          ])),
+                  Container(
+                      alignment: Alignment.centerLeft,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                                child: FutureBuilder<List<Province>>(
+                                    future: getProvince(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.data == null) {
+                                        return Container(
+                                          child: Center(
+                                              child: CircularProgressIndicator(
+                                            color: Colors.brown,
+                                          )),
+                                        );
+                                      } else
+                                        return Container(
+                                          margin: EdgeInsets.fromLTRB(
+                                              20, 30, 20, 20),
+                                          child: DropdownSearch<Province>(
+                                            mode: Mode.DIALOG,
+                                            showSearchBox: true,
+                                            maxHeight: 300,
+                                            selectedItem: selectItemProvince,
+                                            items: provinces,
+                                            hint: '${user?.province}',
+                                            label: 'จังหวัด',
+                                            itemAsString: (value) =>
+                                                value!.name_th,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                province = value!.name_th;
+                                              });
+                                            },
+                                          ),
+                                        );
+                                    }))
+                          ])),
                   TextFieldContainer(
                       controller: postcodeFarmController,
                       keyboardType: TextInputType.number,
                       onChanged: (value) {},
-                      validator: value_validator,
+                      validator: (value) {
+                        if (value!.isEmpty) return 'กรุณากรอกรหัสไปรษณีย์';
+                        if (value.length != 5)
+                          return 'รหัสไปรษณีย์มี 5 ตำแหน่ง';
+                        return null;
+                      },
                       child: Text(
                         'รหัสไปรษณีย์',
                         style: TextStyle(fontSize: 15),
                       ),
-                      hintText: "รหัสไปรษณีย์"),
+                      hintText: '${user?.postcode}'),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -308,14 +464,66 @@ class _EditFarmState extends State<EditFarm> with TickerProviderStateMixin {
                               // ignore: deprecated_member_use
                               RaisedButton(
                                 onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
+                                  if (nameFarmController.text.isEmpty)
+                                    setState(() {
+                                      nameFarmController.text = user!.farm_name;
+                                    });
+                                  if (numberFarmController.text.isEmpty)
+                                    setState(() {
+                                      numberFarmController.text = user!.farm_no;
+                                    });
+                                  if (addressFarmController.text.isEmpty)
+                                    setState(() {
+                                      addressFarmController.text =
+                                          user!.address;
+                                    });
+                                  if (mooFarmController.text.isEmpty)
+                                    setState(() {
+                                      mooFarmController.text =
+                                          user!.moo.toString();
+                                    });
+                                  if (soiFarmController.text.isEmpty)
+                                    setState(() {
+                                      soiFarmController.text = user!.soi;
+                                    });
+                                  if (roadFarmController.text.isEmpty)
+                                    setState(() {
+                                      roadFarmController.text = user!.road;
+                                    });
+                                  if (sub_districtFarmController.text.isEmpty)
+                                    setState(() {
+                                      sub_districtFarmController.text =
+                                          user!.sub_district;
+                                    });
+                                  if (districtFarmController.text.isEmpty)
+                                    setState(() {
+                                      districtFarmController.text =
+                                          user!.district;
+                                    });
+                                  if (provinceFarmController.text.isEmpty)
+                                    setState(() {
+                                      provinceFarmController.text =
+                                          user!.province;
+                                    });
+                                  if (postcodeFarmController.text.isEmpty)
+                                    setState(() {
+                                      postcodeFarmController.text =
+                                          user!.postcode.toString();
+                                    });
+                                  if (_image == null)
+                                    setState(() {
+                                      url = user!.farm_image;
+                                    });
+                                  if (_image != null) {
                                     uploadFile(_image!);
+                                  }
+                                  if (url != null) {
                                     userEditFarm(
                                       user?.user_id,
                                       user?.farm_id,
                                       nameFarmController.text,
                                       numberFarmController.text,
-                                      codeFarmController.text,
+                                      user?.farm_code,
                                       addressFarmController.text,
                                       mooFarmController.text,
                                       soiFarmController.text,
@@ -351,6 +559,30 @@ class _EditFarmState extends State<EditFarm> with TickerProviderStateMixin {
             ),
           ),
         ));
+  }
+
+  void _showerrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(
+          'กรุณาตรวจสอบความถูกต้อง',
+          style: TextStyle(fontSize: 17),
+        ),
+        content: Text(
+          message,
+          style: TextStyle(fontSize: 15),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
+    );
   }
 
   userEditFarm(user_id, farm_id, farm_name, farm_no, farm_code, address, moo,
@@ -393,6 +625,12 @@ class _EditFarmState extends State<EditFarm> with TickerProviderStateMixin {
           builder: (context) => new SuccessCreateFarm(),
         ),
       );
+    }
+    if (response.statusCode == 500) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      Map<String, dynamic> user = resposne['data'];
+      String mess = user['message'];
+      _showerrorDialog(mess);
     } else {
       _scaffoldKey.currentState
           ?.showSnackBar(SnackBar(content: Text("Please Try again")));

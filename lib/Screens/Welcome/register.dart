@@ -48,7 +48,6 @@ class _RegisterScreenState extends State<RegisterScreen>
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final _smsController = TextEditingController();
-  final value_validator = RequiredValidator(errorText: "X Invalid");
 
   File? _image;
   List<File> _images = [];
@@ -289,6 +288,8 @@ class _RegisterScreenState extends State<RegisterScreen>
                             onChanged: (value) {},
                             validator: (value) {
                               if (value!.isEmpty) return 'กรุณากรอกเบอร์มือถือ';
+                              if (value.length < 10) return 'เบอร์มือถือควรมี 10 หลัก';
+                              if (value.length > 10) return 'เบอร์มือถือไม่ควรเกิน 10 หลัก';
                               return null;
                             },
                             child: Text(
@@ -343,28 +344,28 @@ class _RegisterScreenState extends State<RegisterScreen>
                                           _scaffoldKey.currentState
                                               ?.showSnackBar(SnackBar(
                                                   content: Text(
-                                                      "Please Enter Firstname")));
+                                                      "กรุณากรอกชื่อ")));
                                           return;
                                         }
                                         if (lastnameController.text.isEmpty) {
                                           _scaffoldKey.currentState
                                               ?.showSnackBar(SnackBar(
                                                   content: Text(
-                                                      "Please Enter Lastname")));
+                                                      "กรุณากรอกนามสกุล")));
                                           return;
                                         }
                                         if (_dateTime == null) {
                                           _scaffoldKey.currentState
                                               ?.showSnackBar(SnackBar(
                                                   content: Text(
-                                                      "Please Enter BirthDay")));
+                                                      "กรุณากรอกวันเกิด")));
                                           return;
                                         }
                                         if (mobileController.text.isEmpty) {
                                           _scaffoldKey.currentState
                                               ?.showSnackBar(SnackBar(
                                                   content: Text(
-                                                      "Please Enter Mobile")));
+                                                      "กรุณากรอกเบอร์มือถือ")));
                                           return;
                                         }
 

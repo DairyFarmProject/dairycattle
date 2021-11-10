@@ -41,11 +41,10 @@ class _EditProfileState extends State<EditProfile>
   final firstnameController = TextEditingController();
   final lastnameController = TextEditingController();
   //final birthdayController = TextEditingController();
-  final mobileController = TextEditingController();
+  // final mobileController = TextEditingController();
   // final user_imageController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final value_validator = RequiredValidator(errorText: "X Invalid");
 
   File? _image;
   List<File> _images = [];
@@ -105,6 +104,7 @@ class _EditProfileState extends State<EditProfile>
     return Consumer<RegisterStore>(builder: (_, loginStore, __) {
       return Observer(
           builder: (_) => (Scaffold(
+              key: _scaffoldKey,
               appBar: AppBar(
                 automaticallyImplyLeading: false,
                 title: Row(
@@ -177,7 +177,10 @@ class _EditProfileState extends State<EditProfile>
                             controller: firstnameController,
                             keyboardType: TextInputType.text,
                             onChanged: (value) {},
-                            validator: value_validator,
+                            validator: (value) {
+                              if (value!.isEmpty) return 'กรุณากรอกชื่อ';
+                              return null;
+                            },
                             child: Text(
                               'ชื่อ',
                               style: TextStyle(fontSize: 15),
@@ -187,7 +190,10 @@ class _EditProfileState extends State<EditProfile>
                             controller: lastnameController,
                             keyboardType: TextInputType.text,
                             onChanged: (value) {},
-                            validator: value_validator,
+                            validator: (value) {
+                              if (value!.isEmpty) return 'กรุณากรอกนามสกุล';
+                              return null;
+                            },
                             child: Text(
                               'นามสกุล',
                               style: TextStyle(fontSize: 15),
@@ -266,16 +272,6 @@ class _EditProfileState extends State<EditProfile>
                             ],
                           ),
                         ),
-                        TextFieldContainer(
-                            controller: mobileController,
-                            keyboardType: TextInputType.number,
-                            onChanged: (value) {},
-                            validator: value_validator,
-                            child: Text(
-                              'เบอร์มือถือ',
-                              style: TextStyle(fontSize: 15),
-                            ),
-                            hintText: "เบอร์มือถือ"),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -316,42 +312,37 @@ class _EditProfileState extends State<EditProfile>
                                           return;
                                         }
                                         if (firstnameController.text.isEmpty) {
-                                          _scaffoldKey.currentState
-                                              ?.showSnackBar(SnackBar(
-                                                  content: Text(
-                                                      "Please Enter Firstname")));
-                                          return;
+                                          setState(() {
+                                            firstnameController.text =
+                                                user.firstname;
+                                          });
                                         }
                                         if (lastnameController.text.isEmpty) {
-                                          _scaffoldKey.currentState
-                                              ?.showSnackBar(SnackBar(
-                                                  content: Text(
-                                                      "Please Enter Lastname")));
-                                          return;
+                                          setState(() {
+                                            lastnameController.text =
+                                                user.lastname;
+                                          });
                                         }
                                         if (_dateTime == null) {
-                                          _scaffoldKey.currentState
-                                              ?.showSnackBar(SnackBar(
-                                                  content: Text(
-                                                      "Please Enter BirthDay")));
-                                          return;
+                                          setState(() {
+                                            _dateTime = DateTime.parse(
+                                                user.user_birthday);
+                                          });
                                         }
-                                        if (mobileController.text.isEmpty) {
-                                          _scaffoldKey.currentState
-                                              ?.showSnackBar(SnackBar(
-                                                  content: Text(
-                                                      "Please Enter Mobile")));
-                                          return;
-                                        }
-
-                                        if (mobileController.text.isNotEmpty) {
+                                        if (_image == null)
+                                          setState(() {
+                                            url = user.farm_image;
+                                          });
+                                        if (_image != null) {
                                           uploadFile(_image!);
+                                        }
+                                        if (url != null) {
                                           userEditProfile(
                                               user.user_id,
                                               firstnameController.text,
                                               lastnameController.text,
                                               _dateTime.toString(),
-                                              mobileController.text,
+                                              user.mobile,
                                               url);
                                         } else {
                                           loginStore
@@ -393,6 +384,30 @@ class _EditProfileState extends State<EditProfile>
     });
   }
 
+  void _showerrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(
+          'กรุณาตรวจสอบความถูกต้อง',
+          style: TextStyle(fontSize: 17),
+        ),
+        content: Text(
+          message,
+          style: TextStyle(fontSize: 15),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
+
   userEditProfile(
     user_id,
     firstname,
@@ -431,6 +446,12 @@ class _EditProfileState extends State<EditProfile>
           builder: (context) => new SuccessRecord(),
         ),
       );
+    }
+    if (response.statusCode == 500) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      Map<String, dynamic> user = resposne['data'];
+      String mess = user['message'];
+      _showerrorDialog(mess);
     } else {
       _scaffoldKey.currentState
           ?.showSnackBar(SnackBar(content: Text("Please Try again")));

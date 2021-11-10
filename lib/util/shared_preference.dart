@@ -163,6 +163,7 @@ class UserPreferences {
     String startwork = prefs.getString("startwork") ?? '';
     String role_name = prefs.getString("role_name") ?? '';
     String farm_no = prefs.getString("farm_no") ?? '';
+    String farm_code = prefs.getString("fatm_code") ?? '';
     String farm_name = prefs.getString("farm_name") ?? '';
     String farm_image = prefs.getString("farm_image") ?? '';
     String address = prefs.getString("address") ?? '';
@@ -189,6 +190,7 @@ class UserPreferences {
         startwork: startwork,
         role_name: role_name,
         farm_no: farm_no,
+        farm_code: farm_code,
         farm_name: farm_name,
         farm_image: farm_image,
         address: address,
