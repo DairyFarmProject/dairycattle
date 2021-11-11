@@ -62,7 +62,7 @@ class _SuccessEditCowState extends State<SuccessEditCow> {
                     child: Text(
                       'กลับหน้าแรก',
                       style: TextStyle(
-                          color: Color(0xff59aca9),
+                          color: Colors.brown,
                           fontWeight: FontWeight.w600,
                           fontSize: 14),
                     ),
@@ -81,7 +81,7 @@ class _SuccessEditCowState extends State<SuccessEditCow> {
                         return Cow();
                       }));
                     },
-                    color: Color(0xff59aca9),
+                    color: Colors.brown,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(39))),
                     child: Text(

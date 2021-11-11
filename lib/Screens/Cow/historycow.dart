@@ -157,7 +157,7 @@ class _HistoryCowState extends State<HistoryCow> {
                     child: Row(
                       children: [
                         Expanded(
-                          flex: 2,
+                          flex: 3,
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
                             child: Text(

@@ -72,7 +72,7 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
               color: Colors.white,
             ),
           ),
-          backgroundColor: Colors.amber[600],
+          backgroundColor: Color.fromRGBO(234, 177, 93, 5),
         ),
         body: Form(
             key: _formKey,

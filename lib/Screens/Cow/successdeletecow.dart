@@ -62,7 +62,7 @@ class _SuccessDeleteCowState extends State<SuccessDeleteCow> {
                     child: Text(
                       'กลับหน้าแรก',
                       style: TextStyle(
-                          color: Color(0xff59aca9),
+                          color: Colors.brown,
                           fontWeight: FontWeight.w600,
                           fontSize: 14),
                     ),
@@ -78,10 +78,10 @@ class _SuccessDeleteCowState extends State<SuccessDeleteCow> {
                     onPressed: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return Cow();
+                        return Homepage();
                       }));
                     },
-                    color: Color(0xff59aca9),
+                    color: Colors.brown,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(39))),
                     child: Text(

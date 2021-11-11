@@ -220,14 +220,15 @@ class _RecordMilkState extends State<RecordMilk> {
                   padding: EdgeInsets.all(20),
                   margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.brown,
-                      width: 2,
-                    ),
-                    color: Colors.white,
-                    shape: BoxShape.rectangle,
-                    // borderRadius: BorderRadius.all(Radius.circular(10))
-                  ),
+                      border: Border.all(
+                        color: Colors.brown,
+                        width: 2,
+                      ),
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(10)
+                      // borderRadius: BorderRadius.all(Radius.circular(10))
+                      ),
                   child: Text('จำนวนน้ำนมทั้งหมด $sum ลิตร',
                       style: TextStyle(
                           color: Colors.brown[500],

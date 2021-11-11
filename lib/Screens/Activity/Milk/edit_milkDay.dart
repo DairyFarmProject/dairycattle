@@ -100,7 +100,7 @@ class _EditMilkDayState extends State<EditMilkDay> {
               color: Colors.white,
             ),
           ),
-          backgroundColor: Colors.amber[600],
+          backgroundColor: Color.fromRGBO(234, 177, 93, 5),
         ),
         body: Form(
             key: _formKey,
@@ -127,11 +127,6 @@ class _EditMilkDayState extends State<EditMilkDay> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          IconButton(
-                                              icon: const Icon(
-                                                  Icons.navigate_before,
-                                                  size: 28),
-                                              onPressed: () {}),
                                           Text(
                                             '${DateFormat.yMMMMd("th_TH").format(DateTime.parse(now.toString()))}',
                                             style: TextStyle(
@@ -140,12 +135,6 @@ class _EditMilkDayState extends State<EditMilkDay> {
                                             ),
                                             textAlign: TextAlign.center,
                                           ),
-                                          IconButton(
-                                              icon: const Icon(
-                                                Icons.navigate_next,
-                                                size: 24,
-                                              ),
-                                              onPressed: () {}),
                                         ],
                                       ),
                                     ),
@@ -327,13 +316,18 @@ class _EditMilkDayState extends State<EditMilkDay> {
                                     padding: EdgeInsets.all(20),
                                     margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
                                     decoration: BoxDecoration(
-                                        color: Colors.brown,
+                                        border: Border.all(
+                                          color: Colors.brown,
+                                          width: 2,
+                                        ),
+                                        color: Colors.white,
                                         shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10))),
+                                        borderRadius: BorderRadius.circular(10)
+                                        // borderRadius: BorderRadius.all(Radius.circular(10))
+                                        ),
                                     child: Text('จำนวนน้ำนมทั้งหมด $sum ลิตร',
                                         style: TextStyle(
-                                            color: Colors.white,
+                                            color: Colors.brown,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16)),
                                   ),

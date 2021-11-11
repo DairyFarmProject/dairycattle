@@ -62,7 +62,7 @@ class _SuccessAddCowState extends State<SuccessAddCow> {
                     child: Text(
                       'เพิ่มวัวเพิ่ม',
                       style: TextStyle(
-                          color: Color(0xff59aca9),
+                          color: Colors.brown,
                           fontWeight: FontWeight.w600,
                           fontSize: 14),
                     ),
@@ -81,7 +81,7 @@ class _SuccessAddCowState extends State<SuccessAddCow> {
                         return Cow();
                       }));
                     },
-                    color: Color(0xff59aca9),
+                    color: Colors.brown,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(39))),
                     child: Text(
