@@ -39,17 +39,9 @@ class _DeleteCowState extends State<DeleteCow> {
 
   final cowNoteController = TextEditingController();
 
-  int _selectIndex = 0;
-
-  void _onItemTap(int index) {
-    setState(() {
-      _selectIndex = index;
-    });
-  }
-
   Widget optionCowButton() {
     return IconButton(
-      icon: Icon(Icons.more_vert),
+      icon: const Icon(Icons.more_vert),
       onPressed: () {
         print("you want to edit or delete");
       },
@@ -60,28 +52,28 @@ class _DeleteCowState extends State<DeleteCow> {
   Widget build(BuildContext context) {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("ลบวัว"),
+        title: const Text("ลบวัว"),
         leading: GestureDetector(
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(
+          child: const Icon(
             Icons.arrow_back,
             color: Colors.white,
           ),
         ),
         backgroundColor: Colors.brown[500],
       ),
-      body: Container(
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
           child: Column(
             children: [
               Container(
                 padding: const EdgeInsets.all(0),
                 margin: const EdgeInsets.all(20),
                 width: 350,
-                height: 150,
+                height: 180,
                 decoration: BoxDecoration(
                   color: Colors.blueGrey[100],
                   border: Border.all(color: (Colors.blueGrey[300])!, width: 2),
@@ -89,8 +81,8 @@ class _DeleteCowState extends State<DeleteCow> {
                 ),
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                  decoration: const BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(30)),
                   ),
                   child: Column(
                     children: [
@@ -99,9 +91,8 @@ class _DeleteCowState extends State<DeleteCow> {
                         child: Row(
                           children: [
                             Expanded(
-                              flex: 2,
-                              child: Container(
-                                child: Padding(
+                              flex: 3,
+                              child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(0, 10, 0, 5),
                                   child: Text(
@@ -109,13 +100,12 @@ class _DeleteCowState extends State<DeleteCow> {
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                ),
+                                
                               ),
                             ),
                             Expanded(
                               flex: 4,
-                              child: Container(
-                                child: Padding(
+                              child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(0, 10, 0, 5),
                                   child: Text(
@@ -123,30 +113,29 @@ class _DeleteCowState extends State<DeleteCow> {
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                ),
+                              
                               ),
                             ),
                           ],
                         ),
                       ),
-                      Container(
-                        child: Padding(
+                      Padding(
                           padding: const EdgeInsets.fromLTRB(0, 10, 0, 15),
                           child: Text(
                             'รหัสประจำตัว : ${widget.cow.cow_no}',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                        ),
+                        
                       ),
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: Colors.brown[500],
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
                         ),
                         child: Text(
                           'สถานะปัจจุบัน : ${widget.cow.type_name}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
                           ),
@@ -157,9 +146,16 @@ class _DeleteCowState extends State<DeleteCow> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  alignment: Alignment.topLeft,
+                  child: const Text('สาเหตุการลบ',
+                      style: TextStyle(fontWeight: FontWeight.w500))),
+              Container(
+                padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                alignment: Alignment.topLeft,
                 child: DropdownButton<Status>(
-                  hint: new Text("Select a status"),
+                  isExpanded: true,
+                  hint: Text("Select a status"),
                   value: selectStatus == null ? null : statuses[selectStatus],
                   onChanged: (newValue) {
                     setState(() {
@@ -168,11 +164,11 @@ class _DeleteCowState extends State<DeleteCow> {
                     });
                   },
                   items: statuses.map((Status status) {
-                    return new DropdownMenuItem<Status>(
+                    return DropdownMenuItem<Status>(
                       value: status,
-                      child: new Text(
+                      child: Text(
                         status.name,
-                        style: new TextStyle(color: Colors.black),
+                        style: const TextStyle(color: Colors.black),
                       ),
                     );
                   }).toList(),
@@ -181,9 +177,9 @@ class _DeleteCowState extends State<DeleteCow> {
               Column(children: [
                 Container(
                   alignment: Alignment.topLeft,
-                  margin: EdgeInsets.all(0),
+                  margin: const EdgeInsets.all(0),
                   padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
-                  child: Text('รายละเอียดอื่นๆ',
+                  child: const Text('รายละเอียดอื่นๆ',
                       style: TextStyle(fontWeight: FontWeight.w500)),
                 ),
                 Padding(
@@ -191,7 +187,7 @@ class _DeleteCowState extends State<DeleteCow> {
                   child: TextField(
                     controller: cowNoteController,
                     decoration: InputDecoration(
-                      hintText: '${widget.cow.note}',
+                      hintText: widget.cow.note,
                       fillColor: Colors.blueGrey,
                     ),
                     onChanged: (String name) {},
@@ -213,7 +209,7 @@ class _DeleteCowState extends State<DeleteCow> {
                           },
                           color: Colors.blueGrey[50],
                           padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(39)),
                           ),
                           //hoverColor: Colors.brown[900],
@@ -246,10 +242,10 @@ class _DeleteCowState extends State<DeleteCow> {
                           },
                           padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
                           color: Colors.brown[500],
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(39)),
                           ),
-                          child: Text(
+                          child: const Text(
                             'บันทึกข้อมูล',
                             style: TextStyle(
                               color: Colors.white,
@@ -266,7 +262,7 @@ class _DeleteCowState extends State<DeleteCow> {
             ],
           ),
         ),
-      ),
+      
     );
   }
 }
@@ -303,7 +299,7 @@ deleteCow(context, status, user_id, farm_id, cow_id) async {
         ?.showSnackBar(SnackBar(content: Text("${resposne['message']}")));
   } else {
     _scaffoldKey.currentState
-        ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+        ?.showSnackBar(const SnackBar(content: Text("Please Try again")));
   }
 }
 
@@ -315,15 +311,15 @@ Future<ConfirmAction?> _asyncConfirmDialog(
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          insetPadding: EdgeInsets.fromLTRB(20, 10, 20, 0),
-          title: Text(
+          insetPadding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+          title: const Text(
             'ยืนยันที่จะลบข้อมูลนี้',
             style: TextStyle(
               fontWeight: FontWeight.w500,
             ),
             textAlign: TextAlign.center,
           ),
-          content: Text(
+          content: const Text(
             'เมื่อคุณกดปุ่ม "ยืนยัน" แล้ว ข้อมูลของคุณจะถูกลบออกไปโดยทันที ',
             textAlign: TextAlign.center,
           ),
@@ -340,7 +336,7 @@ Future<ConfirmAction?> _asyncConfirmDialog(
                   ),
                   padding: const EdgeInsets.fromLTRB(50, 12, 50, 12),
                   color: Colors.blueGrey[50],
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(39)),
                   ),
                   onPressed: () {
@@ -359,7 +355,7 @@ Future<ConfirmAction?> _asyncConfirmDialog(
                   ),
                   padding: const EdgeInsets.fromLTRB(50, 12, 50, 12),
                   color: Colors.brown[900],
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(39)),
                   ),
                   onPressed: () {

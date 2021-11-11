@@ -365,7 +365,13 @@ class _AddCowState extends State<AddCow> {
                     ),
                     hintText: "หมายเลขพ่อพันธุ์"),
                 Container(
-                  padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+                    alignment: Alignment.topLeft,
+                    child: const Text('ชื่อสายพันธ์',
+                        style: TextStyle(fontWeight: FontWeight.w500))),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  alignment: Alignment.topLeft,
                   child: DropdownButton<DadSpecie>(
                     hint: const Text("Select a specie"),
                     value: selectDadSpecie == null
@@ -402,7 +408,13 @@ class _AddCowState extends State<AddCow> {
                     ),
                     hintText: "หมายเลขแม่พันธุ์"),
                 Container(
-                  padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+                    alignment: Alignment.topLeft,
+                    child: const Text('ชื่อสายพันธ์',
+                        style: TextStyle(fontWeight: FontWeight.w500))),
+                Container(
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  alignment: Alignment.topLeft,
                   child: DropdownButton<MomSpecie>(
                     hint: const Text("Select a specie"),
                     value: selectMomSpecie == null
@@ -652,7 +664,7 @@ class _AddCowState extends State<AddCow> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => new SuccessRecord(),
+          builder: (context) => SuccessRecord(),
         ),
       );
     }

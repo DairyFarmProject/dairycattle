@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: size.height * 0.03),
                 Image.asset(
-                  "assets/images/DairyCattle1.png",
+                  "assets/images/Logo.png",
                   height: size.height * 0.2,
                 ),
                 SizedBox(height: size.height * 0.03),
@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       suffixIcon: IconButton(
                         icon: Icon(
                           // Based on passwordVisible state choose the icon
-                          obscureText ? Icons.visibility : Icons.visibility_off,
+                          obscureText ? Icons.visibility_off : Icons.visibility,
                           color: kPrimaryColor,
                         ),
                         onPressed: () {
