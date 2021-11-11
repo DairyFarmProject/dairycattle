@@ -46,9 +46,12 @@ class MilkChartState extends State<MilkChart> {
       db = jsonDecode(response.body);
       list = db?['data']['rows'];
       List<MilkWeek> milk = list.map((e) => MilkWeek.fromMap(e)).toList();
-      setState(() {
-        milks = milk;
-      });
+
+      if (mounted) {
+        setState(() {
+          milks = milk;
+        });
+      }
     }
     return milks;
   }

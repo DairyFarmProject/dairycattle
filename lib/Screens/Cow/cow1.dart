@@ -37,9 +37,11 @@ class _CowState extends State<Cow> {
       final List list = db['data']['rows'];
       List<Cows> cows = list.map((e) => Cows.fromMap(e)).toList();
 
-      setState(() {
-        cow = cows;
-      });
+      if (mounted) {
+        setState(() {
+          cow = cows;
+        });
+      }
     }
     return cow;
   }
@@ -55,94 +57,82 @@ class _CowState extends State<Cow> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Padding(
-            padding: const EdgeInsets.all(0),
-            child: (cow.isEmpty)
-                ? Center(
-                    child: Container(
-                    width: MediaQuery.of(context).size.height * 0.1,
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    child: const CircularProgressIndicator(
-                      color: Colors.brown,
-                    ),
-                  ))
-                : Container(
-                    child: FutureBuilder<List<Cows>>(
-                        future: getCow(),
-                        builder: (context, snapshot) {
-                          if (snapshot.data == null) {
-                            return Container();
-                          } else
-                            return GridView.builder(
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2),
-                                itemCount: snapshot.data!.length,
-                                itemBuilder: (context, i) {
-                                  return Padding(
-                                      padding: const EdgeInsets.all(0),
-                                      child: Center(
-                                          child: Column(
-                                        children: [
-                                          Center(
-                                              child: Card(
-                                            elevation: 1,
-                                            margin: EdgeInsets.only(top: 3),
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    new BorderRadius.circular(
-                                                        15)),
-                                            child: InkWell(
-                                              onTap: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            OneCow(
-                                                                cow: snapshot
-                                                                        .data![
-                                                                    i])));
-                                              },
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  Hero(
-                                                      tag: i.toString(),
-                                                      child: Column(children: [
-                                                        Image.network(
-                                                          snapshot.data?[i]
-                                                                  .cow_image ??
-                                                              "",
-                                                          width: 180,
-                                                          height: 140,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                        SizedBox.fromSize(
-                                                            size: Size(180, 8)),
-                                                        Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .fromLTRB(
-                                                                    10,
-                                                                    0,
-                                                                    0,
-                                                                    12),
-                                                            child: Text(
-                                                              '${snapshot.data?[i].cow_name ?? ""}, ${snapshot.data?[i].cow_no}',
-                                                              style: TextStyle(
-                                                                fontSize: 14,
-                                                              ),
-                                                            )),
-                                                      ]))
-                                                ],
-                                              ),
+      padding: const EdgeInsets.all(0),
+      child: (cow.isEmpty)
+          ? Center(
+              child: Container(
+              width: MediaQuery.of(context).size.height * 0.1,
+              height: MediaQuery.of(context).size.height * 0.1,
+              child: const CircularProgressIndicator(
+                color: Colors.brown,
+              ),
+            ))
+          : FutureBuilder<List<Cows>>(
+              future: getCow(),
+              builder: (context, snapshot) {
+                if (snapshot.data == null) {
+                  return Container();
+                }
+                return GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2),
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, i) {
+                      return Padding(
+                          padding: const EdgeInsets.all(0),
+                          child: Center(
+                              child: Column(
+                            children: [
+                              Center(
+                                  child: Card(
+                                elevation: 1,
+                                margin: const EdgeInsets.only(top: 3),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => OneCow(
+                                                cow: snapshot.data![i])));
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Hero(
+                                          tag: i.toString(),
+                                          child: Column(children: [
+                                            Image.network(
+                                              snapshot.data?[i].cow_image ?? "",
+                                              width: 180,
+                                              height: 140,
+                                              fit: BoxFit.cover,
                                             ),
-                                          ))
-                                        ],
-                                      )));
-                                });
-                        }),
-                  )));
+                                            SizedBox.fromSize(
+                                                size: const Size(180, 8)),
+                                            Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        10, 0, 0, 12),
+                                                child: Text(
+                                                  '${snapshot.data?[i].cow_name ?? ""}, ${snapshot.data?[i].cow_no}',
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                  ),
+                                                )),
+                                          ]))
+                                    ],
+                                  ),
+                                ),
+                              ))
+                            ],
+                          )));
+                    });
+              }),
+    ));
   }
 
   @override

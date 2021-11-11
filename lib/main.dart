@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import '/Screens/Cow/cow2.dart';
+import '/Screens/Cow/cow3.dart';
+import '/Screens/Cow/cow4.dart';
+import '/Screens/Cow/cow5.dart';
 import '/Screens/Welcome/otp.dart';
 import '/Screens/Welcome/register.dart';
 import '/Screens/Welcome/welcome.dart';
@@ -16,11 +20,12 @@ import 'util/shared_preference.dart';
 import 'util/register_store.dart';
 import 'Screens/Farm/confirm_create_farm.dart';
 
-class MyHttpoverrides extends HttpOverrides{
-  @override 
-  HttpClient createHttpClient(SecurityContext? context){
+class MyHttpoverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-    ..badCertificateCallback = (X509Certificate cert, String host, int port)=>true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
 
@@ -56,6 +61,10 @@ class MyApp extends StatelessWidget {
               ConfirmCreateFarm.routeName: (context) => ConfirmCreateFarm(),
               RegisterScreen.routeName: (context) => RegisterScreen(),
               OTP.routeName: (context) => OTP(),
+              Cow2.routeName: (context) => Cow2(),
+              Cow3.routeName: (context) => Cow3(),
+              Cow4.routeName: (context) => Cow4(),
+              Cow5.routeName: (context) => Cow5(),
             },
             home: Welcome()));
   }

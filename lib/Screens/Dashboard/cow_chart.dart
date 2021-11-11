@@ -63,9 +63,11 @@ class CowChartState extends State<CowChart> {
       Map<String, dynamic>? db = jsonDecode(response.body);
       String counts = db?['data']['total'];
 
-      setState(() {
-        count = counts;
-      });
+      if (mounted) {
+        setState(() {
+          count = counts;
+        });
+      }
     }
     return count;
   }
@@ -84,7 +86,7 @@ class CowChartState extends State<CowChart> {
       //color: Color.fromRGBO(222, 222, 222, 5),
       decoration: const BoxDecoration(color: Colors.white30),
       height: MediaQuery.of(context).size.height * 0.30,
-      child: (count.isEmpty)
+      child: (count.isEmpty || cows.isEmpty)
           ? Center(
               child: Container(
               width: MediaQuery.of(context).size.height * 0.1,
@@ -103,24 +105,24 @@ class CowChartState extends State<CowChart> {
                 Flexible(
                   child: Row(
                     children: <Widget>[
-                      _buildStatCard(cows[5].type_name, '${cows[5].count}',
+                      _buildStatCard(cows[5].type_name, cows[5].count,
                           Colors.deepPurple.shade200),
-                      _buildStatCard(cows[4].type_name, '${cows[4].count}',
+                      _buildStatCard(cows[4].type_name, cows[4].count,
                           Colors.pink.shade100),
-                      _buildStatCard(cows[3].type_name, '${cows[3].count}',
-                          Color.fromRGBO(234, 177, 93, 5)),
+                      _buildStatCard(cows[3].type_name, cows[3].count,
+                          const Color.fromRGBO(234, 177, 93, 5)),
                     ],
                   ),
                 ),
                 Flexible(
                   child: Row(
                     children: <Widget>[
-                      _buildStatCard(cows[2].type_name, '${cows[2].count}',
-                          Color.fromRGBO(111, 193, 148, 5)),
-                      _buildStatCard(cows[1].type_name, '${cows[1].count}',
-                          Color.fromRGBO(93, 124, 234, 5)),
-                      _buildStatCard(cows[0].type_name, '${cows[0].count}',
-                          Color.fromRGBO(185, 110, 110, 5)),
+                      _buildStatCard(cows[2].type_name, cows[2].count,
+                          const Color.fromRGBO(111, 193, 148, 5)),
+                      _buildStatCard(cows[1].type_name, cows[1].count,
+                          const Color.fromRGBO(93, 124, 234, 5)),
+                      _buildStatCard(cows[0].type_name, cows[0].count,
+                          const Color.fromRGBO(185, 110, 110, 5)),
                     ],
                   ),
                 ),

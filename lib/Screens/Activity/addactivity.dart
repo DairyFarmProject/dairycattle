@@ -1,9 +1,6 @@
 import '/Screens/Activity/Breeding/allrecordbreeding.dart';
 import '/Screens/Activity/Milk/recordmilkDay.dart';
-import '/Screens/Cow/cow1.dart';
-import '/Screens/Cow/onecow.dart';
 import '/Screens/Activity/Calve/allrecordcalve.dart';
-
 import 'Vaccine/recordvaccinemain.dart';
 import 'package:flutter/material.dart';
 
@@ -13,26 +10,16 @@ class AddActivity extends StatefulWidget {
 }
 
 class _AddActivityState extends State<AddActivity> {
-  int _selectPage = 0;
-
-  final _pageOptions = [OneCow, Cow(), AddActivity(), Navigator(), Navigator()];
-
-  void _onItemTap(int index) {
-    setState(() {
-      _selectPage = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Column(
+      body: Column(
           children: <Widget>[
             Container(),
             Expanded(
                 child: GridView.count(
-              padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
+              padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
               mainAxisSpacing: 10,
               crossAxisCount: 1,
               childAspectRatio: (200 / 75),
@@ -43,20 +30,20 @@ class _AddActivityState extends State<AddActivity> {
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return RecordMilkDay();
+                      return const RecordMilkDay();
                     }));
                   },
                   child: Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                     elevation: 1,
-                    color: Color.fromRGBO(234, 177, 93, 5),
+                    color: const Color.fromRGBO(234, 177, 93, 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Container(
-                          padding: EdgeInsets.only(left: 30),
-                          child: Text(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: const Text(
                             'บันทึกน้ำนมวัว',
                             style: TextStyle(
                                 color: Colors.white,
@@ -72,7 +59,7 @@ class _AddActivityState extends State<AddActivity> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                                 bottomLeft: Radius.circular(20),
                                 topLeft: Radius.circular(20)),
                             color: Colors.amber[100],
@@ -82,10 +69,10 @@ class _AddActivityState extends State<AddActivity> {
                             children: <Widget>[
                               Container(
                                 width: 30,
-                                padding: EdgeInsets.only(left: 20),
+                                padding: const EdgeInsets.only(left: 20),
                                 alignment: Alignment.center,
                               ),
-                              Icon(
+                              const Icon(
                                 Icons.arrow_back_rounded,
                                 color: Color.fromRGBO(234, 177, 93, 5),
                               ),
@@ -100,20 +87,20 @@ class _AddActivityState extends State<AddActivity> {
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return RecordVaccineMain();
+                      return const RecordVaccineMain();
                     }));
                   },
                   child: Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                     elevation: 1,
-                    color: Color.fromRGBO(111, 193, 148, 5),
+                    color: const Color.fromRGBO(111, 193, 148, 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Container(
-                          padding: EdgeInsets.only(left: 30),
-                          child: Text(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: const Text(
                             'บันทึกการฉีดวัคซีน',
                             style: TextStyle(
                                 color: Colors.white,
@@ -129,7 +116,7 @@ class _AddActivityState extends State<AddActivity> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                                 bottomLeft: Radius.circular(20),
                                 topLeft: Radius.circular(20)),
                             color: Colors.green[100],
@@ -139,10 +126,10 @@ class _AddActivityState extends State<AddActivity> {
                             children: <Widget>[
                               Container(
                                 width: 30,
-                                padding: EdgeInsets.only(left: 20),
+                                padding: const EdgeInsets.only(left: 20),
                                 alignment: Alignment.center,
                               ),
-                              Icon(
+                              const Icon(
                                 Icons.arrow_back_rounded,
                                 color: Color.fromRGBO(111, 193, 148, 5),
                               ),
@@ -164,13 +151,13 @@ class _AddActivityState extends State<AddActivity> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                     elevation: 1,
-                    color: Color.fromRGBO(185, 110, 110, 5),
+                    color: const Color.fromRGBO(185, 110, 110, 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Container(
-                          padding: EdgeInsets.only(left: 30),
-                          child: Text(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: const Text(
                             'บันทึกการผสมพันธ์',
                             style: TextStyle(
                                 color: Colors.white,
@@ -186,7 +173,7 @@ class _AddActivityState extends State<AddActivity> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                                 bottomLeft: Radius.circular(20),
                                 topLeft: Radius.circular(20)),
                             color: Colors.red[100],
@@ -196,10 +183,10 @@ class _AddActivityState extends State<AddActivity> {
                             children: <Widget>[
                               Container(
                                 width: 30,
-                                padding: EdgeInsets.only(left: 20),
+                                padding: const EdgeInsets.only(left: 20),
                                 alignment: Alignment.center,
                               ),
-                              Icon(
+                              const Icon(
                                 Icons.arrow_back_rounded,
                                 color: Color.fromRGBO(185, 110, 110, 5),
                               ),
@@ -214,20 +201,20 @@ class _AddActivityState extends State<AddActivity> {
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return AllRecordCalve();
+                      return const AllRecordCalve();
                     }));
                   },
                   child: Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                     elevation: 1,
-                    color: Color.fromRGBO(93, 124, 234, 5),
+                    color: const Color.fromRGBO(93, 124, 234, 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Container(
-                          padding: EdgeInsets.only(left: 30),
-                          child: Text(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: const Text(
                             'บันทึกการคลอด',
                             style: TextStyle(
                                 color: Colors.white,
@@ -243,7 +230,7 @@ class _AddActivityState extends State<AddActivity> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                                 bottomLeft: Radius.circular(20),
                                 topLeft: Radius.circular(20)),
                             color: Colors.indigo[100],
@@ -253,10 +240,10 @@ class _AddActivityState extends State<AddActivity> {
                             children: <Widget>[
                               Container(
                                 width: 30,
-                                padding: EdgeInsets.only(left: 20),
+                                padding: const EdgeInsets.only(left: 20),
                                 alignment: Alignment.center,
                               ),
-                              Icon(
+                              const Icon(
                                 Icons.arrow_back_rounded,
                                 color: Color.fromRGBO(93, 124, 234, 5),
                               ),
@@ -271,7 +258,7 @@ class _AddActivityState extends State<AddActivity> {
             )),
           ],
         ),
-      ),
+      
     );
   }
 }

@@ -19,13 +19,13 @@ class AlreadyHaveAnAccountCheck extends StatelessWidget {
           login
               ? "ยังไม่มีบัญชีผู้ใช้ใช่หรือไม่ ? "
               : "มีบัญชีผู้ใช้ใช่หรือไม่ ? ",
-          style: TextStyle(color: kPrimaryColor),
+          style: const TextStyle(color: kPrimaryColor),
         ),
         GestureDetector(
           onTap: press,
           child: Text(
             login ? "สมัครใช้งาน" : "เข้าสู่ระบบ",
-            style: TextStyle(
+            style: const TextStyle(
               color: kPrimaryColor,
               fontWeight: FontWeight.w500,
             ),

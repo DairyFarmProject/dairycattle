@@ -1,3 +1,5 @@
+import 'package:dairycattle/Screens/Cow/cow2.dart';
+
 import '/Screens/Profile/Farm_data.dart';
 import 'Screens/Dashboard/dashboard.dart';
 import '/notification.dart';
@@ -11,68 +13,8 @@ class Homepage extends StatefulWidget {
   _HomepageState createState() => _HomepageState();
 }
 
-int _selectIndex = 0;
-
 class _HomepageState extends State<Homepage> {
   int _selectedIndex = 0;
-  List<Widget> _widgetOptions = <Widget>[
-    Text('ฟาร์ม'),
-    Text('วัว'),
-    Text('กิจกรรม'),
-    Text('แจ้งเตือน'),
-    Text('ฉัน'),
-  ];
-
-  void _onItemTap(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  List<AppBar> _appBarList = [
-    AppBar(
-      automaticallyImplyLeading: false,
-      title: Text('ภาพรวมฟาร์ม'),
-      backgroundColor: Colors.brown[500],
-    ),
-    AppBar(
-      automaticallyImplyLeading: false,
-      centerTitle: true,
-      //titleTextStyle: TextStyle(fontWeight: FontWeight.w700),
-      title: Text("วัวในฟาร์ม"),
-      actions: [
-        PopupMenuButton<String>(
-          offset: Offset(100, 38),
-          icon: Icon(Icons.sort),
-          itemBuilder: (BuildContext context) {
-            return {'อายุ : มาก - น้อย', 'อายุ : น้อย - มาก', 'ประเภทวัว'}
-                .map((String choice) {
-              return PopupMenuItem<String>(
-                value: choice,
-                child: Text(choice),
-              );
-            }).toList();
-          },
-        )
-      ],
-      backgroundColor: Colors.brown[500],
-    ),
-    AppBar(
-      automaticallyImplyLeading: false,
-      title: Text('เพิ่มกิจกรรม'),
-      backgroundColor: Colors.brown[500],
-    ),
-    AppBar(
-      automaticallyImplyLeading: false,
-      title: Text('การแจ้งเตือน'),
-      backgroundColor: Colors.brown[500],
-    ),
-    AppBar(
-      automaticallyImplyLeading: false,
-      title: Text('ข้อมูลส่วนตัว'),
-      backgroundColor: Colors.brown[500],
-    ),
-  ];
 
   int _selectPage = 0;
 
@@ -81,12 +23,70 @@ class _HomepageState extends State<Homepage> {
     Cow(),
     AddActivity(),
     Notifications(),
-    FarmData(),
+    const FarmData(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final List<Widget> _widgetOptions = <Widget>[
+      const Text('ฟาร์ม'),
+      const Text('วัว'),
+      const Text('กิจกรรม'),
+      const Text('แจ้งเตือน'),
+      const Text('ฉัน'),
+    ];
+
+    final List<AppBar> _appBarList = [
+      AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('ภาพรวมฟาร์ม'),
+        backgroundColor: Colors.brown[500],
+      ),
+      AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        //titleTextStyle: TextStyle(fontWeight: FontWeight.w700),
+        title: const Text("วัวในฟาร์ม"),
+        actions: [
+          PopupMenuButton<String>(
+            offset: const Offset(100, 38),
+            icon: const Icon(Icons.sort),
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                  value: '/cow5', child: Text('อายุ : มาก - น้อย')),
+              const PopupMenuItem<String>(
+                  value: '/cow2', child: Text('อายุ : น้อย - มาก')),
+              const PopupMenuItem<String>(
+                  value: '/cow3', child: Text('วัว : เก่า - ใหม่')),
+              const PopupMenuItem<String>(
+                  value: '/cow4', child: Text('วัว : ใหม่ - เก่า')),
+            ],
+            onSelected: (filter) {
+              Navigator.pushNamed(context, filter);
+            },
+          )
+        ],
+        backgroundColor: Colors.brown[500],
+      ),
+      AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('เพิ่มกิจกรรม'),
+        backgroundColor: Colors.brown[500],
+      ),
+      AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('การแจ้งเตือน'),
+        backgroundColor: Colors.brown[500],
+      ),
+      AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('ข้อมูลส่วนตัว'),
+        backgroundColor: Colors.brown[500],
+      ),
+    ];
+
+    return MaterialApp(
+        home: Scaffold(
       appBar: _appBarList[_selectPage],
       body: _pageOptions[_selectPage],
       bottomNavigationBar: BottomNavigationBar(
@@ -135,9 +135,9 @@ class _HomepageState extends State<Homepage> {
             color: Colors.white,
             size: 40,
           ),
-          backgroundColor: Color(0xff62b490),
+          backgroundColor: const Color(0xff62b490),
         ),
       ),
-    );
+    ));
   }
 }
