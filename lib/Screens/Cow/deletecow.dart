@@ -81,7 +81,7 @@ class _DeleteCowState extends State<DeleteCow> {
                 padding: const EdgeInsets.all(0),
                 margin: const EdgeInsets.all(20),
                 width: 350,
-                height: 150,
+                height: 180,
                 decoration: BoxDecoration(
                   color: Colors.blueGrey[100],
                   border: Border.all(color: (Colors.blueGrey[300])!, width: 2),
@@ -99,7 +99,7 @@ class _DeleteCowState extends State<DeleteCow> {
                         child: Row(
                           children: [
                             Expanded(
-                              flex: 2,
+                              flex: 3,
                               child: Container(
                                 child: Padding(
                                   padding:
@@ -157,8 +157,15 @@ class _DeleteCowState extends State<DeleteCow> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.all(20.0),
+                  padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  alignment: Alignment.topLeft,
+                  child: Text('สาเหตุการลบ',
+                      style: TextStyle(fontWeight: FontWeight.w500))),
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                alignment: Alignment.topLeft,
                 child: DropdownButton<Status>(
+                  isExpanded: true,
                   hint: new Text("Select a status"),
                   value: selectStatus == null ? null : statuses[selectStatus],
                   onChanged: (newValue) {

@@ -63,7 +63,7 @@ class _RecordMilkState extends State<RecordMilk> {
     return Scaffold(
         appBar: AppBar(
           title: Text("บันทึกน้ำนมวัว",
-              style: TextStyle(fontWeight: FontWeight.bold)),
+              style: TextStyle(fontWeight: FontWeight.w500)),
           leading: GestureDetector(
             onTap: () {
               Navigator.pop(context);

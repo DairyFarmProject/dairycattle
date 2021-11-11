@@ -52,7 +52,7 @@ class _WelcomeState extends State<Welcome> {
             ),
             SizedBox(height: size.height * 0.05),
             Image.asset(
-              "assets/images/DairyCattle1.png",
+              "assets/images/Logo.png",
               height: size.height * 0.30,
             ),
             SizedBox(height: size.height * 0.05),

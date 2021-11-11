@@ -325,8 +325,15 @@ class _AddCowState extends State<AddCow> {
                           fontSize: 18)),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(20.0),
+                    padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                    alignment: Alignment.topLeft,
+                    child: Text('เพศ',
+                        style: TextStyle(fontWeight: FontWeight.w500))),
+                Container(
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  alignment: Alignment.topLeft,
                   child: DropdownButton<Sex>(
+                    isExpanded: true,
                     hint: new Text("Select a sex"),
                     value: selectSex == null ? null : sexs[selectSex],
                     onChanged: (newValue) {
@@ -357,8 +364,15 @@ class _AddCowState extends State<AddCow> {
                     ),
                     hintText: "หมายเลขพ่อพันธุ์"),
                 Container(
-                  padding: const EdgeInsets.all(20.0),
+                    padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                    alignment: Alignment.topLeft,
+                    child: Text('ชื่อสายพันธ์',
+                        style: TextStyle(fontWeight: FontWeight.w500))),
+                Container(
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  alignment: Alignment.topLeft,
                   child: DropdownButton<DadSpecie>(
+                    isExpanded: true,
                     hint: new Text("Select a specie"),
                     value: selectDadSpecie == null
                         ? null
@@ -391,8 +405,15 @@ class _AddCowState extends State<AddCow> {
                     ),
                     hintText: "หมายเลขแม่พันธุ์"),
                 Container(
-                  padding: const EdgeInsets.all(20.0),
+                    padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                    alignment: Alignment.topLeft,
+                    child: Text('ชื่อสายพันธ์',
+                        style: TextStyle(fontWeight: FontWeight.w500))),
+                Container(
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  alignment: Alignment.topLeft,
                   child: DropdownButton<MomSpecie>(
+                    isExpanded: true,
                     hint: new Text("Select a specie"),
                     value: selectMomSpecie == null
                         ? null

@@ -375,8 +375,15 @@ class _EditCowState extends State<EditCow> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.all(20.0),
+                      padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                      alignment: Alignment.topLeft,
+                      child: Text('ประเภทวัว',
+                          style: TextStyle(fontWeight: FontWeight.w500))),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    alignment: Alignment.topLeft,
                     child: DropdownButton<Type>(
+                      isExpanded: true,
                       hint: new Text("Select a type"),
                       value: selectStatus == null ? null : types[selectType],
                       onChanged: (newValue) {
@@ -397,8 +404,15 @@ class _EditCowState extends State<EditCow> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.all(20.0),
+                      padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                      alignment: Alignment.topLeft,
+                      child: Text('ชื่อสายพันธ์',
+                          style: TextStyle(fontWeight: FontWeight.w500))),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    alignment: Alignment.topLeft,
                     child: DropdownButton<Specie>(
+                      isExpanded: true,
                       hint: new Text("Select a specie"),
                       value:
                           selectSpecie == null ? null : species[selectSpecie],
@@ -420,8 +434,15 @@ class _EditCowState extends State<EditCow> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.all(20.0),
+                      padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                      alignment: Alignment.topLeft,
+                      child: Text('เพศ',
+                          style: TextStyle(fontWeight: FontWeight.w500))),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    alignment: Alignment.topLeft,
                     child: DropdownButton<Sex>(
+                      isExpanded: true,
                       hint: new Text("Select a sex"),
                       value: selectSex == null ? null : sexs[selectSex],
                       onChanged: (newValue) {

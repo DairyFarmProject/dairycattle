@@ -48,7 +48,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 SizedBox(height: size.height * 0.03),
                 Image.asset(
-                  "assets/images/DairyCattle1.png",
+                  "assets/images/Logo.png",
                   height: size.height * 0.25,
                 ),
                 Form(
@@ -131,8 +131,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 suffixIcon: IconButton(
                                   icon: Icon(
                                     obscureText2
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
                                     color: kPrimaryColor,
                                   ),
                                   onPressed: () {
