@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:dropdown_search/dropdown_search.dart';
+
 import '../../../models/Cows.dart';
 import '../../../models/checkbox_state.dart';
 import '../../../models/User.dart';
@@ -43,6 +45,7 @@ class _RecordVacineState extends State<RecordVacine> {
 
   int selectVaccine = 1;
   int _selectIndex = 1;
+  int? cow_id;
 
   final allowNotifications = CheckBoxState(title: 'ทุกตัว');
 
@@ -146,31 +149,24 @@ class _RecordVacineState extends State<RecordVacine> {
                             ),
                             onPressed: () {
                               showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1970),
-                                      lastDate: DateTime(2022),
-                                        builder: (context, picker) {
-                                                  return Theme(
-                                                    data: ThemeData.light()
-                                                        .copyWith(
-                                                      colorScheme:
-                                                          ColorScheme.dark(
-                                                        primary: Colors
-                                                            .brown.shade200,
-                                                        onPrimary: Colors.white,
-                                                        surface: Colors
-                                                            .brown.shade200,
-                                                        onSurface: Colors.brown,
-                                                      ),
-                                                      dialogBackgroundColor:
-                                                          Colors.white,
-                                                    ),
-                                                    child: picker!,
-                                                  );
-                                                }
-                                      )
-                                  .then((date) {
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(1970),
+                                  lastDate: DateTime(2022),
+                                  builder: (context, picker) {
+                                    return Theme(
+                                      data: ThemeData.light().copyWith(
+                                        colorScheme: ColorScheme.dark(
+                                          primary: Colors.brown.shade200,
+                                          onPrimary: Colors.white,
+                                          surface: Colors.brown.shade200,
+                                          onSurface: Colors.brown,
+                                        ),
+                                        dialogBackgroundColor: Colors.white,
+                                      ),
+                                      child: picker!,
+                                    );
+                                  }).then((date) {
                                 setState(() {
                                   _dateTime = date;
                                 });
@@ -187,15 +183,31 @@ class _RecordVacineState extends State<RecordVacine> {
                       child: Text('ชื่อวัวที่ฉีดวัคซีน',
                           style: TextStyle(fontWeight: FontWeight.w500)),
                     ),
-                    Column(
-                      children: [
-                        buildGroupCheckBox(allowNotifications),
-                        Divider(
-                          color: Colors.grey,
-                        ),
-                        ...notifications.map(buildSingleCheckbox).toList(),
-                      ],
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                      child: DropdownSearch<Cows>(
+                        showSelectedItems: true,
+                        compareFn: (Cows? i, Cows? s) => i!.isEqual(s),
+                        label: "วัว",
+                        onFind: (String? filter) => getData(filter),
+                        onChanged: (Cows? data) {
+                          setState(() {
+                            cow_id = data!.cow_id;
+                          });
+                        },
+                        dropdownBuilder: _customDropDown,
+                        popupItemBuilder: _customPopup,
+                      ),
                     ),
+                    // Column(
+                    //   children: [
+                    //     buildGroupCheckBox(allowNotifications),
+                    //     Divider(
+                    //       color: Colors.grey,
+                    //     ),
+                    //     ...notifications.map(buildSingleCheckbox).toList(),
+                    //   ],
+                    // ),
                     Column(children: [
                       Container(
                         alignment: Alignment.topLeft,
@@ -334,5 +346,67 @@ class _RecordVacineState extends State<RecordVacine> {
     //   _scaffoldKey.currentState
     //       ?.showSnackBar(SnackBar(content: Text("Please Try again")));
     // }
+  }
+  Widget _customDropDown(BuildContext context, Cows? item) {
+    return Container(
+        child: (item?.cow_name == null)
+            ? ListTile(
+                contentPadding: EdgeInsets.all(0),
+                leading: Icon(Icons.add_outlined),
+                title: Text("กรุณาเลือกวัว"),
+              )
+            : ListTile(
+                contentPadding: EdgeInsets.all(0),
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(item!.cow_image),
+                ),
+                title: Text("${item.cow_name}"),
+              ));
+  }
+
+  Widget _customPopup(BuildContext context, Cows? item, bool isSelected) {
+    return Container(
+        margin: EdgeInsets.symmetric(horizontal: 8),
+        decoration: !isSelected
+            ? null
+            : BoxDecoration(
+                border: Border.all(color: Color(0xff5a82de)),
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.white),
+        child: ListTile(
+          selected: isSelected,
+          title: Text(item!.cow_name),
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(item.cow_image),
+          ),
+        ));
+  }
+
+  Future<List<Cows>> getData(filter) async {
+    User? user = Provider.of<UserProvider>(context, listen: false).user;
+    List<Cows> cows = [];
+    Map data = {
+      'farm_id': user?.farm_id.toString(),
+      'user_id': user?.user_id.toString()
+    };
+
+    final queryParameters = {'filter': filter};
+
+    final response = await http.post(
+        Uri.https(
+            'heroku-diarycattle.herokuapp.com', 'farms/cow', queryParameters),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> db = jsonDecode(response.body);
+      final List list = db['data']['rows'];
+      cows = list.map((e) => Cows.fromMap(e)).toList();
+    }
+    return cows;
   }
 }
