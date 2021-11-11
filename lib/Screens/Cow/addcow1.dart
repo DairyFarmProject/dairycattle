@@ -1,21 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
-
 import '/Screens/Cow/successrecord.dart';
 import '/models/User.dart';
 import '/providers/user_provider.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import '../../models/Species.dart';
-import '../../models/StatusCows.dart';
-import '../../Screens/Cow/cow1.dart';
-import '../../models/TypeCows.dart';
 import '.././Farm/text_field_container.dart';
 import '../../models/AllChoose.dart';
 
@@ -27,12 +20,15 @@ class AddCow extends StatefulWidget {
 class _AddCowState extends State<AddCow> {
   bool isLoading = false;
 
-  int selectStatus = 1;
-  int selectType = 1;
-  int selectSpecie = 1;
-  int selectDadSpecie = 1;
-  int selectMomSpecie = 1;
-  int selectSex = 1;
+  int selectType = 0;
+  int selectSpecie = 0;
+  int selectDadSpecie = 0;
+  int selectMomSpecie = 0;
+  int? type;
+  int? specie;
+  int? dad;
+  int? mom;
+  String? sex;
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -42,11 +38,9 @@ class _AddCowState extends State<AddCow> {
   final idSemenController = TextEditingController();
   final idMomController = TextEditingController();
   DateTime? _dateTime;
-  final value_validator = RequiredValidator(errorText: "X Invalid");
 
   File? _image;
-  List<File> _images = [];
-  String url = '';
+  String? url;
   String imageURL = '';
   String downloadURL = '';
 
@@ -89,25 +83,18 @@ class _AddCowState extends State<AddCow> {
     });
   }
 
-  int _selectIndex = 0;
-
-  void _onItemTap(int index) {
-    setState(() {
-      _selectIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     User? user = Provider.of<UserProvider>(context).user;
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
-          title: Text("เพิ่มวัว"),
+          title: const Text("เพิ่มวัว"),
           leading: GestureDetector(
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back,
               color: Colors.white,
             ),
@@ -120,13 +107,13 @@ class _AddCowState extends State<AddCow> {
             child: Column(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.all(20),
-                  margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.all(20),
+                  margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                  decoration: const BoxDecoration(
                       color: Color(0xff5a82de),
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: Text('ส่วนที่ 1 : กรอกข้อมูลพื้นฐานของวัว',
+                  child: const Text('ส่วนที่ 1 : กรอกข้อมูลพื้นฐานของวัว',
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -136,20 +123,19 @@ class _AddCowState extends State<AddCow> {
                   children: [
                     Container(
                       alignment: Alignment.center,
-                      margin: EdgeInsets.all(0),
+                      margin: const EdgeInsets.all(0),
                       padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                       child: _image == null
                           ? Container(
                               width: 200,
                               height: 200,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                   shape: BoxShape.circle, color: Colors.white),
                               child: Padding(
-                                  padding: EdgeInsets.all(4.0),
+                                  padding: const EdgeInsets.all(4.0),
                                   child: Center(
-                                      child: Container(
-                                          child: IconButton(
-                                    icon: Icon(
+                                      child: IconButton(
+                                    icon: const Icon(
                                       Icons.add_a_photo_outlined,
                                       size: 30,
                                       color: Colors.blueGrey,
@@ -157,7 +143,7 @@ class _AddCowState extends State<AddCow> {
                                     onPressed: () {
                                       getImage(true);
                                     },
-                                  )))))
+                                  ))))
                           : CircleAvatar(
                               backgroundImage: FileImage(_image!),
                               radius: 100.0),
@@ -168,8 +154,11 @@ class _AddCowState extends State<AddCow> {
                     controller: nameCowController,
                     keyboardType: TextInputType.text,
                     onChanged: (value) {},
-                    validator: value_validator,
-                    child: Text(
+                    validator: (value) {
+                      if (value!.isEmpty) return 'กรุณากรอกชื่อวัว';
+                      return null;
+                    },
+                    child: const Text(
                       'ชื่อวัว',
                       style: TextStyle(fontSize: 15),
                     ),
@@ -178,8 +167,11 @@ class _AddCowState extends State<AddCow> {
                     controller: tagCowController,
                     keyboardType: TextInputType.text,
                     onChanged: (value) {},
-                    validator: value_validator,
-                    child: Text(
+                    validator: (value) {
+                      if (value!.isEmpty) return 'กรุณากรอกหมายเลขวัว';
+                      return null;
+                    },
+                    child: const Text(
                       'หมายเลขวัว',
                       style: TextStyle(fontSize: 15),
                     ),
@@ -188,9 +180,9 @@ class _AddCowState extends State<AddCow> {
                   children: [
                     Container(
                       alignment: Alignment.topLeft,
-                      margin: EdgeInsets.all(0),
-                      padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
-                      child: Text(
+                      margin: const EdgeInsets.all(0),
+                      padding: const EdgeInsets.fromLTRB(25, 10, 0, 10),
+                      child: const Text(
                         'วันเกิด',
                         style: TextStyle(fontWeight: FontWeight.w500),
                       ),
@@ -202,13 +194,14 @@ class _AddCowState extends State<AddCow> {
                           child: Text(
                             _dateTime == null
                                 ? 'วัน/เดือน/ปี'
-                                : '${DateFormat('dd-MM-yyyy').format(DateTime.parse(_dateTime.toString()))}',
+                                : DateFormat('dd-MM-yyyy').format(
+                                    DateTime.parse(_dateTime.toString())),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
                           child: IconButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.calendar_today_sharp,
                               color: Colors.brown,
                             ),
@@ -247,24 +240,27 @@ class _AddCowState extends State<AddCow> {
                     controller: noteCowController,
                     keyboardType: TextInputType.text,
                     onChanged: (value) {},
-                    validator: value_validator,
-                    child: Text(
+                    validator: (value) {
+                      if (value!.isEmpty) return 'หากไม่มีให้ใส่ -';
+                      return null;
+                    },
+                    child: const Text(
                       'รายละเอียดอื่นๆ',
                       style: TextStyle(fontWeight: FontWeight.w500),
                     ),
                     hintText: "รายละเอียดอื่นๆ"),
                 Container(
-                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(25, 10, 20, 10),
                     alignment: Alignment.topLeft,
-                    child: Text('ประเภทวัว',
+                    child: const Text('ประเภทวัว',
                         style: TextStyle(fontWeight: FontWeight.w500))),
                 Container(
-                  padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(30, 0, 20, 0),
                   alignment: Alignment.topLeft,
                   child: DropdownButton<Type>(
                     isExpanded: true,
-                    hint: new Text("Select a type"),
-                    value: selectStatus == null ? null : types[selectType],
+                    hint: const Text("Select a type"),
+                    value: selectType == null ? null : types[selectType],
                     onChanged: (newValue) {
                       setState(() {
                         selectType = types.indexOf(newValue!);
@@ -272,27 +268,27 @@ class _AddCowState extends State<AddCow> {
                       });
                     },
                     items: types.map((Type status) {
-                      return new DropdownMenuItem<Type>(
+                      return DropdownMenuItem<Type>(
                         value: status,
-                        child: new Text(
+                        child: Text(
                           status.name,
-                          style: new TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                         ),
                       );
                     }).toList(),
                   ),
                 ),
                 Container(
-                    padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(25, 10, 20, 10),
                     alignment: Alignment.topLeft,
-                    child: Text('ชื่อสายพันธ์',
+                    child: const Text('ชื่อสายพันธุ์',
                         style: TextStyle(fontWeight: FontWeight.w500))),
                 Container(
-                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(30, 0, 20, 0),
                   alignment: Alignment.topLeft,
                   child: DropdownButton<Specie>(
                     isExpanded: true,
-                    hint: new Text("Select a specie"),
+                    hint: const Text("Select a specie"),
                     value: selectSpecie == null ? null : species[selectSpecie],
                     onChanged: (newValue) {
                       setState(() {
@@ -301,57 +297,69 @@ class _AddCowState extends State<AddCow> {
                       });
                     },
                     items: species.map((Specie status) {
-                      return new DropdownMenuItem<Specie>(
+                      return DropdownMenuItem<Specie>(
                         value: status,
-                        child: new Text(
+                        child: Text(
                           status.name,
-                          style: new TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                         ),
                       );
                     }).toList(),
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(20),
-                  margin: EdgeInsets.fromLTRB(0, 15, 0, 20),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.all(20),
+                  margin: const EdgeInsets.fromLTRB(0, 15, 0, 20),
+                  decoration: const BoxDecoration(
                       color: Color(0xff5a82de),
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: Text('ส่วนที่ 2 : กรอกข้อมูลเฉพาะของวัว',
+                  child: const Text('ส่วนที่ 2 : กรอกข้อมูลเฉพาะของวัว',
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
                           fontSize: 18)),
                 ),
                 Container(
+                    padding: const EdgeInsets.fromLTRB(25, 10, 20, 10),
+                    alignment: Alignment.topLeft,
+                    child: const Text('เพศ',
+                        style: TextStyle(fontWeight: FontWeight.w500))),
+                Container(
                   padding: const EdgeInsets.all(20.0),
                   child: DropdownButton<Sex>(
-                    hint: new Text("Select a sex"),
-                    value: selectSex == null ? null : sexs[selectSex],
-                    onChanged: (newValue) {
-                      setState(() {
-                        selectSex = sexs.indexOf(newValue!);
-                        print(selectSex);
-                      });
-                    },
-                    items: sexs.map((Sex status) {
-                      return new DropdownMenuItem<Sex>(
-                        value: status,
-                        child: new Text(
-                          status.name,
-                          style: new TextStyle(color: Colors.black),
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                      isExpanded: true,
+                      items: sexs.map((Sex status) {
+                        return DropdownMenuItem<Sex>(
+                          value: status,
+                          child: Text(
+                            status.name,
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
+                        print(newValue);
+                        if (newValue == "เพศผู้") {
+                          setState(() {
+                            sex = "M";
+                          });
+                        } else {
+                          setState(() {
+                            sex = "F";
+                          });
+                        }
+                      }),
                 ),
                 TextFieldContainer(
                     controller: idSemenController,
                     keyboardType: TextInputType.text,
                     onChanged: (value) {},
-                    validator: value_validator,
-                    child: Text(
+                    validator: (value) {
+                      if (value!.isEmpty) return 'กรุณากรอกหมายเลขพ่อพันธุ์';
+                      return null;
+                    },
+                    child: const Text(
                       'หมายเลขพ่อพันธุ์',
                       style: TextStyle(fontSize: 15),
                     ),
@@ -359,7 +367,7 @@ class _AddCowState extends State<AddCow> {
                 Container(
                   padding: const EdgeInsets.all(20.0),
                   child: DropdownButton<DadSpecie>(
-                    hint: new Text("Select a specie"),
+                    hint: const Text("Select a specie"),
                     value: selectDadSpecie == null
                         ? null
                         : semen_species[selectDadSpecie],
@@ -370,11 +378,11 @@ class _AddCowState extends State<AddCow> {
                       });
                     },
                     items: semen_species.map((DadSpecie status) {
-                      return new DropdownMenuItem<DadSpecie>(
+                      return DropdownMenuItem<DadSpecie>(
                         value: status,
-                        child: new Text(
+                        child: Text(
                           status.name,
-                          style: new TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                         ),
                       );
                     }).toList(),
@@ -384,8 +392,11 @@ class _AddCowState extends State<AddCow> {
                     controller: idMomController,
                     keyboardType: TextInputType.text,
                     onChanged: (value) {},
-                    validator: value_validator,
-                    child: Text(
+                    validator: (value) {
+                      if (value!.isEmpty) return 'กรุณากรอกหมายเลขแม่พันธุ์';
+                      return null;
+                    },
+                    child: const Text(
                       'หมายเลขแม่พันธุ์',
                       style: TextStyle(fontSize: 15),
                     ),
@@ -393,7 +404,7 @@ class _AddCowState extends State<AddCow> {
                 Container(
                   padding: const EdgeInsets.all(20.0),
                   child: DropdownButton<MomSpecie>(
-                    hint: new Text("Select a specie"),
+                    hint: const Text("Select a specie"),
                     value: selectMomSpecie == null
                         ? null
                         : mom_species[selectMomSpecie],
@@ -404,11 +415,11 @@ class _AddCowState extends State<AddCow> {
                       });
                     },
                     items: mom_species.map((MomSpecie status) {
-                      return new DropdownMenuItem<MomSpecie>(
+                      return DropdownMenuItem<MomSpecie>(
                         value: status,
-                        child: new Text(
+                        child: Text(
                           status.name,
-                          style: new TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                         ),
                       );
                     }).toList(),
@@ -419,24 +430,19 @@ class _AddCowState extends State<AddCow> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                        margin: EdgeInsets.fromLTRB(0, 40, 0, 20),
+                        margin: const EdgeInsets.fromLTRB(0, 40, 0, 20),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // ignore: deprecated_member_use
                             RaisedButton(
                               onPressed: () {
                                 Navigator.pop(context);
-                                // Navigator.push(context,
-                                //     MaterialPageRoute(builder: (context) {
-                                //   return Cow();
-                                // }));
                               },
                               color: Colors.blueGrey[50],
-                              shape: RoundedRectangleBorder(
+                              shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(39))),
-                              child: Text(
+                              child: const Text(
                                 'ยกเลิก',
                                 style: TextStyle(
                                     color: Colors.brown,
@@ -449,13 +455,99 @@ class _AddCowState extends State<AddCow> {
                           ],
                         )),
                     Container(
-                        margin: EdgeInsets.fromLTRB(0, 40, 0, 20),
+                        margin: const EdgeInsets.fromLTRB(0, 40, 0, 20),
                         child: Column(
                           children: [
-                            // ignore: deprecated_member_use
                             RaisedButton(
-                              onPressed: () {
-                                uploadFile(_image!);
+                              onPressed: () async {
+                                if (nameCowController.text.isEmpty) {
+                                  _scaffoldKey.currentState?.showSnackBar(
+                                      const SnackBar(
+                                          content: Text("กรุณากรอกชื่อวัว")));
+                                  return;
+                                }
+                                if (tagCowController.text.isEmpty) {
+                                  _scaffoldKey.currentState?.showSnackBar(
+                                      const SnackBar(
+                                          content:
+                                              Text("กรุณากรอกหมายเลขวัว")));
+                                  return;
+                                }
+                                if (_dateTime == null) {
+                                  _scaffoldKey.currentState?.showSnackBar(
+                                      const SnackBar(
+                                          content:
+                                              Text("กรุณากรอกวันเกิดวัว")));
+                                  return;
+                                }
+                                if (_image == null) {
+                                  _scaffoldKey.currentState?.showSnackBar(
+                                      const SnackBar(
+                                          content: Text("กรุณาเพิ่มรูปวัว")));
+                                  return;
+                                }
+                                if (url == null || _image != null) {
+                                  uploadFile(_image!);
+                                }
+                                if (selectType != 0) {
+                                  setState(() {
+                                    type = selectType + 1;
+                                  });
+                                }
+                                if (selectType == 0) {
+                                  setState(() {
+                                    type = 1;
+                                  });
+                                }
+                                if (selectSpecie != 0) {
+                                  setState(() {
+                                    specie = selectSpecie + 1;
+                                  });
+                                }
+                                if (selectSpecie == 0) {
+                                  setState(() {
+                                    specie = 1;
+                                  });
+                                }
+                                if (sex == null) {
+                                  setState(() {
+                                    sex = 'F';
+                                  });
+                                }
+                                if (idSemenController.text.isEmpty) {
+                                  _scaffoldKey.currentState?.showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              "กรุณากรอกหมายเลขพ่อพันธุ์")));
+                                  return;
+                                }
+                                if (idMomController.text.isEmpty) {
+                                  _scaffoldKey.currentState?.showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              "กรุณากรอกหมายเลขแม่พันธุ์")));
+                                  return;
+                                }
+                                if (selectDadSpecie != 0) {
+                                  setState(() {
+                                    dad = selectDadSpecie + 1;
+                                  });
+                                }
+                                if (selectDadSpecie == 0) {
+                                  setState(() {
+                                    dad = 1;
+                                  });
+                                }
+                                if (selectMomSpecie != 0) {
+                                  setState(() {
+                                    mom = selectMomSpecie + 1;
+                                  });
+                                }
+                                if (selectMomSpecie == 0) {
+                                  setState(() {
+                                    mom = 1;
+                                  });
+                                }
                                 userAddCow(
                                     user?.user_id,
                                     user?.farm_id,
@@ -464,19 +556,19 @@ class _AddCowState extends State<AddCow> {
                                     _dateTime,
                                     url,
                                     noteCowController.text,
-                                    selectType,
-                                    selectSpecie,
-                                    selectSex,
+                                    type,
+                                    specie,
+                                    sex,
                                     idSemenController.text,
                                     idMomController.text,
-                                    selectDadSpecie,
-                                    selectMomSpecie);
+                                    dad,
+                                    mom);
                               },
                               color: Colors.brown,
-                              shape: RoundedRectangleBorder(
+                              shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(39))),
-                              child: Text(
+                              child: const Text(
                                 'บันทึกข้อมูล',
                                 style: TextStyle(
                                     color: Colors.white,
@@ -494,6 +586,30 @@ class _AddCowState extends State<AddCow> {
             ),
           ),
         ));
+  }
+
+  void _showerrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text(
+          'กรุณาตรวจสอบความถูกต้อง',
+          style: TextStyle(fontSize: 17),
+        ),
+        content: Text(
+          message,
+          style: const TextStyle(fontSize: 15),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
+    );
   }
 
   userAddCow(user_id, farm_id, name, tag, date, image, note, type, specie, sex,
@@ -535,13 +651,19 @@ class _AddCowState extends State<AddCow> {
       print(user['message']);
       Navigator.push(
         context,
-        new MaterialPageRoute(
+        MaterialPageRoute(
           builder: (context) => new SuccessRecord(),
         ),
       );
+    }
+    if (response.statusCode == 500) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      Map<String, dynamic> user = resposne['data'];
+      String mess = user['message'];
+      _showerrorDialog(mess);
     } else {
       _scaffoldKey.currentState
-          ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+          ?.showSnackBar(const SnackBar(content: Text("Please Try again")));
     }
   }
 }

@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import '../../models/User.dart';
 import '../../providers/user_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
@@ -18,6 +16,7 @@ import 'successeditcow.dart';
 class EditCow extends StatefulWidget {
   final Cows cow;
   EditCow({required this.cow});
+
   @override
   _EditCowState createState() => _EditCowState();
 }
@@ -29,7 +28,6 @@ void showInSnackBar(String value) {
 
 class _EditCowState extends State<EditCow> {
   File? _image;
-  List<File> _images = [];
   String url = '';
   String imageURL = '';
   String downloadURL = '';
@@ -73,10 +71,10 @@ class _EditCowState extends State<EditCow> {
     });
   }
 
-  int selectStatus = 1;
-  int selectType = 1;
-  int selectSpecie = 1;
-  int selectSex = 1;
+  int selectStatus = 0;
+  int selectType = 0;
+  int selectSpecie = 0;
+  String? sex;
 
   final myController = TextEditingController();
 
@@ -86,36 +84,27 @@ class _EditCowState extends State<EditCow> {
     super.dispose();
   }
 
-  int _selectIndex = 0;
-
-  void _onItemTap(int index) {
-    setState(() {
-      _selectIndex = index;
-    });
-  }
-
   DateTime? _dateTime;
   final _formKey = GlobalKey<FormState>();
   final nameCowController = TextEditingController();
   final cowNoController = TextEditingController();
   final cowNoteController = TextEditingController();
-  final value_validator = RequiredValidator(errorText: "กรุณาใส่ข้อมูล");
 
   TextEditingController dateCtl = TextEditingController();
-  DateTime? date;
-  var formatter = new DateFormat('dd-MM-yyyy');
+  var formatter = DateFormat('dd-MM-yyyy');
 
   @override
   Widget build(BuildContext context) {
     User? user = Provider.of<UserProvider>(context).user;
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
-          title: Text("แก้ไขข้อมูลวัว"),
+          title: const Text("แก้ไขข้อมูลวัว"),
           leading: GestureDetector(
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back,
               color: Colors.white,
             ),
@@ -124,15 +113,13 @@ class _EditCowState extends State<EditCow> {
         ),
         body: Form(
             key: _formKey,
-            child: Container(
-                child: SingleChildScrollView(
+            child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
                   Column(
                     children: [
                       Container(
                         alignment: Alignment.center,
-                        margin: EdgeInsets.all(0),
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                         child: _image == null
                             ? Container(
@@ -140,22 +127,20 @@ class _EditCowState extends State<EditCow> {
                                 height: 200,
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.white),
+                                    color: Colors.brown[50]),
                                 child: Padding(
-                                    padding: EdgeInsets.all(0),
+                                    padding: const EdgeInsets.all(4.0),
                                     child: Center(
-                                        child: Container(
-                                            child: IconButton(
+                                        child: IconButton(
+                                      iconSize: 200,
                                       icon: CircleAvatar(
-                                        radius: 200,
-                                        backgroundImage: NetworkImage(
-                                            '${widget.cow.cow_image}'),
-                                        //backgroundColor: Colors.transparent,
-                                      ),
+                                          radius: 200,
+                                          backgroundImage: NetworkImage(
+                                              widget.cow.cow_image)),
                                       onPressed: () {
                                         getImage(true);
                                       },
-                                    )))))
+                                    ))))
                             : CircleAvatar(
                                 backgroundImage: FileImage(_image!),
                                 radius: 100.0),
@@ -169,13 +154,10 @@ class _EditCowState extends State<EditCow> {
                     height: 150,
                     decoration: BoxDecoration(
                       color: Colors.blueGrey[100],
-                      border:
-                          Border.all(color: (Colors.blueGrey[300])!, width: 2),
                       borderRadius: BorderRadius.circular(3),
                     ),
                     child: Container(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(30)),
                       ),
                       child: Column(
@@ -186,54 +168,49 @@ class _EditCowState extends State<EditCow> {
                               children: [
                                 Expanded(
                                   flex: 2,
-                                  child: Container(
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          0, 10, 0, 5),
-                                      child: Text(
-                                        'ชื่อวัว : ${widget.cow.cow_name}',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500),
-                                      ),
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 10, 0, 5),
+                                    child: Text(
+                                      'ชื่อวัว : ${widget.cow.cow_name}',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ),
                                 ),
                                 Expanded(
                                   flex: 4,
-                                  child: Container(
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          0, 10, 0, 5),
-                                      child: Text(
-                                        'วันเกิด : ${DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.cow.cow_birthday))}',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500),
-                                      ),
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 10, 0, 5),
+                                    child: Text(
+                                      'วันเกิด : ${DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.cow.cow_birthday))}',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          Container(
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 15),
-                              child: Text(
-                                'รหัสประจำตัว : ${widget.cow.cow_no}',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 15),
+                            child: Text(
+                              'รหัสประจำตัว : ${widget.cow.cow_no}',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w500),
                             ),
                           ),
                           Container(
                             padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Color(0xff5a82de),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10)),
                             ),
                             child: Text(
                               'สถานะปัจจุบัน : ${widget.cow.type_name}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -253,39 +230,41 @@ class _EditCowState extends State<EditCow> {
                               Expanded(
                                   child: Container(
                                       alignment: Alignment.topLeft,
-                                      margin: EdgeInsets.all(0),
                                       padding: const EdgeInsets.fromLTRB(
                                           0, 0, 0, 15),
-                                      child: Text('ชื่อวัว',
+                                      child: const Text('ชื่อ',
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500)))),
                               Expanded(
                                   flex: 2,
-                                  child: Container(
-                                      child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              0, 0, 0, 0),
-                                          child: SizedBox(
-                                            height: 30,
-                                            width: 100,
-                                            child: TextFormField(
-                                              validator: value_validator,
-                                              controller: nameCowController,
-                                              decoration: InputDecoration(
-                                                hintText:
-                                                    '${widget.cow.cow_name}',
-                                                fillColor: Colors.blueGrey,
-                                                border: InputBorder.none,
-                                              ),
-                                              onChanged: (String _name) {
-                                                if (_name.isEmpty) {
-                                                  _name =
-                                                      '${widget.cow.cow_name}';
-                                                } else
-                                                  _name = _name;
-                                              },
-                                            ),
-                                          ))))
+                                  child: Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                      child: SizedBox(
+                                        height: 30,
+                                        width: 100,
+                                        child: TextFormField(
+                                          autovalidateMode: AutovalidateMode
+                                              .onUserInteraction,
+                                          validator: (value) {
+                                            if (value!.isEmpty)
+                                              return 'กรุณากรอกชื่อวัว';
+                                            return null;
+                                          },
+                                          controller: nameCowController,
+                                          decoration: InputDecoration(
+                                            hintText: widget.cow.cow_name,
+                                            fillColor: Colors.blueGrey,
+                                            border: InputBorder.none,
+                                          ),
+                                          onChanged: (String _name) {
+                                            if (_name.isEmpty) {
+                                              _name = widget.cow.cow_name;
+                                            } else
+                                              _name = _name;
+                                          },
+                                        ),
+                                      ))),
                             ]),
                         Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -293,32 +272,41 @@ class _EditCowState extends State<EditCow> {
                               Expanded(
                                   child: Container(
                                       alignment: Alignment.topLeft,
-                                      margin: EdgeInsets.all(0),
                                       padding: const EdgeInsets.fromLTRB(
                                           0, 20, 0, 15),
-                                      child: Text('รหัสประจำตัว',
+                                      child: const Text('รหัสประจำตัว',
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500)))),
                               Expanded(
                                   flex: 2,
-                                  child: Container(
-                                      child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              0, 20, 0, 0),
-                                          child: SizedBox(
-                                            height: 30,
-                                            width: 100,
-                                            child: TextFormField(
-                                              validator: value_validator,
-                                              controller: cowNoController,
-                                              decoration: InputDecoration(
-                                                  hintText:
-                                                      '${widget.cow.cow_no}',
-                                                  fillColor: Colors.blueGrey,
-                                                  border: InputBorder.none),
-                                              onChanged: (String name) {},
-                                            ),
-                                          ))))
+                                  child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 20, 0, 0),
+                                      child: SizedBox(
+                                        height: 30,
+                                        width: 100,
+                                        child: TextFormField(
+                                          autovalidateMode: AutovalidateMode
+                                              .onUserInteraction,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return 'กรุณากรอกรหัสประจำตัว';
+                                            }
+                                            return null;
+                                          },
+                                          controller: cowNoController,
+                                          decoration: InputDecoration(
+                                              hintText: widget.cow.cow_no,
+                                              fillColor: Colors.blueGrey,
+                                              border: InputBorder.none),
+                                          onChanged: (String _name) {
+                                            if (_name.isEmpty) {
+                                              _name = widget.cow.cow_no;
+                                            } else
+                                              _name = _name;
+                                          },
+                                        ),
+                                      )))
                             ]),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -326,160 +314,249 @@ class _EditCowState extends State<EditCow> {
                             Expanded(
                               child: Container(
                                 alignment: Alignment.topLeft,
-                                margin: EdgeInsets.all(0),
                                 padding:
                                     const EdgeInsets.fromLTRB(0, 20, 0, 15),
-                                child: Text('วันเกิด',
+                                child: const Text('วันเกิด',
                                     style:
                                         TextStyle(fontWeight: FontWeight.w500)),
                               ),
                             ),
                             Expanded(
                                 flex: 2,
-                                child: Container(
-                                    child: Padding(
+                                child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(0, 20, 0, 0),
                                   child: SizedBox(
                                       height: 30,
                                       width: 250,
                                       child: TextFormField(
-                                          readOnly: true,
-                                          controller: dateCtl,
+                                        readOnly: true,
+                                        controller: dateCtl,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: DateFormat('dd-MM-yyyy')
+                                              .format(DateTime.parse(
+                                                  widget.cow.cow_birthday)),
+                                          fillColor: Colors.blueGrey,
+                                        ),
+                                        onTap: () async {
+                                          showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime(1970),
+                                              lastDate: DateTime(2022),
+                                              builder: (context, picker) {
+                                                return Theme(
+                                                  data: ThemeData.light()
+                                                      .copyWith(
+                                                    colorScheme:
+                                                        ColorScheme.dark(
+                                                      primary:
+                                                          Colors.brown.shade200,
+                                                      onPrimary: Colors.white,
+                                                      surface:
+                                                          Colors.brown.shade200,
+                                                      onSurface: Colors.brown,
+                                                    ),
+                                                    dialogBackgroundColor:
+                                                        Colors.white,
+                                                  ),
+                                                  child: picker!,
+                                                );
+                                              }).then((date) {
+                                            setState(() {
+                                              _dateTime = date;
+                                            });
+                                          });
+                                        },
+                                      )),
+                                ))
+                          ],
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.topLeft,
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                child: const Text('ประเภท',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500)),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                padding: const EdgeInsets.fromLTRB(0, 0, 90, 0),
+                                child: DropdownButton<Type>(
+                                  hint: Text(
+                                      "${widget.cow.status_id}                 "),
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      selectType = types.indexOf(newValue!) + 1;
+                                      print(selectType);
+                                    });
+                                  },
+                                  items: types.map((Type status) {
+                                    return DropdownMenuItem<Type>(
+                                      value: status,
+                                      child: Text(
+                                        status.name,
+                                        style: const TextStyle(
+                                            color: Colors.black),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.topLeft,
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                child: const Text('สายพันธุ์',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500)),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                padding: const EdgeInsets.fromLTRB(0, 0, 90, 0),
+                                child: DropdownButton<Specie>(
+                                  hint: Text(widget.cow.specie_name_th),
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      selectSpecie =
+                                          species.indexOf(newValue!) + 1;
+                                      print(selectSpecie);
+                                    });
+                                  },
+                                  items: species.map((Specie status) {
+                                    return DropdownMenuItem<Specie>(
+                                      value: status,
+                                      child: Text(
+                                        status.name,
+                                        style: const TextStyle(
+                                            color: Colors.black),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                child: const Text('เพศ',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500)),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                alignment: Alignment.topLeft,
+                                child: DropdownButton<String>(
+                                    hint: Text(widget.cow.cow_sex),
+                                    items: <String>[
+                                      '                  ',
+                                      'เพศผู้',
+                                      'เพศเมีย'
+                                    ].map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                    onChanged: (newValue) {
+                                      print(newValue);
+                                      if (newValue == "เพศผู้") {
+                                        setState(() {
+                                          sex = "M";
+                                        });
+                                      } else {
+                                        setState(() {
+                                          sex = "F";
+                                        });
+                                      }
+                                      ;
+                                    }),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                  child: Container(
+                                      alignment: Alignment.topLeft,
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 20, 0, 15),
+                                      child: const Text('รายละเอียดอื่นๆ',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500)))),
+                              Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 0, 20, 0),
+                                      child: SizedBox(
+                                        height: 30,
+                                        width: 100,
+                                        child: TextField(
+                                          controller: cowNoteController,
                                           decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            hintText:
-                                                '${DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.cow.cow_birthday))}',
+                                            hintText: '${widget.cow.note}',
                                             fillColor: Colors.blueGrey,
                                           ),
-                                          onTap: () async {
-                                            date = await showDatePicker(
-                                                context: context,
-                                                initialDate: DateTime.now(),
-                                                firstDate: DateTime.now()
-                                                    .subtract(
-                                                        Duration(days: 2)),
-                                                lastDate: DateTime.now()
-                                                    .add(Duration(days: 2)));
-                                            if (date == null) {
-                                              date = DateTime.now();
-                                            } else {
-                                              dateCtl.text =
-                                                  formatter.format((date)!);
-                                            }
-                                          })),
-                                )))
-                          ],
-                        )
+                                          onChanged: (String _name) {
+                                            if (_name.isEmpty) {
+                                              _name = '-';
+                                            } else
+                                              _name = _name;
+                                          },
+                                        ),
+                                      )))
+                            ]),
                       ],
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(20.0),
-                    child: DropdownButton<Type>(
-                      hint: new Text("Select a type"),
-                      value: selectStatus == null ? null : types[selectType],
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectType = types.indexOf(newValue!);
-                          print(selectType);
-                        });
-                      },
-                      items: types.map((Type status) {
-                        return new DropdownMenuItem<Type>(
-                          value: status,
-                          child: new Text(
-                            status.name,
-                            style: new TextStyle(color: Colors.black),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(20.0),
-                    child: DropdownButton<Specie>(
-                      hint: new Text("Select a specie"),
-                      value:
-                          selectSpecie == null ? null : species[selectSpecie],
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectSpecie = species.indexOf(newValue!);
-                          print(selectSpecie);
-                        });
-                      },
-                      items: species.map((Specie status) {
-                        return new DropdownMenuItem<Specie>(
-                          value: status,
-                          child: new Text(
-                            status.name,
-                            style: new TextStyle(color: Colors.black),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(20.0),
-                    child: DropdownButton<Sex>(
-                      hint: new Text("Select a sex"),
-                      value: selectSex == null ? null : sexs[selectSex],
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectSex = sexs.indexOf(newValue!);
-                          print(selectSex);
-                        });
-                      },
-                      items: sexs.map((Sex status) {
-                        return new DropdownMenuItem<Sex>(
-                          value: status,
-                          child: new Text(
-                            status.name,
-                            style: new TextStyle(color: Colors.black),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  Column(children: [
-                    Container(
-                      alignment: Alignment.topLeft,
-                      margin: EdgeInsets.all(0),
-                      padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
-                      child: Text('รายละเอียดอื่นๆ',
-                          style: TextStyle(fontWeight: FontWeight.w500)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 60),
-                      child: TextField(
-                        controller: cowNoteController,
-                        decoration: InputDecoration(
-                          hintText: '${widget.cow.note}',
-                          fillColor: Colors.blueGrey,
-                        ),
-                        onChanged: (String name) {},
-                      ),
-                    )
-                  ]),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 30),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 30),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              // ignore: deprecated_member_use
                               RaisedButton(
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
                                 color: Colors.blueGrey[50],
-                                shape: RoundedRectangleBorder(
+                                shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(39))),
-                                child: Text(
+                                child: const Text(
                                   'ยกเลิก',
                                   style: TextStyle(
                                       color: Colors.brown,
@@ -492,19 +569,63 @@ class _EditCowState extends State<EditCow> {
                             ],
                           )),
                       Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 30),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 30),
                           child: Column(
                             children: [
                               RaisedButton(
-                                onPressed: () {
-                                  print('Edit cow');
-                                  uploadFile(_image!);
+                                onPressed: () async {
+                                  if (cowNoController.text.isEmpty) {
+                                    setState(() {
+                                      cowNoController.text = widget.cow.cow_no;
+                                    });
+                                  }
+                                  if (nameCowController.text.isEmpty) {
+                                    setState(() {
+                                      nameCowController.text =
+                                          widget.cow.cow_name;
+                                    });
+                                  }
+                                  if (_dateTime == null) {
+                                    setState(() {
+                                      _dateTime = DateTime.parse(
+                                          widget.cow.cow_birthday);
+                                    });
+                                  }
+                                  if (sex == null) {
+                                    setState(() {
+                                      sex = widget.cow.cow_sex;
+                                    });
+                                  }
+                                  if (_image == null) {
+                                    setState(() {
+                                      url = widget.cow.cow_image;
+                                    });
+                                  }
+                                  if (selectSpecie == 0) {
+                                    setState(() {
+                                      selectSpecie = widget.cow.specie_id;
+                                    });
+                                  }
+                                  if (selectType == 0) {
+                                    setState(() {
+                                      selectType = widget.cow.type_id;
+                                    });
+                                  }
+                                  if (cowNoteController.text.isEmpty) {
+                                    setState(() {
+                                      cowNoteController.text = widget.cow.note;
+                                    });
+                                  }
+                                  if (_image != null) {
+                                    uploadFile(_image!);
+                                  }
                                   userEditCow(
                                     widget.cow.cow_id,
                                     cowNoController.text,
                                     nameCowController.text,
-                                    '${DateFormat('yyyy-MM-dd').format(DateTime.parse(date.toString()))}',
-                                    selectSex,
+                                    DateFormat('yyyy-MM-dd').format(
+                                        DateTime.parse(_dateTime.toString())),
+                                    sex,
                                     url,
                                     cowNoteController.text,
                                     selectSpecie,
@@ -518,10 +639,10 @@ class _EditCowState extends State<EditCow> {
                                   );
                                 },
                                 color: Colors.brown,
-                                shape: RoundedRectangleBorder(
+                                shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(39))),
-                                child: Text(
+                                child: const Text(
                                   'บันทึกข้อมูล',
                                   style: TextStyle(
                                       color: Colors.white,
@@ -537,7 +658,31 @@ class _EditCowState extends State<EditCow> {
                   ),
                 ],
               ),
-            ))));
+            )));
+  }
+
+  void _showerrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text(
+          'กรุณาตรวจสอบความถูกต้อง',
+          style: TextStyle(fontSize: 17),
+        ),
+        content: Text(
+          message,
+          style: const TextStyle(fontSize: 15),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
+    );
   }
 
   userEditCow(
@@ -600,9 +745,10 @@ class _EditCowState extends State<EditCow> {
       }
       _scaffoldKey.currentState
           ?.showSnackBar(SnackBar(content: Text("${resposne['message']}")));
-    } else {
-      _scaffoldKey.currentState
-          ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+    }
+    if (response.statusCode == 500) {
+    _scaffoldKey.currentState
+          ?.showSnackBar(const SnackBar(content: Text("Please Try again")));
     }
   }
 }

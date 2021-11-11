@@ -10,7 +10,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'providers/auth.dart';
 import 'providers/user_provider.dart';
-import 'models/User.dart' as DairyUser;
+import 'models/User.dart' as dairyuser;
 import 'models/UserDairys.dart';
 import 'util/shared_preference.dart';
 import 'util/register_store.dart';
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting();
-    Future<DairyUser.User> getUserData() => UserPreferences().getUser();
+    Future<dairyuser.User> getUserData() => UserPreferences().getUser();
     Future<UserDairys> getUser() => UserPreferences().getUserDairy();
     return MultiProvider(
         providers: [
