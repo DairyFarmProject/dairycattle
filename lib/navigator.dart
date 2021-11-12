@@ -1,5 +1,3 @@
-import 'package:dairycattle/Screens/Cow/cow2.dart';
-
 import '/Screens/Profile/Farm_data.dart';
 import 'Screens/Dashboard/dashboard.dart';
 import '/notification.dart';
@@ -86,58 +84,59 @@ class _HomepageState extends State<Homepage> {
     ];
 
     return MaterialApp(
+        theme: ThemeData(fontFamily: 'Mitr'),
         home: Scaffold(
-      appBar: _appBarList[_selectPage],
-      body: _pageOptions[_selectPage],
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (int index) {
-          setState(() {
-            print('page:$index');
-            _selectPage = index;
-          });
-        },
-        selectedItemColor: Colors.brown[500],
-        unselectedItemColor: Colors.blueGrey,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'ภาพรวม',
+          appBar: _appBarList[_selectPage],
+          body: _pageOptions[_selectPage],
+          bottomNavigationBar: BottomNavigationBar(
+            onTap: (int index) {
+              setState(() {
+                print('page:$index');
+                _selectPage = index;
+              });
+            },
+            selectedItemColor: Colors.brown[500],
+            unselectedItemColor: Colors.blueGrey,
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'ภาพรวม',
+              ),
+              BottomNavigationBarItem(
+                icon: ImageIcon(AssetImage("assets/images/icon_cow.png")),
+                label: 'วัวของฉัน',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.note_add),
+                label: 'เพิ่มกิจกรรม',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.notifications),
+                label: 'แจ้งเตือน',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.people_alt),
+                label: 'ฉัน',
+              ),
+            ],
+            currentIndex: _selectPage,
           ),
-          BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage("assets/images/icon_cow.png")),
-            label: 'วัวของฉัน',
+          floatingActionButton: Visibility(
+            visible: _selectPage == 1,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return AddCow();
+                }));
+              },
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+                size: 40,
+              ),
+              backgroundColor: const Color(0xff62b490),
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.note_add),
-            label: 'เพิ่มกิจกรรม',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'แจ้งเตือน',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people_alt),
-            label: 'ฉัน',
-          ),
-        ],
-        currentIndex: _selectPage,
-      ),
-      floatingActionButton: Visibility(
-        visible: _selectPage == 1,
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return AddCow();
-            }));
-          },
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-            size: 40,
-          ),
-          backgroundColor: const Color(0xff62b490),
-        ),
-      ),
-    ));
+        ));
   }
 }

@@ -69,6 +69,17 @@ class _EditMilkDayState extends State<EditMilkDay> {
   String title = 'บันทึกแล้ว';
 
   void doAddition() {
+    if (t1.text.isEmpty) {
+      _scaffoldKey.currentState?.showSnackBar(
+          const SnackBar(content: Text("กรุณากรอกปริมาณน้ำนมช่วงเช้า")));
+      return;
+    }
+    if (t2.text.isEmpty) {
+      _scaffoldKey.currentState?.showSnackBar(
+          const SnackBar(content: Text("กรุณากรอกปริมาณน้ำนมช่วงเย็น")));
+      return;
+    }
+
     setState(() {
       num1 = int.parse(t1.text);
       num2 = int.parse(t2.text);
@@ -88,6 +99,7 @@ class _EditMilkDayState extends State<EditMilkDay> {
   Widget build(BuildContext context) {
     User? user = Provider.of<UserProvider>(context).user;
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text("แก้ไขการบันทึกน้ำนมวัว",
               style: TextStyle(fontWeight: FontWeight.bold)),
@@ -374,15 +386,34 @@ class _EditMilkDayState extends State<EditMilkDay> {
                                               EdgeInsets.fromLTRB(0, 40, 0, 0),
                                           child: Column(
                                             children: [
-                                              // ignore: deprecated_member_use
                                               RaisedButton(
                                                 onPressed: () {
-                                                  editMilk(
-                                                      snapshot.data?[i].milk_id,
-                                                      t1.text,
-                                                      t2.text,
-                                                      user?.farm_id,
-                                                      user?.user_id);
+                                                  if (t1.text.isEmpty) {
+                                                    _scaffoldKey.currentState
+                                                        ?.showSnackBar(
+                                                            const SnackBar(
+                                                                content: Text(
+                                                                    "กรุณากรอกปริมาณน้ำนมช่วงเช้า")));
+                                                    return;
+                                                  }
+                                                  if (t2.text.isEmpty) {
+                                                    _scaffoldKey.currentState
+                                                        ?.showSnackBar(
+                                                            const SnackBar(
+                                                                content: Text(
+                                                                    "กรุณากรอกปริมาณน้ำนมช่วงเย็น")));
+                                                    return;
+                                                  }
+                                                  if (t1.text.isNotEmpty &&
+                                                      t2.text.isNotEmpty) {
+                                                    editMilk(
+                                                        snapshot
+                                                            .data?[i].milk_id,
+                                                        t1.text,
+                                                        t2.text,
+                                                        user?.farm_id,
+                                                        user?.user_id);
+                                                  }
                                                 },
                                                 color: Colors.brown,
                                                 shape: RoundedRectangleBorder(
@@ -414,6 +445,30 @@ class _EditMilkDayState extends State<EditMilkDay> {
                 })));
   }
 
+  void _showerrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text(
+          'กรุณาตรวจสอบความถูกต้อง',
+          style: TextStyle(fontSize: 17),
+        ),
+        content: Text(
+          message,
+          style: const TextStyle(fontSize: 15),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
+
   editMilk(milk_id, milk_litermorn, milkliter_even, farm_id, user_id) async {
     int num1 = int.parse(milk_litermorn);
     int num2 = int.parse(milkliter_even);
@@ -443,11 +498,15 @@ class _EditMilkDayState extends State<EditMilkDay> {
     if (response.statusCode == 200) {
       Map<String, dynamic> resposne = jsonDecode(response.body);
       var user = resposne['data'];
-      _scaffoldKey.currentState
-          ?.showSnackBar(SnackBar(content: Text("${user}")));
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return SuccessRecord();
       }));
+    }
+    if (response.statusCode == 500) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      Map<String, dynamic> user = resposne['data'];
+      String mess = user['message'];
+      _showerrorDialog(mess);
     } else {
       _scaffoldKey.currentState
           ?.showSnackBar(SnackBar(content: Text("Please try again!")));
