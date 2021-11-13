@@ -16,8 +16,6 @@ class RecordCalve extends StatefulWidget {
 }
 
 class _RecordCalveState extends State<RecordCalve> {
-  int? ab_id;
-
   Future<List<CowAb>> getCow() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     List<CowAb> cows = [];
@@ -43,9 +41,9 @@ class _RecordCalveState extends State<RecordCalve> {
   }
 
   DateTime? _dateTime;
-  int selectSex = 1;
-  int? selectCow = 1;
-  String? cow_id;
+  int selectSex = 0;
+  int? selectCow = 0;
+  int? ab_id;
   String? sex;
   String? status;
 
@@ -62,68 +60,65 @@ class _RecordCalveState extends State<RecordCalve> {
   Widget build(BuildContext context) {
     User? user = Provider.of<UserProvider>(context).user;
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
-          title: Text('บันทึกการคลอด'),
+          title: const Text('บันทึกการคลอด'),
           leading: GestureDetector(
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back,
               color: Colors.white,
             ),
           ),
-          backgroundColor: Color(0xff5a82de),
+          backgroundColor: const Color(0xff5a82de),
         ),
         body: Form(
             key: _formKey,
-            child: Container(
-                child: SingleChildScrollView(
+            child: SingleChildScrollView(
               child: Column(
                 children: [
                   Column(children: [
-                    Container(
-                        child: FutureBuilder<List<CowAb>>(
-                            future: getCow(),
-                            builder: (context, snapshot) {
-                              if (snapshot.data == null) {
-                                return Container(
-                                  child: Center(
-                                      child: CircularProgressIndicator(
-                                    color: Colors.red[400],
-                                  )),
-                                );
-                              } else
-                                return Container(
-                                  padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                                  child: DropdownSearch<CowAb>(
-                                    showSelectedItems: true,
-                                    compareFn: (CowAb? i, CowAb? s) =>
-                                        i!.isEqual(s),
-                                    label: "วัว",
-                                    onFind: (String? filter) => getData(filter),
-                                    onChanged: (CowAb? data) {
-                                      setState(() {
-                                        ab_id = data!.abdominal_id;
-                                      });
-                                    },
-                                    dropdownBuilder: _customDropDown,
-                                    popupItemBuilder: _customPopup,
-                                  ),
-                                );
-                            })),
+                    FutureBuilder<List<CowAb>>(
+                        future: getCow(),
+                        builder: (context, snapshot) {
+                          if (snapshot.data == null) {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.red[400],
+                              ),
+                            );
+                          }
+                          return Container(
+                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                            child: DropdownSearch<CowAb>(
+                              showSelectedItems: true,
+                              compareFn: (CowAb? i, CowAb? s) => i!.isEqual(s),
+                              label: "วัว",
+                              onFind: (String? filter) => getData(filter),
+                              onChanged: (CowAb? data) {
+                                setState(() {
+                                  ab_id = data!.abdominal_id;
+                                });
+                              },
+                              dropdownBuilder: _customDropDown,
+                              popupItemBuilder: _customPopup,
+                            ),
+                          );
+                        }),
                     Container(
                       alignment: Alignment.topLeft,
-                      margin: EdgeInsets.all(0),
+                      margin: const EdgeInsets.all(0),
                       padding: const EdgeInsets.all(20),
-                      child: Text('ชื่อลูกวัว',
+                      child: const Text('ชื่อลูกวัว',
                           style: TextStyle(fontWeight: FontWeight.w500)),
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                       child: TextField(
                         controller: calfNameController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'ชื่อลูกวัว',
                           fillColor: Colors.blueGrey,
                         ),
@@ -134,16 +129,16 @@ class _RecordCalveState extends State<RecordCalve> {
                   Column(children: [
                     Container(
                       alignment: Alignment.topLeft,
-                      margin: EdgeInsets.all(20),
+                      margin: const EdgeInsets.all(20),
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      child: Text('เพศลูกวัว',
+                      child: const Text('เพศลูกวัว',
                           style: TextStyle(fontWeight: FontWeight.w500)),
                     ),
                     Container(
                       child: DropdownSearch<String>(
                           mode: Mode.MENU,
                           showSelectedItems: true,
-                          items: ["", "เพศผู้", "เพศเมีย"],
+                          items: const ["", "เพศผู้", "เพศเมีย"],
                           label: "เพศ",
                           hint: "เพศลูกวัว",
                           popupItemDisabled: (String s) => s.startsWith('I'),
@@ -166,16 +161,16 @@ class _RecordCalveState extends State<RecordCalve> {
                   Column(children: [
                     Container(
                       alignment: Alignment.topLeft,
-                      margin: EdgeInsets.all(20),
+                      margin: const EdgeInsets.all(20),
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      child: Text('ผู้ดูแล',
+                      child: const Text('ผู้ดูแล',
                           style: TextStyle(fontWeight: FontWeight.w500)),
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                       child: TextField(
                         controller: caretakerController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'ชื่อผู้แล',
                           fillColor: Colors.blueGrey,
                         ),
@@ -186,16 +181,16 @@ class _RecordCalveState extends State<RecordCalve> {
                   Column(children: [
                     Container(
                       alignment: Alignment.topLeft,
-                      margin: EdgeInsets.all(20),
+                      margin: const EdgeInsets.all(20),
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      child: Text('สถานะ',
+                      child: const Text('สถานะ',
                           style: TextStyle(fontWeight: FontWeight.w500)),
                     ),
                     Container(
                       child: DropdownSearch<String>(
                         mode: Mode.MENU,
                         showSelectedItems: true,
-                        items: ["", "ปกติ", "แท้ง"],
+                        items: const ["", "ปกติ", "แท้ง"],
                         label: "สถานะ",
                         hint: "สถานะ",
                         popupItemDisabled: (String s) => s.startsWith('I'),
@@ -212,9 +207,9 @@ class _RecordCalveState extends State<RecordCalve> {
                     children: [
                       Container(
                         alignment: Alignment.topLeft,
-                        margin: EdgeInsets.all(0),
+                        margin: const EdgeInsets.all(0),
                         padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
-                        child: Text('วันที่คลอด',
+                        child: const Text('วันที่คลอด',
                             style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                       Row(
@@ -224,13 +219,14 @@ class _RecordCalveState extends State<RecordCalve> {
                             child: Text(
                               _dateTime == null
                                   ? 'วัน/เดือน/ปี'
-                                  : '${DateFormat('dd-MM-yyyy').format(DateTime.parse(_dateTime.toString()))}',
+                                  : DateFormat('dd-MM-yyyy').format(
+                                      DateTime.parse(_dateTime.toString())),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
                             child: IconButton(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.calendar_today_sharp,
                                 color: Colors.brown,
                               ),
@@ -266,16 +262,16 @@ class _RecordCalveState extends State<RecordCalve> {
                       Column(children: [
                         Container(
                           alignment: Alignment.topLeft,
-                          margin: EdgeInsets.all(20),
+                          margin: const EdgeInsets.all(20),
                           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          child: Text('รายละเอียดอื่นๆ',
+                          child: const Text('รายละเอียดอื่นๆ',
                               style: TextStyle(fontWeight: FontWeight.w500)),
                         ),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                           child: TextField(
                             controller: noteController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: 'รายละเอียด',
                               fillColor: Colors.blueGrey,
                             ),
@@ -288,20 +284,19 @@ class _RecordCalveState extends State<RecordCalve> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                              margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                              margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  // ignore: deprecated_member_use
                                   RaisedButton(
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
                                     color: Colors.blueGrey[50],
-                                    shape: RoundedRectangleBorder(
+                                    shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(39))),
-                                    child: Text(
+                                    child: const Text(
                                       'ยกเลิก',
                                       style: TextStyle(
                                           color: Colors.brown,
@@ -314,28 +309,81 @@ class _RecordCalveState extends State<RecordCalve> {
                                 ],
                               )),
                           Container(
-                              margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                              margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                               child: Column(
                                 children: [
-                                  // ignore: deprecated_member_use
                                   RaisedButton(
                                     onPressed: () {
-                                      userAddPar(
-                                          ab_id,
-                                          _dateTime.toString(),
-                                          calfNameController.text,
-                                          sex,
-                                          caretakerController.text,
-                                          status,
-                                          noteController.text,
-                                          user?.user_id,
-                                          user?.farm_id);
+                                      if (ab_id == null) {
+                                        _scaffoldKey.currentState?.showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    "กรุณาเลือกวัวที่จะบันทึกข้อมูล")));
+                                        return;
+                                      }
+                                      if (calfNameController.text.isEmpty) {
+                                        _scaffoldKey.currentState?.showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    "กรุณากรอกชื่อลูกวัว")));
+                                        return;
+                                      }
+                                      if (sex == null) {
+                                        _scaffoldKey.currentState?.showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    "กรุณากรอกเพศลูกวัว")));
+                                        return;
+                                      }
+                                      if (caretakerController.text.isEmpty) {
+                                        _scaffoldKey.currentState?.showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    "กรุณากรอกชื่อผู้ดูแล")));
+                                        return;
+                                      }
+                                      if (status == null) {
+                                        _scaffoldKey.currentState?.showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    "กรุณากรอกผลสถานะการคลอด")));
+                                        return;
+                                      }
+                                      if (_dateTime == null) {
+                                        _scaffoldKey.currentState?.showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    "กรุณากรอกวันที่ลูกวัวคลอด")));
+                                        return;
+                                      }
+                                      if (noteController.text.isEmpty) {
+                                        setState(() {
+                                          noteController.text = '-';
+                                        });
+                                      }
+                                      if (ab_id != null &&
+                                          calfNameController.text.isNotEmpty &&
+                                          sex != null &&
+                                          caretakerController.text.isNotEmpty &&
+                                          status != null &&
+                                          _dateTime != null) {
+                                        userAddPar(
+                                            ab_id,
+                                            _dateTime.toString(),
+                                            calfNameController.text,
+                                            sex,
+                                            caretakerController.text,
+                                            status,
+                                            noteController.text,
+                                            user?.user_id,
+                                            user?.farm_id);
+                                      }
                                     },
                                     color: Colors.brown,
-                                    shape: RoundedRectangleBorder(
+                                    shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(39))),
-                                    child: Text(
+                                    child: const Text(
                                       'บันทึกข้อมูล',
                                       style: TextStyle(
                                           color: Colors.white,
@@ -353,7 +401,31 @@ class _RecordCalveState extends State<RecordCalve> {
                   ),
                 ],
               ),
-            ))));
+            )));
+  }
+
+  void _showerrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text(
+          'กรุณาตรวจสอบความถูกต้อง',
+          style: TextStyle(fontSize: 17),
+        ),
+        content: Text(
+          message,
+          style: const TextStyle(fontSize: 15),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
+    );
   }
 
   userAddPar(
@@ -387,26 +459,33 @@ class _RecordCalveState extends State<RecordCalve> {
       print(user['message']);
       Navigator.push(
         context,
-        new MaterialPageRoute(
-          builder: (context) => new SuccessRecord(),
+        MaterialPageRoute(
+          builder: (context) => SuccessRecord(),
         ),
       );
-    } else {
+    }
+    if (response.statusCode == 500) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      Map<String, dynamic> user = resposne['data'];
+      String mess = user['message'];
+      _showerrorDialog(mess);
+    }
+    else {
       _scaffoldKey.currentState
-          ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+          ?.showSnackBar(const SnackBar(content: Text("Please Try again")));
     }
   }
 
   Widget _customDropDown(BuildContext context, CowAb? item) {
     return Container(
         child: (item?.cow_name == null)
-            ? ListTile(
+            ? const ListTile(
                 contentPadding: EdgeInsets.all(0),
                 leading: Icon(Icons.add_outlined),
                 title: Text("กรุณาเลือกวัว"),
               )
             : ListTile(
-                contentPadding: EdgeInsets.all(0),
+                contentPadding: const EdgeInsets.all(0),
                 leading: CircleAvatar(
                   backgroundImage: NetworkImage(item!.cow_image),
                 ),
@@ -416,11 +495,11 @@ class _RecordCalveState extends State<RecordCalve> {
 
   Widget _customPopup(BuildContext context, CowAb? item, bool isSelected) {
     return Container(
-        margin: EdgeInsets.symmetric(horizontal: 8),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
         decoration: !isSelected
             ? null
             : BoxDecoration(
-                border: Border.all(color: Color(0xff5a82de)),
+                border: Border.all(color: const Color(0xff5a82de)),
                 borderRadius: BorderRadius.circular(5),
                 color: Colors.white),
         child: ListTile(
