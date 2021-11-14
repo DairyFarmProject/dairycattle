@@ -1,7 +1,6 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
 import 'dart:convert';
-
 import '../../../models/DistinctVac.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -55,27 +54,25 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('บันทึกการฉีดวัคซีน'),
+          title: const Text('บันทึกการฉีดวัคซีน'),
           leading: GestureDetector(
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back,
               color: Colors.white,
             ),
           ),
-          backgroundColor: Color.fromRGBO(111, 193, 148, 5),
+          backgroundColor: const Color.fromRGBO(111, 193, 148, 5),
         ),
         body: FutureBuilder<List<DistinctVac>>(
             future: getVacS(),
             builder: (context, snapshot) {
               if (snapshot.data == null) {
-                return Container(
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.brown,
-                    ),
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: Color.fromRGBO(111, 193, 148, 5),
                   ),
                 );
               } else
@@ -83,11 +80,9 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, i) {
                       return Container(
-                          margin: EdgeInsets.fromLTRB(20, 15, 20, 5),
+                          margin: const EdgeInsets.fromLTRB(20, 15, 20, 5),
                           child: SingleChildScrollView(
                               child: Material(
-                            // color: Colors.transparent,
-                            //elevation: 3,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -95,7 +90,7 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
                               width: MediaQuery.of(context).size.width * 0.86,
                               height: 150,
                               decoration: BoxDecoration(
-                                color: Color.fromRGBO(111, 193, 148, 5),
+                                color: const Color.fromRGBO(111, 193, 148, 5),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: InkWell(
@@ -112,7 +107,7 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
                                       Expanded(
                                         child: Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   10, 0, 10, 0),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
@@ -123,14 +118,14 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
                                             children: [
                                               Text(
                                                   '${snapshot.data?[i].vac_name_th}',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
                                                           FontWeight.w500,
                                                       fontSize: 20)),
                                               Text(
                                                   '${snapshot.data?[i].vac_name_en}',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
                                                           FontWeight.w500,
@@ -141,7 +136,7 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
                                       ),
                                       Container(
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
+                                          borderRadius: const BorderRadius.only(
                                               bottomLeft: Radius.circular(20),
                                               topLeft: Radius.circular(20)),
                                           color: Colors.green[100],
@@ -151,18 +146,18 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
                                           children: <Widget>[
                                             Container(
                                               width: 40,
-                                              padding: EdgeInsets.only(
+                                              padding: const EdgeInsets.only(
                                                   left: 0, right: 20),
                                               alignment: Alignment.center,
                                             ),
                                             Padding(
                                               padding:
-                                                  EdgeInsetsDirectional.only(
+                                                  const EdgeInsetsDirectional.only(
                                                       end: 20),
                                               child: Image.asset(
                                                 "assets/images/vaccines.png",
                                                 height: 50,
-                                                color: Color.fromRGBO(
+                                                color: const Color.fromRGBO(
                                                     111, 193, 148, 5),
                                               ),
                                             ),
@@ -176,12 +171,12 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
                     });
             }),
         floatingActionButton: FloatingActionButton.extended(
-          label: Text(
+          label: const Text(
             ' เพิ่มการบันทึกข้อมูล',
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.w200, fontSize: 14),
           ),
-          icon: Icon(Icons.add),
+          icon: const Icon(Icons.add),
           backgroundColor: Colors.brown,
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {

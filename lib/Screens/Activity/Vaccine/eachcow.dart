@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import '/models/DistinctCowVac.dart';
 import '/Screens/Activity/Vaccine/eachvaccine.dart';
 import '/models/DistinctVac.dart';
@@ -56,29 +55,29 @@ class _VaccineCowState extends State<VaccineCow> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('บันทึกการฉีดวัคซีน'),
+          title: const Text('บันทึกการฉีดวัคซีน'),
           leading: GestureDetector(
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back,
               color: Colors.white,
             ),
           ),
-          backgroundColor: Color.fromRGBO(111, 193, 148, 5),
+          backgroundColor: const Color.fromRGBO(111, 193, 148, 5),
         ),
         body: FutureBuilder<List<DistinctCowVac>>(
             future: getVacS(),
             builder: (context, snapshot) {
               if (snapshot.data == null) {
                 return Container();
-              } else
+              }
                 return ListView.builder(
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, i) {
                       return Container(
-                          margin: EdgeInsets.fromLTRB(20, 15, 20, 5),
+                          margin: const EdgeInsets.fromLTRB(20, 15, 20, 5),
                           child: SingleChildScrollView(
                               child: Material(
                             // color: Colors.transparent,
@@ -90,7 +89,7 @@ class _VaccineCowState extends State<VaccineCow> {
                               width: MediaQuery.of(context).size.width * 0.86,
                               height: 150,
                               decoration: BoxDecoration(
-                                color: Color.fromRGBO(111, 193, 148, 5),
+                                color: const Color.fromRGBO(111, 193, 148, 5),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: InkWell(
@@ -107,7 +106,7 @@ class _VaccineCowState extends State<VaccineCow> {
                                       Expanded(
                                         child: Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   10, 0, 10, 0),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
@@ -118,14 +117,14 @@ class _VaccineCowState extends State<VaccineCow> {
                                             children: [
                                               Text(
                                                   '${snapshot.data?[i].cow_name}',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
                                                           FontWeight.w500,
                                                       fontSize: 20)),
                                               Text(
                                                   '${snapshot.data?[i].cow_no}',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
                                                           FontWeight.w500,
@@ -136,7 +135,7 @@ class _VaccineCowState extends State<VaccineCow> {
                                       ),
                                       Container(
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
+                                          borderRadius: const BorderRadius.only(
                                               bottomLeft: Radius.circular(20),
                                               topLeft: Radius.circular(20)),
                                           color: Colors.green[100],
@@ -146,17 +145,17 @@ class _VaccineCowState extends State<VaccineCow> {
                                           children: <Widget>[
                                             Container(
                                               width: 0,
-                                              padding: EdgeInsets.only(
+                                              padding: const EdgeInsets.only(
                                                   left: 0, right: 20),
                                               alignment: Alignment.center,
                                             ),
                                             Padding(
                                                 padding:
-                                                    EdgeInsetsDirectional.only(
+                                                    const EdgeInsetsDirectional.only(
                                                         end: 0),
                                                 child: CircleAvatar(
                                                     backgroundImage: NetworkImage(
-                                                        '${snapshot.data![i].cow_image}'),
+                                                        snapshot.data![i].cow_image),
                                                     radius: 90.0)),
                                           ],
                                         ),
@@ -168,12 +167,12 @@ class _VaccineCowState extends State<VaccineCow> {
                     });
             }),
         floatingActionButton: FloatingActionButton.extended(
-          label: Text(
+          label: const Text(
             ' เพิ่มการบันทึกข้อมูล',
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.w200, fontSize: 14),
           ),
-          icon: Icon(Icons.add),
+          icon: const Icon(Icons.add),
           backgroundColor: Colors.brown,
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {

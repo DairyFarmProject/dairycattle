@@ -63,39 +63,31 @@ class _EachVaccineState extends State<EachVaccine> {
     getVacS();
   }
 
-  int _selectIndex = 0;
-
-  void _onItemTap(int index) {
-    setState(() {
-      _selectIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
     return Scaffold(
+        key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-            title: Text("บันทึกการฉีดวัคซีน"),
+            title: const Text("บันทึกการฉีดวัคซีน"),
             leading: GestureDetector(
               onTap: () {
                 Navigator.pop(context);
               },
-              child: Icon(
+              child: const Icon(
                 Icons.arrow_back,
                 color: Colors.white,
               ),
             ),
-            backgroundColor: Color.fromRGBO(111, 193, 148, 5)),
+            backgroundColor: const Color.fromRGBO(111, 193, 148, 5)),
         body: Form(
             key: _formKey,
-            //child: Container(
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   Container(
-                      margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                      margin: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                       alignment: Alignment.topLeft,
                       child: Row(children: [
                         Column(
@@ -106,189 +98,183 @@ class _EachVaccineState extends State<EachVaccine> {
                               Text('ชื่ออังกฤษ : ${widget.vac.vac_name_en}'),
                             ]),
                         Container(
-                            margin: EdgeInsets.fromLTRB(100, 0, 0, 0),
+                            margin: const EdgeInsets.fromLTRB(100, 0, 0, 0),
                             child: CircleAvatar(
                                 backgroundImage:
-                                    NetworkImage('${widget.vac.cow_image}'),
+                                    NetworkImage(widget.vac.cow_image),
                                 radius: 40.0))
                       ])),
                   Container(
-                      margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                       child: Column(
                         children: [
-                          Container(
-                              child: FutureBuilder<List<VacIDCow>>(
-                                  future: getVacS(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.data == null) {
-                                      return Container();
-                                    } else
-                                      return ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: snapshot.data!.length,
-                                          itemBuilder: (context, i) {
-                                            return Container(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  0, 10, 0, 0),
-                                              margin: EdgeInsets.fromLTRB(
-                                                  10, 10, 10, 10),
-                                              height: 120,
-                                              width: 300,
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                      'วันที่ฉีด : ${DateFormat('dd-MM-yyyy').format(DateTime.parse('${snapshot.data![i].vac_date.toString()}'))}'),
-                                                  Text(snapshot.data![i]
-                                                              .next_date ==
-                                                          '0000-00-00'
-                                                      ? ''
-                                                      : 'วันที่ฉีด : ${DateFormat('dd-MM-yyyy').format(DateTime.parse('${snapshot.data![i].next_date.toString()}'))}'),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Container(
-                                                          margin: EdgeInsets
-                                                              .fromLTRB(
-                                                                  0, 5, 0, 5),
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              // ignore: deprecated_member_use
-                                                              RaisedButton(
-                                                                onPressed:
-                                                                    () async {
-                                                                  final ConfirmAction? action = await _asyncConfirmDialog(
-                                                                      context,
-                                                                      snapshot
-                                                                          .data?[
-                                                                              i]
-                                                                          .schedule_id,
-                                                                      user?.farm_id,
-                                                                      user?.user_id);
-                                                                },
-                                                                color: Colors
-                                                                    .blueGrey[50],
-                                                                shape: RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.all(
-                                                                            Radius.circular(39))),
-                                                                child: Row(
-                                                                  children: [
-                                                                    Padding(
-                                                                      padding: const EdgeInsets
-                                                                              .only(
-                                                                          right:
-                                                                              5),
-                                                                      child:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .delete,
-                                                                        color: Colors
-                                                                            .brown,
-                                                                      ),
-                                                                    ),
-                                                                    Text(
-                                                                      'ลบข้อมูล',
-                                                                      style: TextStyle(
-                                                                          color: Colors
-                                                                              .brown,
-                                                                          fontWeight: FontWeight
-                                                                              .w600,
-                                                                          fontSize:
-                                                                              14),
-                                                                    )
-                                                                  ],
-                                                                ),
+                          FutureBuilder<List<VacIDCow>>(
+                              future: getVacS(),
+                              builder: (context, snapshot) {
+                                if (snapshot.data == null) {
+                                  return Container();
+                                }
+                                return ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: snapshot.data!.length,
+                                    itemBuilder: (context, i) {
+                                      return Container(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 10, 0, 0),
+                                        margin: const EdgeInsets.fromLTRB(
+                                            10, 10, 10, 10),
+                                        height: 120,
+                                        width: 300,
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                                'วันที่ฉีด : ${DateFormat('dd-MM-yyyy').format(DateTime.parse('${snapshot.data![i].vac_date.toString()}'))}'),
+                                            Text(snapshot.data![i].next_date ==
+                                                    '0000-00-00'
+                                                ? ''
+                                                : 'วันที่ฉีด : ${DateFormat('dd-MM-yyyy').format(DateTime.parse('${snapshot.data![i].next_date.toString()}'))}'),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                    margin: const EdgeInsets
+                                                        .fromLTRB(0, 5, 0, 5),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        // ignore: deprecated_member_use
+                                                        RaisedButton(
+                                                          onPressed: () async {
+                                                            final ConfirmAction?
+                                                                action =
+                                                                await _asyncConfirmDialog(
+                                                                    context,
+                                                                    snapshot
+                                                                        .data?[
+                                                                            i]
+                                                                        .schedule_id,
+                                                                    user?.farm_id,
+                                                                    user?.user_id);
+                                                          },
+                                                          color: Colors
+                                                              .blueGrey[50],
+                                                          shape: const RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          39))),
+                                                          child: Row(
+                                                            children: const [
+                                                              Padding(
                                                                 padding:
-                                                                    const EdgeInsets
-                                                                            .fromLTRB(
-                                                                        10,
-                                                                        5,
-                                                                        10,
-                                                                        5),
+                                                                    EdgeInsets
+                                                                            .only(
+                                                                        right:
+                                                                            5),
+                                                                child: Icon(
+                                                                  Icons.delete,
+                                                                  color: Colors
+                                                                      .brown,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                'ลบข้อมูล',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .brown,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    fontSize:
+                                                                        14),
                                                               )
                                                             ],
-                                                          )),
-                                                      Container(
-                                                          margin: EdgeInsets
-                                                              .fromLTRB(
-                                                                  0, 5, 0, 5),
-                                                          child: Column(
-                                                            children: [
-                                                              RaisedButton(
-                                                                onPressed: () {
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) =>
-                                                                              EditRecordVaccine(vac: snapshot.data![i])));
-                                                                },
-                                                                color: Colors
-                                                                    .brown,
-                                                                shape: RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.all(
-                                                                            Radius.circular(39))),
-                                                                child: Center(
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.only(right: 5),
-                                                                        child:
-                                                                            Icon(
-                                                                          Icons
-                                                                              .edit,
-                                                                          color:
-                                                                              Colors.white,
-                                                                        ),
-                                                                      ),
-                                                                      Text(
-                                                                        'แก้ไข',
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                Colors.white,
-                                                                            fontWeight: FontWeight.w600,
-                                                                            fontSize: 14),
-                                                                      )
-                                                                    ],
+                                                          ),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .fromLTRB(
+                                                                  10, 5, 10, 5),
+                                                        )
+                                                      ],
+                                                    )),
+                                                Container(
+                                                    margin: const EdgeInsets.fromLTRB(
+                                                        0, 5, 0, 5),
+                                                    child: Column(
+                                                      children: [
+                                                        RaisedButton(
+                                                          onPressed: () {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) =>
+                                                                        EditRecordVaccine(
+                                                                            vac:
+                                                                                snapshot.data![i])));
+                                                          },
+                                                          color: Colors.brown,
+                                                          shape: const RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          39))),
+                                                          child: Center(
+                                                            child: Row(
+                                                              children: const [
+                                                                Padding(
+                                                                  padding: EdgeInsets
+                                                                          .only(
+                                                                      right: 5),
+                                                                  child: Icon(
+                                                                    Icons.edit,
+                                                                    color: Colors
+                                                                        .white,
                                                                   ),
                                                                 ),
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .fromLTRB(
-                                                                        15,
-                                                                        7,
-                                                                        15,
-                                                                        7),
-                                                              ),
-                                                            ],
-                                                          )),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                              decoration: BoxDecoration(
-                                                  border: Border(
-                                                    top: BorderSide(
-                                                        color: Colors.white),
-                                                    bottom: BorderSide(
-                                                        color: Colors.white),
-                                                    left: BorderSide(
-                                                        width: 5,
-                                                        color: Colors.brown),
-                                                  ),
-                                                  color: Colors.brown[50]),
-                                            );
-                                          });
-                                  }))
+                                                                Text(
+                                                                  'แก้ไข',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      fontSize:
+                                                                          14),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .fromLTRB(
+                                                                  15, 7, 15, 7),
+                                                        ),
+                                                      ],
+                                                    )),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        decoration: BoxDecoration(
+                                            border: const Border(
+                                              top: BorderSide(
+                                                  color: Colors.white),
+                                              bottom: BorderSide(
+                                                  color: Colors.white),
+                                              left: BorderSide(
+                                                  width: 5,
+                                                  color: Colors.brown),
+                                            ),
+                                            color: Colors.brown[50]),
+                                      );
+                                    });
+                              })
                         ],
                       )),
                 ],
@@ -329,7 +315,7 @@ deleteVac(context, user_id, farm_id, schedule_id) async {
         ?.showSnackBar(SnackBar(content: Text("${resposne['message']}")));
   } else {
     _scaffoldKey.currentState
-        ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+        ?.showSnackBar(const SnackBar(content: Text("Please Try again")));
   }
 }
 
@@ -341,15 +327,15 @@ Future<ConfirmAction?> _asyncConfirmDialog(
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          insetPadding: EdgeInsets.fromLTRB(20, 10, 20, 0),
-          title: Text(
+          insetPadding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+          title: const Text(
             'ยืนยันที่จะลบข้อมูลนี้',
             style: TextStyle(
               fontWeight: FontWeight.w500,
             ),
             textAlign: TextAlign.center,
           ),
-          content: Text(
+          content: const Text(
             'เมื่อคุณกดปุ่ม "ยืนยัน" แล้ว ข้อมูลของคุณจะถูกลบออกไปโดยทันที ',
             textAlign: TextAlign.center,
           ),
@@ -366,7 +352,7 @@ Future<ConfirmAction?> _asyncConfirmDialog(
                   ),
                   padding: const EdgeInsets.fromLTRB(50, 12, 50, 12),
                   color: Colors.blueGrey[50],
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(39)),
                   ),
                   onPressed: () {
@@ -385,7 +371,7 @@ Future<ConfirmAction?> _asyncConfirmDialog(
                   ),
                   padding: const EdgeInsets.fromLTRB(50, 12, 50, 12),
                   color: Colors.brown[900],
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(39)),
                   ),
                   onPressed: () {

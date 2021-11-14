@@ -1,15 +1,8 @@
-import 'package:dairycattle/models/AllChoose.dart';
-import 'package:dairycattle/models/VacIDCow.dart';
-
-import '/models/Vaccine_schedule.dart';
+import '/models/VacIDCow.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
-
-import 'package:dropdown_search/dropdown_search.dart';
-
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-
 import '../../Cow/successrecord.dart';
 import '../../../models/Vaccines.dart';
 
@@ -39,22 +32,16 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
     getVaccines();
   }
 
-  int selectVaccine = 1;
-  int _selectIndex = 0;
+  int selectVaccine = 0;
+  int vac = 0;
   var date2;
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  void _onItemTap(int index) {
-    setState(() {
-      _selectIndex = index;
-    });
-  }
-
   getDate(date) {
     DateTime dateTime = DateTime.parse(date);
-    var newDate = new DateTime(dateTime.year, dateTime.month + 1, dateTime.day);
+    var newDate = DateTime(dateTime.year, dateTime.month + 1, dateTime.day);
     var date1 =
         (DateFormat('yyyy-MM-dd').format(DateTime.parse(newDate.toString())));
 
@@ -71,8 +58,9 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
-          title: Text('แก้ไขบันทึกการฉีดวัคซีน'),
+          title: const Text('แก้ไขบันทึกการฉีดวัคซีน'),
           leading: GestureDetector(
             onTap: () {
               Navigator.pop(context);
@@ -83,75 +71,97 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
               color: Colors.white,
             ),
           ),
-          backgroundColor: Color.fromRGBO(111, 193, 148, 5),
+          backgroundColor: const Color.fromRGBO(111, 193, 148, 5),
         ),
         body: Form(
             key: _formKey,
-            child: Container(
-                child: FutureBuilder<List<Vaccines>>(
-              future: getVaccines(),
-              builder: (context, snapshot) {
-                if (snapshot.data == null) {
-                  return Container(
-                    child: Center(
-                        child: CircularProgressIndicator(
-                      color: Colors.brown,
-                    )),
-                  );
-                } else
+            child: SingleChildScrollView(
+                child: Column(children: [
+              Container(
+                  margin: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                  alignment: Alignment.topLeft,
+                  child: Row(children: [
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('ชื่อวัว : ${widget.vac.cow_name}'),
+                          Text('หมายเลขวัว : ${widget.vac.cow_no}'),
+                          Text(
+                              'บันทึกฉีดวัคซีน : ${DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.vac.vac_date))}'),
+                        ]),
+                    Container(
+                        margin: const EdgeInsets.fromLTRB(80, 0, 0, 0),
+                        child: CircleAvatar(
+                            backgroundImage: NetworkImage(widget.vac.cow_image),
+                            radius: 40.0))
+                  ])),
+              FutureBuilder<List<Vaccines>>(
+                future: getVaccines(),
+                builder: (context, snapshot) {
+                  if (snapshot.data == null) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.brown,
+                      ),
+                    );
+                  }
                   return Column(
                     children: [
                       Container(
-                        padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                         alignment: Alignment.topLeft,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('ชื่อวัคซีน',
+                            const Text('ชื่อวัคซีนใหม่',
                                 style: TextStyle(fontWeight: FontWeight.w500)),
                             Container(
-                                child: Container(
-                                    margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                                    child: DropdownButton<Vaccines>(
-                                      hint: new Text('select vaccine'),
-                                      value: selectVaccine == null
-                                          ? null
-                                          : snapshot.data?[selectVaccine],
-                                      items: snapshot.data?.map((data) {
-                                        return new DropdownMenuItem<Vaccines>(
-                                            value: data,
-                                            child: new Text(data.vac_name_th));
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectVaccine =
-                                              snapshot.data!.indexOf(value!);
-                                        });
-                                      },
-                                    ),
-                                    padding: const EdgeInsets.all(20.0))),
+                                margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                                child: DropdownButton<Vaccines>(
+                                  isExpanded: true,
+                                  hint: const Text('select vaccine'),
+                                  value: selectVaccine == null
+                                      ? null
+                                      : snapshot.data?[selectVaccine],
+                                  items: snapshot.data?.map((data) {
+                                    return DropdownMenuItem<Vaccines>(
+                                        value: data,
+                                        child: Text(data.vac_name_th));
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectVaccine =
+                                          snapshot.data!.indexOf(value!);
+                                    });
+                                  },
+                                ),
+                                padding: const EdgeInsets.all(20.0)),
                             Container(
                               alignment: Alignment.topLeft,
-                              margin: EdgeInsets.all(0),
-                              padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
-                              child: Text('วันที่',
+                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              child: const Text('วันที่ต้องการบันทึกใหม่',
                                   style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
+                                      TextStyle(fontWeight: FontWeight.w500)),
                             ),
                             Row(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.fromLTRB(30, 20, 0, 20),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(30, 20, 0, 20),
                                   child: Text(
                                     _dateTime == null
-                                        ? '${DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.vac.vac_date))}'
-                                        : '${DateFormat('dd-MM-yyyy').format(DateTime.parse(_dateTime.toString()))}',
+                                        ? DateFormat('dd-MM-yyyy').format(
+                                            DateTime.parse(widget.vac.vac_date))
+                                        : DateFormat('dd-MM-yyyy').format(
+                                            DateTime.parse(
+                                                _dateTime.toString())),
                                   ),
                                 ),
                                 Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(10, 10, 0, 10),
                                   child: IconButton(
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.calendar_today_sharp,
                                       color: Colors.brown,
                                     ),
@@ -192,7 +202,8 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(0, 40, 0, 30),
+                                  margin:
+                                      const EdgeInsets.fromLTRB(0, 40, 0, 30),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -201,10 +212,10 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
                                             Navigator.pop(context);
                                           },
                                           color: Colors.blueGrey[50],
-                                          shape: RoundedRectangleBorder(
+                                          shape: const RoundedRectangleBorder(
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(39))),
-                                          child: Text(
+                                          child: const Text(
                                             'ยกเลิก',
                                             style: TextStyle(
                                                 color: Colors.brown,
@@ -217,24 +228,43 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(0, 40, 0, 30),
+                                  margin:
+                                      const EdgeInsets.fromLTRB(0, 40, 0, 30),
                                   child: Column(
                                     children: [
                                       RaisedButton(
                                           onPressed: () {
-                                            userRecordVaccine(
-                                                widget.vac.schedule_id,
-                                                selectVaccine + 1,
-                                                widget.vac.cow_id,
-                                                '${DateFormat('yyyy-MM-dd').format(DateTime.parse(_dateTime.toString()))}',
-                                                getDate(_dateTime.toString()));
+                                            if (selectVaccine != null) {
+                                              setState(() {
+                                                vac = selectVaccine;
+                                                vac = vac + 1;
+                                              });
+                                            }
+                                            if (_dateTime == null) {
+                                              _dateTime = DateTime.parse(widget
+                                                  .vac.vac_date
+                                                  .toString());
+                                            }
+                                            if (vac != null &&
+                                                _dateTime != null) {
+                                              userRecordVaccine(
+                                                  widget.vac.schedule_id,
+                                                  vac,
+                                                  widget.vac.cow_id,
+                                                  DateFormat('yyyy-MM-dd')
+                                                      .format(DateTime.parse(
+                                                          _dateTime
+                                                              .toString())),
+                                                  getDate(
+                                                      _dateTime.toString()));
+                                            }
                                           },
-                                          color:
-                                              Color.fromRGBO(111, 193, 148, 5),
-                                          shape: RoundedRectangleBorder(
+                                          color: const Color.fromRGBO(
+                                              111, 193, 148, 5),
+                                          shape: const RoundedRectangleBorder(
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(39))),
-                                          child: Text(
+                                          child: const Text(
                                             'บันทึกข้อมูล',
                                             style: TextStyle(
                                                 color: Colors.white,
@@ -253,8 +283,33 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
                       ),
                     ],
                   );
-              },
-            ))));
+                },
+              )
+            ]))));
+  }
+
+  void _showerrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text(
+          'กรุณาตรวจสอบความถูกต้อง',
+          style: TextStyle(fontSize: 17),
+        ),
+        content: Text(
+          message,
+          style: const TextStyle(fontSize: 15),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
+    );
   }
 
   userRecordVaccine(
@@ -287,13 +342,19 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
       print(user['message']);
       Navigator.push(
         context,
-        new MaterialPageRoute(
-          builder: (context) => new SuccessRecord(),
+        MaterialPageRoute(
+          builder: (context) => SuccessRecord(),
         ),
       );
+    }
+    if (response.statusCode == 500) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      Map<String, dynamic> user = resposne['data'];
+      String mess = user['message'];
+      _showerrorDialog(mess);
     } else {
       _scaffoldKey.currentState
-          ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+          ?.showSnackBar(const SnackBar(content: Text("Please Try again")));
     }
   }
 }
