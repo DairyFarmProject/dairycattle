@@ -19,7 +19,6 @@ class VaccineCow extends StatefulWidget {
 
 class _VaccineCowState extends State<VaccineCow> {
   List<DistinctCowVac> vac = [];
-  String? have;
 
   Future<List<DistinctCowVac>> getVacS() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
@@ -40,21 +39,12 @@ class _VaccineCowState extends State<VaccineCow> {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> db = jsonDecode(response.body);
-      if (db['data']['row'] != null) {
-        final List list = db['data']['rows'];
-        vacs = list.map((e) => DistinctCowVac.fromMap(e)).toList();
-        if (mounted) {
-          setState(() {
-            vac = vacs;
-          });
-        }
-      }
-      if (db['data']['row'] == null) {
-        if (mounted) {
-          setState(() {
-            have = '0';
-          });
-        }
+      final List list = db['data']['rows'];
+      vacs = list.map((e) => DistinctCowVac.fromMap(e)).toList();
+      if (mounted) {
+        setState(() {
+          vac = vacs;
+        });
       }
     }
     return vacs;
@@ -87,14 +77,7 @@ class _VaccineCowState extends State<VaccineCow> {
             future: getVacS(),
             builder: (context, snapshot) {
               if (snapshot.data == null) {
-                return Center(
-                    child: (have == '0')
-                        ? Container()
-                        : const Center(
-                            child: CircularProgressIndicator(
-                              color: Color.fromRGBO(111, 193, 148, 5),
-                            ),
-                          ));
+                return Center();
               }
               return ListView.builder(
                   itemCount: snapshot.data!.length,

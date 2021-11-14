@@ -1,3 +1,6 @@
+import '/Screens/Farm/confirm_create_farm.dart';
+import '/Screens/Welcome/otp.dart';
+import '/Screens/Welcome/register.dart';
 import '/Screens/Cow/addcow1.dart';
 import '/Screens/Cow/cow2.dart';
 import '/Screens/Cow/cow3.dart';
@@ -84,10 +87,13 @@ class _Homepage_MemberState extends State<Homepage_Member> {
         theme: ThemeData(fontFamily: 'Mitr'),
         initialRoute: '/',
         routes: {
-          '/cow2': (context) => Cow2(),
-          '/cow3': (context) => Cow3(),
-          '/cow4': (context) => Cow4(),
-          '/cow5': (context) => Cow5(),
+          ConfirmCreateFarm.routeName: (context) => ConfirmCreateFarm(),
+          RegisterScreen.routeName: (context) => RegisterScreen(),
+          OTP.routeName: (context) => OTP(),
+          Cow2.routeName: (context) => Cow2(),
+          Cow3.routeName: (context) => Cow3(),
+          Cow4.routeName: (context) => Cow4(),
+          Cow5.routeName: (context) => Cow5(),
         },
         home: Scaffold(
           appBar: _appBarList[_selectPage],

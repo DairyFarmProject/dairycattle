@@ -1,10 +1,17 @@
 import '/Screens/Profile/Farm_data.dart';
+import 'Screens/Cow/cow2.dart';
+import 'Screens/Cow/cow3.dart';
+import 'Screens/Cow/cow4.dart';
+import 'Screens/Cow/cow5.dart';
 import 'Screens/Dashboard/dashboard.dart';
 import '/notification.dart';
 import 'package:flutter/material.dart';
 import 'Screens/Activity/addactivity.dart';
 import 'Screens/Cow/addcow1.dart';
 import 'Screens/Cow/cow1.dart';
+import 'Screens/Farm/confirm_create_farm.dart';
+import 'Screens/Welcome/otp.dart';
+import 'Screens/Welcome/register.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -85,6 +92,16 @@ class _HomepageState extends State<Homepage> {
 
     return MaterialApp(
         theme: ThemeData(fontFamily: 'Mitr'),
+            initialRoute: '/',
+            routes: {
+              ConfirmCreateFarm.routeName: (context) => ConfirmCreateFarm(),
+              RegisterScreen.routeName: (context) => RegisterScreen(),
+              OTP.routeName: (context) => OTP(),
+              Cow2.routeName: (context) => Cow2(),
+              Cow3.routeName: (context) => Cow3(),
+              Cow4.routeName: (context) => Cow4(),
+              Cow5.routeName: (context) => Cow5(),
+            },
         home: Scaffold(
           appBar: _appBarList[_selectPage],
           body: _pageOptions[_selectPage],

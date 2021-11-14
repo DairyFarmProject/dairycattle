@@ -54,7 +54,7 @@ abstract class RegisterStoreBase with Store {
               print('Authentication successful');
               onAuthenticationSuccessful(context, value);
             } else {
-              loginScaffoldKey.currentState?.showSnackBar(SnackBar(
+              loginScaffoldKey.currentState?.showSnackBar(const SnackBar(
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: Colors.red,
                 content: Text(
@@ -64,7 +64,7 @@ abstract class RegisterStoreBase with Store {
               ));
             }
           }).catchError((error) {
-            loginScaffoldKey.currentState?.showSnackBar(SnackBar(
+            loginScaffoldKey.currentState?.showSnackBar(const SnackBar(
               behavior: SnackBarBehavior.floating,
               backgroundColor: Colors.red,
               content: Text(
@@ -77,7 +77,7 @@ abstract class RegisterStoreBase with Store {
         verificationFailed: (authException) {
           print(
               'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
-          loginScaffoldKey.currentState?.showSnackBar(SnackBar(
+          loginScaffoldKey.currentState?.showSnackBar(const SnackBar(
             behavior: SnackBarBehavior.floating,
             backgroundColor: Colors.red,
             content: Text(
@@ -116,7 +116,7 @@ abstract class RegisterStoreBase with Store {
 
     await _auth.signInWithCredential(_authCredential).catchError((error) {
       isOtpLoading = false;
-      otpScaffoldKey.currentState?.showSnackBar(SnackBar(
+      otpScaffoldKey.currentState?.showSnackBar(const SnackBar(
         behavior: SnackBarBehavior.floating,
         backgroundColor: Colors.red,
         content: Text(
@@ -191,7 +191,7 @@ abstract class RegisterStoreBase with Store {
           ?.showSnackBar(SnackBar(content: Text("${resposne['message']}")));
     } else {
       otpScaffoldKey.currentState
-          ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+          ?.showSnackBar(const SnackBar(content: Text("Please Try again")));
     }
   }
 

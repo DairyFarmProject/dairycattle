@@ -57,6 +57,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
             theme: ThemeData(fontFamily: 'Mitr'),
+            initialRoute: '/',
             routes: {
               ConfirmCreateFarm.routeName: (context) => ConfirmCreateFarm(),
               RegisterScreen.routeName: (context) => RegisterScreen(),

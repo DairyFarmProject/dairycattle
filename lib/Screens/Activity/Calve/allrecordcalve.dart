@@ -24,7 +24,6 @@ void showInSnackBar(String value) {
 
 class _AllRecordCalveState extends State<AllRecordCalve> {
   List<DistinctCowAb> ab = [];
-  String? have;
 
   Future<List<DistinctCowAb>> getAbdominal() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
@@ -44,21 +43,12 @@ class _AllRecordCalveState extends State<AllRecordCalve> {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> db = jsonDecode(response.body);
-      if (db['data']['row'] != null) {
-        final List list = db['data']['rows'];
-        adbs = list.map((e) => DistinctCowAb.fromMap(e)).toList();
-        if (mounted) {
-          setState(() {
-            ab = adbs;
-          });
-        }
-      }
-      if (db['data']['row'] == null) {
-        if (mounted) {
-          setState(() {
-            have = '0';
-          });
-        }
+      final List list = db['data']['rows'];
+      adbs = list.map((e) => DistinctCowAb.fromMap(e)).toList();
+      if (mounted) {
+        setState(() {
+          ab = adbs;
+        });
       }
     }
     return adbs;
@@ -90,13 +80,7 @@ class _AllRecordCalveState extends State<AllRecordCalve> {
             future: getAbdominal(),
             builder: (context, snapshot) {
               if (snapshot.data == null) {
-                return Center(
-                    child: (have == '0')
-                        ? Container()
-                        : const Center(
-                            child: CircularProgressIndicator(
-                            color: Colors.blue,
-                          )));
+                return Center();
               }
               return ListView.builder(
                   itemCount: snapshot.data!.length,

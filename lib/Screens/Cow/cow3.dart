@@ -16,7 +16,6 @@ class Cow3 extends StatefulWidget {
 
 class _Cow3State extends State<Cow3> {
   List<Cows> cow = [];
-  String? have;
 
   Future<List<Cows>> getCow() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
@@ -36,21 +35,12 @@ class _Cow3State extends State<Cow3> {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> db = jsonDecode(response.body);
-      if (db['data']['row'] != null) {
-        final List list = db['data']['rows'];
-        cows = list.map((e) => Cows.fromMap(e)).toList();
-        if (mounted) {
-          setState(() {
-            cow = cows;
-          });
-        }
-      }
-      if (db['data']['row'] == null) {
-        if (mounted) {
-          setState(() {
-            have = '0';
-          });
-        }
+      final List list = db['data']['rows'];
+      cows = list.map((e) => Cows.fromMap(e)).toList();
+      if (mounted) {
+        setState(() {
+          cow = cows;
+        });
       }
     }
     return cow;
@@ -60,6 +50,13 @@ class _Cow3State extends State<Cow3> {
   void initState() {
     super.initState();
     getCow();
+  }
+
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
   }
 
   @override
@@ -81,16 +78,7 @@ class _Cow3State extends State<Cow3> {
       body: Padding(
         padding: const EdgeInsets.all(0),
         child: (cow.isEmpty)
-            ? Center(
-                child: (have == '0')
-                    ? Container()
-                    : Container(
-                        width: MediaQuery.of(context).size.height * 0.1,
-                        height: MediaQuery.of(context).size.height * 0.1,
-                        child: const CircularProgressIndicator(
-                          color: Colors.brown,
-                        ),
-                      ))
+            ? Center()
             : FutureBuilder<List<Cows>>(
                 future: getCow(),
                 builder: (context, snapshot) {

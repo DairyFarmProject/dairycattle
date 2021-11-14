@@ -1,4 +1,5 @@
 import 'package:dairycattle/models/UserDairys.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -6,7 +7,6 @@ import 'dart:convert';
 import '../../models/ScreenArguments.dart';
 import 'show_text_field.dart';
 import 'success_create_farm.dart';
-import '../../models/User.dart';
 import '../../providers/user_provider.dart';
 
 class ConfirmCreateFarm extends StatefulWidget {
@@ -34,6 +34,19 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
   late String province = '';
   late String postcode = '';
 
+  late User firebaseUser;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<bool> isAlreadyAuthenticated() async {
+    firebaseUser = _auth.currentUser!;
+    if (firebaseUser != null) {
+      print(firebaseUser.uid);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -59,6 +72,7 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
   Widget build(BuildContext context) {
     UserDairys? user = Provider.of<UserProvider>(context).userDairys;
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Row(
@@ -68,22 +82,22 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Align(
+                    child: const Align(
                         alignment: Alignment.centerLeft,
                         child: Icon(
                           Icons.arrow_back_ios_outlined,
                           color: Colors.white,
                         ))),
               ),
-              Center(
-                child: Text('DairyCattle'),
+              const Center(
+                child: Text('สร้างฟาร์ม'),
               ),
               Expanded(
                   child: Align(
                 alignment: Alignment.centerRight,
                 child: IconButton(
-                  icon:
-                      Icon(Icons.account_circle, color: Colors.white, size: 30),
+                  icon: const Icon(Icons.account_circle,
+                      color: Colors.brown, size: 30),
                   onPressed: () {},
                 ),
               )),
@@ -99,96 +113,74 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
               child: Column(
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.all(20),
-                    margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                    child: Text('สร้างฟาร์ม',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 25)),
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.all(0),
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    child: CircleAvatar(
+                        backgroundImage: NetworkImage(url), radius: 100.0),
                   ),
                   ShowTextField(
-                      child: Text(
+                      child: const Text(
                         'ชื่อฟาร์ม',
                         style: TextStyle(fontSize: 15),
                       ),
                       hintText: args.farm_name),
                   ShowTextField(
-                      child: Text(
+                      child: const Text(
                         'เลขทะเบียนฟาร์ม',
                         style: TextStyle(fontSize: 15),
                       ),
                       hintText: args.farm_no),
                   ShowTextField(
-                      child: Text(
+                      child: const Text(
                         'ไอดีฟาร์ม',
                         style: TextStyle(fontSize: 15),
                       ),
                       hintText: args.farm_code),
-                  Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.topLeft,
-                        margin: EdgeInsets.all(0),
-                        padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
-                        child: Text(
-                          'เพิ่มรูปภาพฟาร์ม',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      ),
-                      Container(
-                          alignment: Alignment.topLeft,
-                          margin: EdgeInsets.all(0),
-                          padding: const EdgeInsets.fromLTRB(30, 10, 0, 10),
-                          child: Icon(
-                            Icons.add_a_photo_outlined,
-                            size: 30,
-                            color: Colors.blueGrey,
-                          )),
-                    ],
-                  ),
                   ShowTextField(
-                      child: Text(
+                      child: const Text(
                         'บ้านเลขที่',
                         style: TextStyle(fontSize: 15),
                       ),
                       hintText: args.address),
                   ShowTextField(
-                      child: Text(
+                      child: const Text(
                         'หมู่',
                         style: TextStyle(fontSize: 15),
                       ),
                       hintText: args.moo),
                   ShowTextField(
-                      child: Text(
+                      child: const Text(
                         'ซอย',
                         style: TextStyle(fontSize: 15),
                       ),
                       hintText: args.soi),
                   ShowTextField(
-                      child: Text(
+                      child: const Text(
                         'ถนน',
                         style: TextStyle(fontSize: 15),
                       ),
                       hintText: args.road),
                   ShowTextField(
-                      child: Text(
+                      child: const Text(
                         'ตำบล',
                         style: TextStyle(fontSize: 15),
                       ),
                       hintText: args.sub_district),
                   ShowTextField(
-                      child: Text(
+                      child: const Text(
                         'อำเภอ',
                         style: TextStyle(fontSize: 15),
                       ),
                       hintText: args.district),
                   ShowTextField(
-                      child: Text(
+                      child: const Text(
                         'จังหวัด',
                         style: TextStyle(fontSize: 15),
                       ),
                       hintText: args.province),
                   ShowTextField(
-                      child: Text(
+                      child: const Text(
                         'รหัสไปรษณีย์',
                         style: TextStyle(fontSize: 15),
                       ),
@@ -198,20 +190,19 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                          margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                          margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              // ignore: deprecated_member_use
                               RaisedButton(
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
                                 color: Colors.blueGrey[50],
-                                shape: RoundedRectangleBorder(
+                                shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(39))),
-                                child: Text(
+                                child: const Text(
                                   'ยกเลิก',
                                   style: TextStyle(
                                       color: Colors.brown,
@@ -224,7 +215,7 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
                             ],
                           )),
                       Container(
-                          margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                          margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                           child: Column(
                             children: [
                               RaisedButton(
@@ -245,10 +236,10 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
                                       args.url);
                                 },
                                 color: Colors.brown,
-                                shape: RoundedRectangleBorder(
+                                shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(39))),
-                                child: Text(
+                                child: const Text(
                                   'บันทึกข้อมูล',
                                   style: TextStyle(
                                       color: Colors.white,
@@ -267,6 +258,30 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
             ),
           ),
         ));
+  }
+
+  void _showerrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text(
+          'กรุณาตรวจสอบความถูกต้อง',
+          style: TextStyle(fontSize: 17),
+        ),
+        content: Text(
+          message,
+          style: const TextStyle(fontSize: 15),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
+    );
   }
 
   userCreateFarm(user_id, farm_name, farm_no, farm_code, address, moo, soi,
@@ -304,13 +319,19 @@ class _ConfirmCreateFarmState extends State<ConfirmCreateFarm>
       print(user['message']);
       Navigator.push(
         context,
-        new MaterialPageRoute(
-          builder: (context) => new SuccessCreateFarm(),
+        MaterialPageRoute(
+          builder: (context) => SuccessCreateFarm(),
         ),
       );
+    }
+    if (response.statusCode == 500) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      Map<String, dynamic> user = resposne['data'];
+      String mess = user['message'];
+      _showerrorDialog(mess);
     } else {
       _scaffoldKey.currentState
-          ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+          ?.showSnackBar(const SnackBar(content: Text("Please Try again")));
     }
   }
 }

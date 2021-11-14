@@ -15,7 +15,6 @@ class AllRecordBreeding extends StatefulWidget {
 
 class _AllRecordBreedingState extends State<AllRecordBreeding> {
   List<DistinctCowAb> ab = [];
-  String? have;
 
   Future<List<DistinctCowAb>> getAbdominal() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
@@ -35,21 +34,12 @@ class _AllRecordBreedingState extends State<AllRecordBreeding> {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> db = jsonDecode(response.body);
-      if (db['data']['row'] != null) {
-        final List list = db['data']['rows'];
-        adb = list.map((e) => DistinctCowAb.fromMap(e)).toList();
-        if (mounted) {
-          setState(() {
-            ab = adb;
-          });
-        }
-      }
-      if (db['data']['row'] == null) {
-        if (mounted) {
-          setState(() {
-            have = '0';
-          });
-        }
+      final List list = db['data']['rows'];
+      adb = list.map((e) => DistinctCowAb.fromMap(e)).toList();
+      if (mounted) {
+        setState(() {
+          ab = adb;
+        });
       }
     }
     return adb;
@@ -81,13 +71,7 @@ class _AllRecordBreedingState extends State<AllRecordBreeding> {
             future: getAbdominal(),
             builder: (context, snapshot) {
               if (snapshot.data == null) {
-                return Center(
-                    child: (have == '0')
-                        ? Container()
-                        : const Center(
-                            child: CircularProgressIndicator(
-                            color: Color.fromRGBO(185, 110, 110, 5),
-                          )));
+                return Center();
               }
               return ListView.builder(
                   itemCount: snapshot.data!.length,

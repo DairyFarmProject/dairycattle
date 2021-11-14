@@ -22,9 +22,6 @@ class Background extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.cover,
               child: Image.asset('assets/images/B1.png'),
-              // child: Image.network(
-              //   'https://us.123rf.com/450wm/merggy/merggy1308/merggy130800017/21736152-vector-illustration-of-an-autumn-farm-landscape.jpg?ver=6',
-              // ),
             ),
           ),
           child,
