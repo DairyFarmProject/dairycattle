@@ -16,9 +16,11 @@ class Cow extends StatefulWidget {
 
 class _CowState extends State<Cow> {
   List<Cows> cow = [];
+  String? have;
 
   Future<List<Cows>> getCow() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
+    List<Cows> cows = [];
     Map data = {
       'user_id': user?.user_id.toString(),
       'farm_id': user?.farm_id.toString()
@@ -34,13 +36,21 @@ class _CowState extends State<Cow> {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> db = jsonDecode(response.body);
-      final List list = db['data']['rows'];
-      List<Cows> cows = list.map((e) => Cows.fromMap(e)).toList();
-
-      if (mounted) {
-        setState(() {
-          cow = cows;
-        });
+      if (db['data']['row'] != null) {
+        final List list = db['data']['rows'];
+        cows = list.map((e) => Cows.fromMap(e)).toList();
+        if (mounted) {
+          setState(() {
+            cow = cows;
+          });
+        }
+      }
+      if (db['data']['row'] == null) {
+        if (mounted) {
+          setState(() {
+            have = '0';
+          });
+        }
       }
     }
     return cow;
@@ -60,13 +70,15 @@ class _CowState extends State<Cow> {
       padding: const EdgeInsets.all(0),
       child: (cow.isEmpty)
           ? Center(
-              child: Container(
-              width: MediaQuery.of(context).size.height * 0.1,
-              height: MediaQuery.of(context).size.height * 0.1,
-              child: const CircularProgressIndicator(
-                color: Colors.brown,
-              ),
-            ))
+              child: (have == '0')
+                  ? Container()
+                  : Container(
+                      width: MediaQuery.of(context).size.height * 0.1,
+                      height: MediaQuery.of(context).size.height * 0.1,
+                      child: const CircularProgressIndicator(
+                        color: Colors.brown,
+                      ),
+                    ))
           : FutureBuilder<List<Cows>>(
               future: getCow(),
               builder: (context, snapshot) {

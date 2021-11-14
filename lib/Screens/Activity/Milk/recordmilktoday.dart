@@ -22,7 +22,7 @@ class _RecordMilkTodayState extends State<RecordMilkToday> {
 
   Future<List<Milks>> getMilk() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
-    late List<Milks> milks;
+    List<Milks> milks = [];
     Map data = {
       'farm_id': user!.farm_id.toString(),
       'user_id': user.user_id.toString()
@@ -59,7 +59,9 @@ class _RecordMilkTodayState extends State<RecordMilkToday> {
             builder: (context, snapshot) {
               if (snapshot.data == null) {
                 return const Center(
-                  child: Text('Loading...'),
+                  child: CircularProgressIndicator(
+                    color: Color.fromRGBO(234, 177, 93, 5),
+                  ),
                 );
               }
               return ListView.builder(

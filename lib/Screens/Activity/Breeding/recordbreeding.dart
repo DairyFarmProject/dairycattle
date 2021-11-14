@@ -125,11 +125,11 @@ class _RecordBreedingState extends State<RecordBreeding> {
                       future: getCow(),
                       builder: (context, snapshot) {
                         if (snapshot.data == null) {
-                          return Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.red[400],
-                            ),
-                          );
+                          return Container(
+                              padding:
+                                  const EdgeInsets.fromLTRB(30, 30, 30, 30),
+                              child: const Center(
+                                  child: Text('กรุณาเพิ่มข้อมูลวัว')));
                         }
                         return Container(
                           padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
@@ -499,7 +499,7 @@ class _RecordBreedingState extends State<RecordBreeding> {
         ),
         content: Text(
           message,
-          style: TextStyle(fontSize: 15),
+          style: const TextStyle(fontSize: 15),
         ),
         actions: <Widget>[
           FlatButton(

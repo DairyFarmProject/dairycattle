@@ -94,11 +94,10 @@ class _RecordVacineState extends State<RecordVacine> {
                   future: getCow(),
                   builder: (context, snapshot) {
                     if (snapshot.data == null) {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: Color.fromRGBO(111, 193, 148, 5),
-                        ),
-                      );
+                      return Container(
+                          padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
+                          child:
+                              const Center(child: Text('กรุณาเพิ่มข้อมูลวัว')));
                     }
                     return Container(
                       padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),

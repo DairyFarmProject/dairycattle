@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_provider.dart';
 import '../../models/User.dart';
-
 import 'milk_chart.dart';
 
 class Dashboard extends StatefulWidget {
@@ -15,20 +14,18 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     User? user = Provider.of<UserProvider>(context).user;
-    return Scaffold(
-      //backgroundColor: Palette.primaryColor,
-      //appBar: CustomAppBar(),
+    return const Scaffold(
       body: CustomScrollView(
         physics: ClampingScrollPhysics(),
         slivers: <Widget>[
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
             sliver: SliverToBoxAdapter(
               child: CowChart(),
             ),
           ),
           SliverPadding(
-            padding: const EdgeInsets.only(top: 20.0),
+            padding: EdgeInsets.only(top: 20.0),
             sliver: SliverToBoxAdapter(
               child: MilkChart(),
             ),

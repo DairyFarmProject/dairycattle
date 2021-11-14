@@ -265,19 +265,19 @@ class MilkChartState extends State<MilkChart> {
           getTitles: (double value) {
             switch (value.toInt()) {
               case 0:
-                return '${DateFormat('dd').format(DateTime.parse(milks[0].date))}';
+                return DateFormat('dd').format(DateTime.parse(milks[0].date));
               case 1:
-                return '${DateFormat('dd').format(DateTime.parse(milks[1].date))}';
+                return DateFormat('dd').format(DateTime.parse(milks[1].date));
               case 2:
-                return '${DateFormat('dd').format(DateTime.parse(milks[2].date))}';
+                return DateFormat('dd').format(DateTime.parse(milks[2].date));
               case 3:
-                return '${DateFormat('dd').format(DateTime.parse(milks[3].date))}';
+                return DateFormat('dd').format(DateTime.parse(milks[3].date));
               case 4:
-                return '${DateFormat('dd').format(DateTime.parse(milks[4].date))}';
+                return DateFormat('dd').format(DateTime.parse(milks[4].date));
               case 5:
-                return '${DateFormat('dd').format(DateTime.parse(milks[5].date))}';
+                return DateFormat('dd').format(DateTime.parse(milks[5].date));
               case 6:
-                return '${DateFormat('dd').format(DateTime.parse(milks[6].date))}';
+                return DateFormat('dd').format(DateTime.parse(milks[6].date));
               default:
                 return '';
             }

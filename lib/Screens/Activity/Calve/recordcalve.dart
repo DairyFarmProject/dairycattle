@@ -84,11 +84,11 @@ class _RecordCalveState extends State<RecordCalve> {
                         future: getCow(),
                         builder: (context, snapshot) {
                           if (snapshot.data == null) {
-                            return Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.red[400],
-                              ),
-                            );
+                            return Container(
+                                padding:
+                                    const EdgeInsets.fromLTRB(30, 30, 30, 30),
+                                child: const Center(
+                                    child: Text('กรุณาเพิ่มข้อมูลวัว')));
                           }
                           return Container(
                             padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
@@ -469,8 +469,7 @@ class _RecordCalveState extends State<RecordCalve> {
       Map<String, dynamic> user = resposne['data'];
       String mess = user['message'];
       _showerrorDialog(mess);
-    }
-    else {
+    } else {
       _scaffoldKey.currentState
           ?.showSnackBar(const SnackBar(content: Text("Please Try again")));
     }

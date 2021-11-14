@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import '/Screens/Profile/editfarm.dart';
 import '/Screens/member/navigator_member.dart';
-
 import '/Screens/Profile/accept_member.dart';
 import '/Screens/Profile/profile.dart';
 import '/models/Farms.dart';
@@ -273,28 +271,6 @@ class _FarmDataState extends State<FarmData> {
                                         padding: const EdgeInsets.fromLTRB(
                                             30, 10, 30, 10),
                                       ),
-                                      RaisedButton(
-                                        onPressed: () {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return Homepage_Member();
-                                          }));
-                                        },
-                                        color: Colors.blueGrey[50],
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(39))),
-                                        child: Text(
-                                          'ไปหน้าฝั่ง member',
-                                          style: TextStyle(
-                                              color: Colors.brown,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 14),
-                                        ),
-                                        padding: const EdgeInsets.fromLTRB(
-                                            30, 10, 30, 10),
-                                      )
                                     ],
                                   ),
                                 )),

@@ -477,7 +477,7 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
         ),
         content: Text(
           message,
-          style: TextStyle(fontSize: 15),
+          style: const TextStyle(fontSize: 15),
         ),
         actions: <Widget>[
           FlatButton(

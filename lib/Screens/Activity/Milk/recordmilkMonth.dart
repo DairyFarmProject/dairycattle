@@ -96,7 +96,7 @@ class _RecordMilkMonthState extends State<RecordMilkMonth> {
               "จำนวนน้ำนมรวมภายในเดือนนี้",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
             ),
-            Text('${milks}',
+            Text('${milks ?? 0}',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
             Container(
                 margin: EdgeInsets.only(bottom: 20),

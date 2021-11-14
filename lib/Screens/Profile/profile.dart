@@ -1,6 +1,5 @@
-import 'package:dairycattle/Screens/Profile/editprofile.dart';
-import 'package:dairycattle/Screens/Welcome/welcome.dart';
-
+import '/Screens/Profile/editprofile.dart';
+import '/Screens/Welcome/welcome.dart';
 import '/models/User.dart';
 import '/providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -23,17 +22,17 @@ class _ProfileState extends State<Profile> {
       body: Column(
         children: [
           Container(
-            child: Text(
+            child: const Text(
               'โปรไฟล์',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
-            margin: EdgeInsets.only(top: 10),
+            margin: const EdgeInsets.only(top: 10),
           ),
           Container(
-            margin: EdgeInsets.fromLTRB(15, 10, 15, 20),
+            margin: const EdgeInsets.fromLTRB(15, 10, 15, 20),
             width: 420,
             height: 160,
-            padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
+            padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               color: Colors.blueGrey[50],
@@ -55,9 +54,9 @@ class _ProfileState extends State<Profile> {
               }));
             },
             color: Colors.blueGrey[50],
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(39))),
-            child: Text(
+            child: const Text(
               'แก้ไขข้อมูลส่วนตัว',
               style: TextStyle(
                   color: Colors.brown,
@@ -67,7 +66,7 @@ class _ProfileState extends State<Profile> {
             padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
           ),
           Container(
-            margin: EdgeInsets.only(top: 5),
+            margin: const EdgeInsets.only(top: 5),
             child: RaisedButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -75,9 +74,9 @@ class _ProfileState extends State<Profile> {
                 }));
               },
               color: Colors.brown,
-              shape: RoundedRectangleBorder(
+              shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(39))),
-              child: Text(
+              child: const Text(
                 'ออกจากระบบ',
                 style: TextStyle(
                     color: Colors.white,
@@ -90,6 +89,5 @@ class _ProfileState extends State<Profile> {
         ],
       ),
     );
-    ;
   }
 }

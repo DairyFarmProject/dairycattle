@@ -18,9 +18,12 @@ class RecordVaccineMain extends StatefulWidget {
 }
 
 class _RecordVaccineMainState extends State<RecordVaccineMain> {
+  List<DistinctVac> vac = [];
+  String? have;
+
   Future<List<DistinctVac>> getVacS() async {
     User? user = Provider.of<UserProvider>(context, listen: false).user;
-    late List<DistinctVac> vacs;
+    List<DistinctVac> vacs = [];
     Map data = {
       'farm_id': user?.farm_id.toString(),
       'user_id': user?.user_id.toString()
@@ -36,9 +39,22 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> db = jsonDecode(response.body);
-      print('Get Vaccine Schedule');
-      final List list = db['data']['rows'];
-      vacs = list.map((e) => DistinctVac.fromMap(e)).toList();
+      if (db['data']['row'] != null) {
+        final List list = db['data']['rows'];
+        vacs = list.map((e) => DistinctVac.fromMap(e)).toList();
+        if (mounted) {
+          setState(() {
+            vac = vacs;
+          });
+        }
+      }
+      if (db['data']['row'] == null) {
+        if (mounted) {
+          setState(() {
+            have = '0';
+          });
+        }
+      }
     }
     return vacs;
   }
@@ -70,11 +86,14 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
             future: getVacS(),
             builder: (context, snapshot) {
               if (snapshot.data == null) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: Color.fromRGBO(111, 193, 148, 5),
-                  ),
-                );
+                return Center(
+                    child: (have == '0')
+                        ? Container()
+                        : const Center(
+                            child: CircularProgressIndicator(
+                              color: Color.fromRGBO(111, 193, 148, 5),
+                            ),
+                          ));
               } else
                 return ListView.builder(
                     itemCount: snapshot.data!.length,
@@ -106,9 +125,8 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
                                     children: [
                                       Expanded(
                                         child: Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  10, 0, 10, 0),
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(10, 0, 10, 0),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
                                             mainAxisAlignment:
@@ -152,8 +170,8 @@ class _RecordVaccineMainState extends State<RecordVaccineMain> {
                                             ),
                                             Padding(
                                               padding:
-                                                  const EdgeInsetsDirectional.only(
-                                                      end: 20),
+                                                  const EdgeInsetsDirectional
+                                                      .only(end: 20),
                                               child: Image.asset(
                                                 "assets/images/vaccines.png",
                                                 height: 50,

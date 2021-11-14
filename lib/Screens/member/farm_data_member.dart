@@ -1,12 +1,6 @@
 import 'dart:convert';
-
-import 'package:dairycattle/Screens/Farm/home.dart';
-import 'package:dairycattle/Screens/Farm/join_farm.dart';
-import 'package:dairycattle/Screens/Profile/editfarm.dart';
+import '/Screens/Farm/home.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:mobx/mobx.dart';
-
-import '/Screens/Profile/accept_member.dart';
 import '/Screens/Profile/profile.dart';
 import '/models/Farms.dart';
 import '/models/User.dart';
@@ -144,185 +138,152 @@ class _FarmData_memberState extends State<FarmData_member> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     User? user = Provider.of<UserProvider>(context, listen: false).user;
-    userImage(user?.user_image);
-    farmImage(user?.farm_image);
     return Scaffold(
-        appBar: AppBar(
-          actions: [
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
             Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-              // width: 130,
-              child: RaisedButton(
-                child: const Text(
-                  'ยืนยัน',
-                  style: TextStyle(color: Colors.white),
-                ),
-                padding: const EdgeInsets.fromLTRB(50, 12, 50, 12),
-                color: Colors.brown[900],
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(39)),
-                ),
-                onPressed: () {
-                  //userExitFarm(context, user_id, farm_id);
-                },
-              ),
-            ),
-          ],
-        ),
-        body: Container(
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Container(
-                    height: size.height * 0.2,
-                    width: size.width,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: NetworkImage(file2), fit: BoxFit.cover)),
-                    child: Stack(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(145, 20, 0, 0),
-                          height: 100,
-                          width: 100,
-                          child: CircleAvatar(
-                              radius: 120, backgroundImage: NetworkImage(file)),
-                        )
+                height: size.height * 0.2,
+                width: size.width,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(farm_image), fit: BoxFit.cover)),
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(145, 20, 0, 0),
+                      height: 100,
+                      width: 100,
+                      child: CircleAvatar(
+                          radius: 120,
+                          backgroundImage: NetworkImage('${user?.user_image}')),
+                    )
+                  ],
+                )),
+            DefaultTabController(
+                length: 2,
+                initialIndex: 0,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TabBar(
+                      indicatorColor: Colors.brown,
+                      tabs: [
+                        Tab(
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                              Align(
+                                  alignment: Alignment.center,
+                                  child: Image.asset(
+                                    "assets/images/icon_farm.png",
+                                    color: Colors.brown,
+                                    height: 20,
+                                  )),
+                              const Padding(padding: EdgeInsets.only(left: 5)),
+                              const Text(
+                                'ฟาร์ม',
+                                style: TextStyle(color: Colors.brown),
+                              )
+                            ])),
+                        Tab(
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const <Widget>[
+                              Align(
+                                  alignment: Alignment.center,
+                                  child: Icon(
+                                    Icons.person_outline_sharp,
+                                    color: Colors.brown,
+                                    size: 20,
+                                  )),
+                              Padding(padding: EdgeInsets.only(left: 5)),
+                              Text(
+                                'โปรไฟล์',
+                                style: TextStyle(color: Colors.brown),
+                              )
+                            ])),
                       ],
-                    )),
-                DefaultTabController(
-                    length: 2,
-                    initialIndex: 0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Container(
-                            // margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                            child: TabBar(
-                          indicatorColor: Colors.brown,
-                          tabs: [
-                            Tab(
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                  Align(
-                                      alignment: Alignment.center,
-                                      child: Image.asset(
-                                        "assets/images/icon_farm.png",
-                                        color: Colors.brown,
-                                        height: 20,
-                                      )),
-                                  Padding(padding: EdgeInsets.only(left: 5)),
-                                  Text(
-                                    'ฟาร์ม',
-                                    style: TextStyle(color: Colors.brown),
-                                  )
-                                ])),
-                            Tab(
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                  Align(
-                                      alignment: Alignment.center,
-                                      child: Icon(
-                                        Icons.person_outline_sharp,
-                                        color: Colors.brown,
-                                        size: 20,
-                                      )),
-                                  Padding(padding: EdgeInsets.only(left: 5)),
-                                  Text(
-                                    'โปรไฟล์',
-                                    style: TextStyle(color: Colors.brown),
-                                  )
-                                ])),
-                          ],
-                        )),
-
-                        Container(
-                            height: 600, //height of TabBarView
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    top: BorderSide(
-                                        color: Colors.grey, width: 0.5))),
-                            child: TabBarView(children: <Widget>[
-                              Container(
-                                child: Container(
-                                    margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
-                                    child: SingleChildScrollView(
+                    ),
+                    Container(
+                        height: 600, //height of TabBarView
+                        decoration: const BoxDecoration(
+                            border: Border(
+                                top: BorderSide(
+                                    color: Colors.grey, width: 0.5))),
+                        child: TabBarView(children: <Widget>[
+                          Container(
+                              margin: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      child: const Text(
+                                        'ข้อมูลฟาร์ม',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      margin: EdgeInsets.only(top: 10),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          top: 10, bottom: 10),
+                                      width: 420,
+                                      height: 200,
+                                      padding: const EdgeInsets.fromLTRB(
+                                          30, 10, 30, 10),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        color: Colors.blueGrey[50],
+                                      ),
                                       child: Column(
                                         children: [
-                                          Container(
-                                            child: Text(
-                                              'ข้อมูลฟาร์ม',
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            margin: EdgeInsets.only(top: 10),
-                                          ),
-                                          Container(
-                                            margin: EdgeInsets.only(
-                                                top: 10, bottom: 10),
-                                            width: 420,
-                                            height: 200,
-                                            padding: EdgeInsets.fromLTRB(
-                                                30, 10, 30, 10),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              color: Colors.blueGrey[50],
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                    'ชื่อฟาร์ม : ${user?.farm_name}'),
-                                                Text('ตำแหน่ง : พนักงาน'),
-                                                Text('เลขทะเบียนฟาร์ม'),
-                                                Text('${user?.farm_no}'),
-                                                Text('ที่อยู่ฟาร์ม '),
-                                                Text(
-                                                    '${address} ${sub_district} ${district} ${province} ${postcode}'),
-                                                Text(
-                                                    'จำนวนวัวทั้งหมด : ${countCow} ตัว')
-                                              ],
-                                            ),
-                                          ),
-                                          RaisedButton(
-                                            onPressed: () async {
-                                              final ConfirmAction? action =
-                                                  await _asyncConfirmDialog(
-                                                      context,
-                                                      user?.user_id,
-                                                      user?.farm_id);
-                                            },
-                                            color: Colors.blueGrey[50],
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(39))),
-                                            child: Text(
-                                              'ออกจากฟาร์ม',
-                                              style: TextStyle(
-                                                  color: Colors.brown,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 14),
-                                            ),
-                                            padding: const EdgeInsets.fromLTRB(
-                                                30, 10, 30, 10),
-                                          )
+                                          Text(
+                                              'ชื่อฟาร์ม : ${user?.farm_name}'),
+                                          const Text('ตำแหน่ง : พนักงาน'),
+                                          const Text('เลขทะเบียนฟาร์ม'),
+                                          Text('${user?.farm_no}'),
+                                          const Text('ที่อยู่ฟาร์ม '),
+                                          Text(
+                                              '${address} ${sub_district} ${district} ${province} ${postcode}'),
+                                          Text(
+                                              'จำนวนวัวทั้งหมด : ${countCow} ตัว')
                                         ],
                                       ),
-                                    )),
-                              ),
-                              Profile(),
-                            ]))
-                        // Container(
-                      ],
-                    ))
-              ],
-            ),
-          ),
-        ));
+                                    ),
+                                    RaisedButton(
+                                      onPressed: () async {
+                                        final ConfirmAction? action =
+                                            await _asyncConfirmDialog(context,
+                                                user?.user_id, user?.farm_id);
+                                      },
+                                      color: Colors.blueGrey[50],
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(39))),
+                                      child: const Text(
+                                        'ออกจากฟาร์ม',
+                                        style: TextStyle(
+                                            color: Colors.brown,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14),
+                                      ),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          30, 10, 30, 10),
+                                    )
+                                  ],
+                                ),
+                              )),
+                          const Profile(),
+                        ]))
+                    // Container(
+                  ],
+                ))
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -354,7 +315,7 @@ userExitFarm(context, user_id, farm_id) async {
         ?.showSnackBar(SnackBar(content: Text("${resposne['message']}")));
   } else {
     _scaffoldKey.currentState
-        ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+        ?.showSnackBar(const SnackBar(content: Text("Please Try again")));
   }
 }
 
@@ -365,15 +326,15 @@ Future<ConfirmAction?> _asyncConfirmDialog(context, user_id, farm_id) async {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          insetPadding: EdgeInsets.fromLTRB(20, 10, 20, 0),
-          title: Text(
+          insetPadding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+          title: const Text(
             'ยืนยันที่จะออกจากฟาร์ม',
             style: TextStyle(
               fontWeight: FontWeight.w500,
             ),
             textAlign: TextAlign.center,
           ),
-          content: Text(
+          content: const Text(
             'เมื่อคุณกดปุ่ม "ยืนยัน" แล้ว คุณจะออกฟาร์มทันที ',
             textAlign: TextAlign.center,
           ),
@@ -390,7 +351,7 @@ Future<ConfirmAction?> _asyncConfirmDialog(context, user_id, farm_id) async {
                   ),
                   padding: const EdgeInsets.fromLTRB(50, 12, 50, 12),
                   color: Colors.blueGrey[50],
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(39)),
                   ),
                   onPressed: () {
@@ -409,7 +370,7 @@ Future<ConfirmAction?> _asyncConfirmDialog(context, user_id, farm_id) async {
                   ),
                   padding: const EdgeInsets.fromLTRB(50, 12, 50, 12),
                   color: Colors.brown[900],
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(39)),
                   ),
                   onPressed: () {

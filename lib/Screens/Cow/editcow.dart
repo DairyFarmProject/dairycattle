@@ -71,10 +71,12 @@ class _EditCowState extends State<EditCow> {
     });
   }
 
-  int selectStatus = 0;
-  int selectType = 0;
-  int selectSpecie = 0;
-  String? sex;
+  int? selectType;
+  int? selectSpecie;
+  int? type;
+  int? specie;
+  int one = 1;
+  String sex = '';
 
   final myController = TextEditingController();
 
@@ -334,9 +336,13 @@ class _EditCowState extends State<EditCow> {
                                         controller: dateCtl,
                                         decoration: InputDecoration(
                                           border: InputBorder.none,
-                                          hintText: DateFormat('dd-MM-yyyy')
-                                              .format(DateTime.parse(
-                                                  widget.cow.cow_birthday)),
+                                          hintText: _dateTime == null
+                                              ? DateFormat('dd-MM-yyyy').format(
+                                                  DateTime.parse(
+                                                      widget.cow.cow_birthday))
+                                              : DateFormat('dd-MM-yyyy').format(
+                                                  DateTime.parse(
+                                                      _dateTime.toString())),
                                           fillColor: Colors.blueGrey,
                                         ),
                                         onTap: () async {
@@ -395,7 +401,7 @@ class _EditCowState extends State<EditCow> {
                                       "${widget.cow.status_id}                 "),
                                   onChanged: (newValue) {
                                     setState(() {
-                                      selectType = types.indexOf(newValue!) + 1;
+                                      selectType = types.indexOf(newValue!);
                                       print(selectType);
                                     });
                                   },
@@ -435,8 +441,7 @@ class _EditCowState extends State<EditCow> {
                                   hint: Text(widget.cow.specie_name_th),
                                   onChanged: (newValue) {
                                     setState(() {
-                                      selectSpecie =
-                                          species.indexOf(newValue!) + 1;
+                                      selectSpecie = species.indexOf(newValue!);
                                       print(selectSpecie);
                                     });
                                   },
@@ -473,7 +478,9 @@ class _EditCowState extends State<EditCow> {
                               child: Container(
                                 alignment: Alignment.topLeft,
                                 child: DropdownButton<String>(
-                                    hint: Text(widget.cow.cow_sex),
+                                    hint: sex == null
+                                        ? Text(widget.cow.cow_sex)
+                                        : Text(sex),
                                     items: <String>[
                                       '                  ',
                                       'เพศผู้',
@@ -601,14 +608,19 @@ class _EditCowState extends State<EditCow> {
                                       url = widget.cow.cow_image;
                                     });
                                   }
-                                  if (selectSpecie == 0) {
+                                  if (selectSpecie == null) {
                                     setState(() {
-                                      selectSpecie = widget.cow.specie_id;
+                                      specie = widget.cow.specie_id;
                                     });
                                   }
-                                  if (selectType == 0) {
+                                  if (selectSpecie != null) {
                                     setState(() {
-                                      selectType = widget.cow.type_id;
+                                      specie = selectSpecie;
+                                    });
+                                  }
+                                  if (selectType != null) {
+                                    setState(() {
+                                      type = selectType;
                                     });
                                   }
                                   if (cowNoteController.text.isEmpty) {
@@ -619,24 +631,33 @@ class _EditCowState extends State<EditCow> {
                                   if (_image != null) {
                                     uploadFile(_image!);
                                   }
-                                  userEditCow(
-                                    widget.cow.cow_id,
-                                    cowNoController.text,
-                                    nameCowController.text,
-                                    DateFormat('yyyy-MM-dd').format(
-                                        DateTime.parse(_dateTime.toString())),
-                                    sex,
-                                    url,
-                                    cowNoteController.text,
-                                    selectSpecie,
-                                    selectType,
-                                    widget.cow.semen_id,
-                                    widget.cow.semen_specie,
-                                    widget.cow.mom_id,
-                                    widget.cow.mom_specie,
-                                    user?.user_id,
-                                    user?.farm_id,
-                                  );
+                                  if (url != null &&
+                                      cowNoController.text != null &&
+                                      nameCowController.text != null &&
+                                      _dateTime != null &&
+                                      sex != null &&
+                                      cowNoteController.text != null &&
+                                      specie != null &&
+                                      type != null) {
+                                    userEditCow(
+                                      widget.cow.cow_id,
+                                      cowNoController.text,
+                                      nameCowController.text,
+                                      DateFormat('yyyy-MM-dd').format(
+                                          DateTime.parse(_dateTime.toString())),
+                                      sex,
+                                      url,
+                                      cowNoteController.text,
+                                      specie! + one,
+                                      type! + one,
+                                      widget.cow.semen_id,
+                                      widget.cow.semen_specie,
+                                      widget.cow.mom_id,
+                                      widget.cow.mom_specie,
+                                      user?.user_id,
+                                      user?.farm_id,
+                                    );
+                                  }
                                 },
                                 color: Colors.brown,
                                 shape: const RoundedRectangleBorder(
@@ -724,31 +745,31 @@ class _EditCowState extends State<EditCow> {
 
     print(data);
 
-    final response = await http.put(
-        Uri.https('heroku-diarycattle.herokuapp.com', 'cows/edit'),
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: data,
-        encoding: Encoding.getByName("utf-8"));
+    // final response = await http.put(
+    //     Uri.https('heroku-diarycattle.herokuapp.com', 'cows/edit'),
+    //     headers: {
+    //       "Accept": "application/json",
+    //       "Content-Type": "application/x-www-form-urlencoded"
+    //     },
+    //     body: data,
+    //     encoding: Encoding.getByName("utf-8"));
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> resposne = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        print("Edit Cow Success");
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return SuccessEditCow();
-        }));
-      } else {
-        print(" ${resposne['message']}");
-      }
-      _scaffoldKey.currentState
-          ?.showSnackBar(SnackBar(content: Text("${resposne['message']}")));
-    }
-    if (response.statusCode == 500) {
-    _scaffoldKey.currentState
-          ?.showSnackBar(const SnackBar(content: Text("Please Try again")));
-    }
+    // if (response.statusCode == 200) {
+    //   Map<String, dynamic> resposne = jsonDecode(response.body);
+    //   if (response.statusCode == 200) {
+    //     print("Edit Cow Success");
+    //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+    //       return SuccessEditCow();
+    //     }));
+    //   } else {
+    //     print(" ${resposne['message']}");
+    //   }
+    //   _scaffoldKey.currentState
+    //       ?.showSnackBar(SnackBar(content: Text("${resposne['message']}")));
+    // }
+    // if (response.statusCode == 500) {
+    //   _scaffoldKey.currentState
+    //       ?.showSnackBar(const SnackBar(content: Text("Please Try again")));
+    // }
   }
 }

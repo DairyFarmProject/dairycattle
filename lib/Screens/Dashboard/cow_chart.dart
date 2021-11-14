@@ -105,11 +105,13 @@ class CowChartState extends State<CowChart> {
                 Flexible(
                   child: Row(
                     children: <Widget>[
-                      _buildStatCard(cows[5].type_name, cows[5].count,
-                          Colors.deepPurple.shade200),
-                      _buildStatCard(cows[4].type_name, cows[4].count,
-                          Colors.pink.shade100),
-                      _buildStatCard(cows[3].type_name, cows[3].count,
+                      _buildStatCard(cows[5].type_name,
+                          cows[5].count.toString(), Colors.deepPurple.shade200),
+                      _buildStatCard(cows[4].type_name,
+                          cows[4].count.toString(), Colors.pink.shade100),
+                      _buildStatCard(
+                          cows[3].type_name,
+                          cows[3].count.toString(),
                           const Color.fromRGBO(234, 177, 93, 5)),
                     ],
                   ),
@@ -117,11 +119,17 @@ class CowChartState extends State<CowChart> {
                 Flexible(
                   child: Row(
                     children: <Widget>[
-                      _buildStatCard(cows[2].type_name, cows[2].count,
+                      _buildStatCard(
+                          cows[2].type_name,
+                          cows[2].count.toString(),
                           const Color.fromRGBO(111, 193, 148, 5)),
-                      _buildStatCard(cows[1].type_name, cows[1].count,
+                      _buildStatCard(
+                          cows[1].type_name,
+                          cows[1].count.toString(),
                           const Color.fromRGBO(93, 124, 234, 5)),
-                      _buildStatCard(cows[0].type_name, cows[0].count,
+                      _buildStatCard(
+                          cows[0].type_name,
+                          cows[0].count.toString(),
                           const Color.fromRGBO(185, 110, 110, 5)),
                     ],
                   ),
