@@ -92,9 +92,7 @@ class _RecordMilkState extends State<RecordMilk> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  IconButton(
-                      icon: const Icon(Icons.navigate_before, size: 24),
-                      onPressed: () {}),
+                  Icon(Icons.auto_awesome_rounded, size: 24),
                   Text(
                     DateFormat.yMMMMd("th_TH")
                         .format(DateTime.parse(now.toString())),
@@ -104,12 +102,7 @@ class _RecordMilkState extends State<RecordMilk> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  IconButton(
-                      icon: const Icon(
-                        Icons.navigate_next,
-                        size: 24,
-                      ),
-                      onPressed: () {}),
+                  Icon(Icons.auto_awesome_rounded, size: 24),
                 ],
               ),
             ),
@@ -126,6 +119,7 @@ class _RecordMilkState extends State<RecordMilk> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
@@ -151,20 +145,6 @@ class _RecordMilkState extends State<RecordMilk> {
                     style: TextStyle(fontSize: 14),
                   ),
                 ),
-                TextButton(
-                  child: const Text('บันทึก',
-                      style: TextStyle(fontSize: 14, color: Colors.white)),
-                  style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsets>(
-                          const EdgeInsets.all(10)),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.brown),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ))),
-                  onPressed: doAddition,
-                )
               ],
             ),
             Container(
@@ -204,20 +184,6 @@ class _RecordMilkState extends State<RecordMilk> {
                     'ลิตร',
                     style: TextStyle(fontSize: 14),
                   ),
-                ),
-                TextButton(
-                  child: const Text('บันทึก',
-                      style: TextStyle(fontSize: 14, color: Colors.white)),
-                  style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsets>(
-                          const EdgeInsets.all(10)),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.brown),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ))),
-                  onPressed: doAddition,
                 ),
               ],
             ),
@@ -276,6 +242,9 @@ class _RecordMilkState extends State<RecordMilk> {
                         // ignore: deprecated_member_use
                         RaisedButton(
                           onPressed: () {
+                            if (t1.text.isNotEmpty || t2.text.isNotEmpty) {
+                              doAddition();
+                            }
                             if (t1.text.isEmpty) {
                               _scaffoldKey.currentState?.showSnackBar(
                                   const SnackBar(
