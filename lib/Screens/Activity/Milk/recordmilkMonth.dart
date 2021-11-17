@@ -88,12 +88,12 @@ class _RecordMilkMonthState extends State<RecordMilkMonth> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      margin: EdgeInsets.fromLTRB(20, 15, 20, 5),
+      margin: EdgeInsets.fromLTRB(40, 15, 40, 5),
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Text(
-              "จำนวนน้ำนมรวมภายในเดือนนี้",
+              'จำนวนน้ำนมภายในเดือน ${DateFormat.MMMM("th_TH").format(DateTime.parse(now.toString()))}',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
             ),
             Text('${milks ?? 0}',
@@ -101,7 +101,7 @@ class _RecordMilkMonthState extends State<RecordMilkMonth> {
             Container(
                 margin: EdgeInsets.only(bottom: 20),
                 child: Text(
-                  'กิโลกรัม',
+                  'ลิตร',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
                 )),
             FutureBuilder<List<Milks>>(
@@ -116,7 +116,7 @@ class _RecordMilkMonthState extends State<RecordMilkMonth> {
                   }
                   return Column(children: [
                     ListView.builder(
-                        scrollDirection: Axis.vertical,
+                        //scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, i) {
@@ -126,7 +126,7 @@ class _RecordMilkMonthState extends State<RecordMilkMonth> {
                             tilePadding:
                                 const EdgeInsets.fromLTRB(20, 0, 20, 0),
                             title: Text(
-                              '${DateFormat.yMMMMd("th_TH").format(DateTime.parse(snapshot.data![i].milk_date.toString()))}',
+                              'วันที่ ${DateFormat.MMMMd("th_TH").format(DateTime.parse(snapshot.data![i].milk_date.toString()))}',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w400,

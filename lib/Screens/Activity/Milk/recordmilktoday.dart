@@ -73,10 +73,10 @@ class _RecordMilkTodayState extends State<RecordMilkToday> {
                           const SizedBox(height: 20.0),
                           SingleChildScrollView(
                             child: Container(
-                              margin: const EdgeInsets.fromLTRB(20, 15, 20, 5),
+                              margin: const EdgeInsets.fromLTRB(20, 0, 20, 5),
                               child: Column(
                                 children: [
-                                  const Text("จำนวนน้ำนมรวมภายในวันนี้",
+                                  const Text("จำนวนน้ำนมภายในวันนี้",
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w400)),
@@ -88,7 +88,7 @@ class _RecordMilkTodayState extends State<RecordMilkToday> {
                                   ),
                                   Container(
                                       margin: const EdgeInsets.only(bottom: 20),
-                                      child: const Text('กิโลกรัม',
+                                      child: const Text('ลิตร',
                                           style: TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.w400))),

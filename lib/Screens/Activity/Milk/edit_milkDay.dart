@@ -102,7 +102,7 @@ class _EditMilkDayState extends State<EditMilkDay> {
         key: _scaffoldKey,
         appBar: AppBar(
           title: Text("แก้ไขการบันทึกน้ำนมวัว",
-              style: TextStyle(fontWeight: FontWeight.bold)),
+              style: TextStyle(fontWeight: FontWeight.w500)),
           leading: GestureDetector(
             onTap: () {
               Navigator.pop(context);
@@ -192,49 +192,6 @@ class _EditMilkDayState extends State<EditMilkDay> {
                                           style: TextStyle(fontSize: 14),
                                         ),
                                       ),
-                                      TextButton(
-                                        child: Text('บันทึก',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.white)),
-                                        style: ButtonStyle(
-                                            padding: MaterialStateProperty.all<
-                                                EdgeInsets>(EdgeInsets.all(10)),
-                                            backgroundColor:
-                                                MaterialStateProperty.all<
-                                                    Color>(Colors.brown),
-                                            shape: MaterialStateProperty.all<
-                                                    RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(18.0),
-                                            ))),
-                                        onPressed: doAddition,
-                                        onLongPress: () {
-                                          TextButton(
-                                            child: Text('แก้ไข',
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.white)),
-                                            style: ButtonStyle(
-                                                padding: MaterialStateProperty
-                                                    .all<EdgeInsets>(
-                                                        EdgeInsets.all(10)),
-                                                backgroundColor:
-                                                    MaterialStateProperty.all<
-                                                            Color>(
-                                                        (Colors.grey[400])!),
-                                                shape: MaterialStateProperty.all<
-                                                        RoundedRectangleBorder>(
-                                                    RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          18.0),
-                                                ))),
-                                            onPressed: () {},
-                                          );
-                                        },
-                                      ),
                                     ],
                                   ),
                                   Container(
@@ -264,9 +221,10 @@ class _EditMilkDayState extends State<EditMilkDay> {
                                           child: TextField(
                                             keyboardType: TextInputType.number,
                                             decoration: new InputDecoration(
-                                              hintText:
-                                                  '${snapshot.data![i].milk_liter_even}',
-                                            ),
+                                                hintText:
+                                                    '${snapshot.data![i].milk_liter_even}',
+                                                    
+                                                ),
                                             controller: t2,
                                           ),
                                         ),
@@ -278,49 +236,6 @@ class _EditMilkDayState extends State<EditMilkDay> {
                                           'ลิตร',
                                           style: TextStyle(fontSize: 14),
                                         ),
-                                      ),
-                                      TextButton(
-                                        child: Text('บันทึก',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.white)),
-                                        style: ButtonStyle(
-                                            padding: MaterialStateProperty.all<
-                                                EdgeInsets>(EdgeInsets.all(10)),
-                                            backgroundColor:
-                                                MaterialStateProperty.all<
-                                                    Color>(Colors.brown),
-                                            shape: MaterialStateProperty.all<
-                                                    RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(18.0),
-                                            ))),
-                                        onPressed: doAddition,
-                                        onLongPress: () {
-                                          TextButton(
-                                            child: Text('แก้ไข',
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.white)),
-                                            style: ButtonStyle(
-                                                padding: MaterialStateProperty
-                                                    .all<EdgeInsets>(
-                                                        EdgeInsets.all(10)),
-                                                backgroundColor:
-                                                    MaterialStateProperty.all<
-                                                            Color>(
-                                                        (Colors.grey[400])!),
-                                                shape: MaterialStateProperty.all<
-                                                        RoundedRectangleBorder>(
-                                                    RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          18.0),
-                                                ))),
-                                            onPressed: () {},
-                                          );
-                                        },
                                       ),
                                     ],
                                   ),
@@ -388,6 +303,10 @@ class _EditMilkDayState extends State<EditMilkDay> {
                                             children: [
                                               RaisedButton(
                                                 onPressed: () {
+                                                  if (t1.text.isNotEmpty ||
+                                                      t2.text.isNotEmpty) {
+                                                    doAddition();
+                                                  }
                                                   if (t1.text.isEmpty) {
                                                     _scaffoldKey.currentState
                                                         ?.showSnackBar(
