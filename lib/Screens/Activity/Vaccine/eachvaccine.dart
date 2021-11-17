@@ -132,7 +132,7 @@ class _EachVaccineState extends State<EachVaccine> {
                                             Text(snapshot.data![i].next_date ==
                                                     '0000-00-00'
                                                 ? ''
-                                                : 'วันที่ฉีด : ${DateFormat('dd-MM-yyyy').format(DateTime.parse('${snapshot.data![i].next_date.toString()}'))}'),
+                                                : 'ครั้งถัดไป : ${DateFormat('dd-MM-yyyy').format(DateTime.parse('${snapshot.data![i].next_date.toString()}'))}'),
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceEvenly,
@@ -171,9 +171,8 @@ class _EachVaccineState extends State<EachVaccine> {
                                                           child: Row(
                                                             children: const [
                                                               Padding(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                            .only(
+                                                                padding: EdgeInsets
+                                                                    .only(
                                                                         right:
                                                                             5),
                                                                 child: Icon(
@@ -203,8 +202,8 @@ class _EachVaccineState extends State<EachVaccine> {
                                                       ],
                                                     )),
                                                 Container(
-                                                    margin: const EdgeInsets.fromLTRB(
-                                                        0, 5, 0, 5),
+                                                    margin: const EdgeInsets
+                                                        .fromLTRB(0, 5, 0, 5),
                                                     child: Column(
                                                       children: [
                                                         RaisedButton(
@@ -228,8 +227,9 @@ class _EachVaccineState extends State<EachVaccine> {
                                                               children: const [
                                                                 Padding(
                                                                   padding: EdgeInsets
-                                                                          .only(
-                                                                      right: 5),
+                                                                      .only(
+                                                                          right:
+                                                                              5),
                                                                   child: Icon(
                                                                     Icons.edit,
                                                                     color: Colors

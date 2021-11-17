@@ -745,31 +745,30 @@ class _EditCowState extends State<EditCow> {
 
     print(data);
 
-    // final response = await http.put(
-    //     Uri.https('heroku-diarycattle.herokuapp.com', 'cows/edit'),
-    //     headers: {
-    //       "Accept": "application/json",
-    //       "Content-Type": "application/x-www-form-urlencoded"
-    //     },
-    //     body: data,
-    //     encoding: Encoding.getByName("utf-8"));
-
-    // if (response.statusCode == 200) {
-    //   Map<String, dynamic> resposne = jsonDecode(response.body);
-    //   if (response.statusCode == 200) {
-    //     print("Edit Cow Success");
-    //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-    //       return SuccessEditCow();
-    //     }));
-    //   } else {
-    //     print(" ${resposne['message']}");
-    //   }
-    //   _scaffoldKey.currentState
-    //       ?.showSnackBar(SnackBar(content: Text("${resposne['message']}")));
-    // }
-    // if (response.statusCode == 500) {
-    //   _scaffoldKey.currentState
-    //       ?.showSnackBar(const SnackBar(content: Text("Please Try again")));
-    // }
+    final response = await http.put(
+        Uri.https('heroku-diarycattle.herokuapp.com', 'cows/edit'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      Map<String, dynamic> user = resposne['data'];
+      print(user['message']);
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return SuccessEditCow();
+      }));
+    }
+    if (response.statusCode == 500) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      Map<String, dynamic> user = resposne['data'];
+      String mess = user['message'];
+      _showerrorDialog(mess);
+    } else {
+      _scaffoldKey.currentState
+          ?.showSnackBar(const SnackBar(content: Text("Please Try again")));
+    }
   }
 }

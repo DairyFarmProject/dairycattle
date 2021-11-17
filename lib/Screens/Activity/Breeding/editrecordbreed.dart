@@ -54,11 +54,8 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
   DateTime? _dateTime;
 
   bool isShowOtherField = false;
-  int? cow_id;
   int _counter = 1;
-  int selectCow = 0;
   int selectSpecie = 0;
-  int cow = 0;
   int specie = 0;
 
   final _formKey = GlobalKey<FormState>();
@@ -117,36 +114,6 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                   return SingleChildScrollView(
                     child: Column(
                       children: [
-                        FutureBuilder<List<Cows>>(
-                            future: getCow(),
-                            builder: (context, snapshot) {
-                              if (snapshot.data == null) {
-                                return Container(
-                                  child: Center(
-                                      child: CircularProgressIndicator(
-                                    color: Colors.red[400],
-                                  )),
-                                );
-                              }
-                              return Container(
-                                padding:
-                                    const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                                child: DropdownSearch<Cows>(
-                                  showSelectedItems: true,
-                                  compareFn: (Cows? i, Cows? s) =>
-                                      i!.isEqual(s),
-                                  label: "วัว",
-                                  onFind: (String? filter) => getData(filter),
-                                  onChanged: (Cows? data) {
-                                    setState(() {
-                                      cow_id = data!.cow_id;
-                                    });
-                                  },
-                                  dropdownBuilder: _customDropDown,
-                                  popupItemBuilder: _customPopup,
-                                ),
-                              );
-                            }),
                         Column(
                           children: [
                             Container(
@@ -398,9 +365,6 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                                               });
                                             }
                                             setState(() {
-                                              cow = selectCow;
-                                            });
-                                            setState(() {
                                               specie = selectSpecie;
                                             });
                                             if (_counter < 1) {
@@ -426,7 +390,7 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
                                                 noteController.text != null) {
                                               userEditAb(
                                                   widget.ab.abdominal_id,
-                                                  cow + 1,
+                                                  widget.ab.cow_id,
                                                   _counter,
                                                   DateFormat('dd-MM-yyyy')
                                                       .format(DateTime.parse(
@@ -539,8 +503,7 @@ class _EditRecordBreedState extends State<EditRecordBreed> {
       Map<String, dynamic> user = resposne['data'];
       String mess = user['message'];
       _showerrorDialog(mess);
-    }
-    else {
+    } else {
       _scaffoldKey.currentState
           ?.showSnackBar(const SnackBar(content: Text("Please Try again")));
     }

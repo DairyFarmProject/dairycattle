@@ -139,7 +139,7 @@ class _EditRecordVaccineState extends State<EditRecordVaccine> {
                             Container(
                               alignment: Alignment.topLeft,
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              child: const Text('วันที่ต้องการบันทึกใหม่',
+                              child: const Text('วันที่ฉีดวัคซีนวัว',
                                   style:
                                       TextStyle(fontWeight: FontWeight.w500)),
                             ),

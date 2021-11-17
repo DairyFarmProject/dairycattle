@@ -86,7 +86,7 @@ class MilkChartState extends State<MilkChart> {
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         const Text(
-                          'จำนวนน้ำนมวัว',
+                          'จำนวนน้ำนมวัว (ลิตร)',
                           style: TextStyle(
                               color: Colors.brown,
                               fontSize: 16,
