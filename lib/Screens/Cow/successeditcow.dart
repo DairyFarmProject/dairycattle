@@ -3,6 +3,8 @@ import '/navigator.dart';
 import 'package:flutter/material.dart';
 
 class SuccessEditCow extends StatefulWidget {
+  const SuccessEditCow({Key? key}) : super(key: key);
+
   @override
   _SuccessEditCowState createState() => _SuccessEditCowState();
 }
@@ -11,14 +13,15 @@ class _SuccessEditCowState extends State<SuccessEditCow> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("แก้ไขข้อมูลวัว"),
-          leading: GestureDetector(
-            onTap: () {},
-          ),
-          backgroundColor: Colors.brown,
+      appBar: AppBar(
+        title: Text("แก้ไขข้อมูลวัว"),
+        leading: GestureDetector(
+          onTap: () {},
         ),
-        body: Column(children: [
+        backgroundColor: Colors.brown,
+      ),
+      body: Column(
+        children: [
           Container(
             padding: const EdgeInsets.fromLTRB(0, 150, 0, 40),
             child: Icon(
@@ -40,63 +43,33 @@ class _SuccessEditCowState extends State<SuccessEditCow> {
               ),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          Container(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // ignore: deprecated_member_use
-                  RaisedButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return Homepage();
-                      }));
-                    },
-                    color: Colors.blueGrey[50],
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(39))),
-                    child: Text(
-                      'กลับหน้าแรก',
-                      style: TextStyle(
-                          color: Colors.brown,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14),
-                    ),
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  )
-                ],
-              )),
-              Container(
-                  child: Column(
-                children: [
-                  // ignore: deprecated_member_use
-                  RaisedButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return Cow();
-                      }));
-                    },
-                    color: Colors.brown,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(39))),
-                    child: Text(
-                      'ดูวัวทั้งหมด',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14),
-                    ),
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  )
-                ],
-              )),
+              // ignore: deprecated_member_use
+              RaisedButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return Homepage();
+                  }));
+                },
+                color: Colors.blueGrey[50],
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(39))),
+                child: Text(
+                  'กลับหน้าแรก',
+                  style: TextStyle(
+                      color: Colors.brown,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
+                ),
+                padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+              )
             ],
-          ),
-        ]));
+          )),
+        ],
+      ),
+    );
   }
 }
