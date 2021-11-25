@@ -1,7 +1,7 @@
 import 'dart:convert';
 import '/Screens/Profile/editfarm.dart';
 import '/Screens/member/navigator_member.dart';
-import '/Screens/Profile/accept_member.dart';
+import 'Showall_member.dart';
 import '/Screens/Profile/profile.dart';
 import '/models/Farms.dart';
 import '/models/User.dart';
@@ -249,6 +249,27 @@ class _FarmDataState extends State<FarmData> {
                                           ],
                                         ),
                                       ),
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            top: 10, bottom: 10),
+                                        width: 420,
+                                        height: 80,
+                                        padding:
+                                            EdgeInsets.fromLTRB(30, 10, 30, 10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          color: Colors.blueGrey[50],
+                                        ),
+                                        child: Column(children: [
+                                          Text('โค้ดเข้าร่วมฟาร์ม'),
+                                          Text('PYUXXXXX',
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.brown[700]))
+                                        ]),
+                                      ),
                                       RaisedButton(
                                         onPressed: () {
                                           Navigator.push(context,
@@ -257,17 +278,23 @@ class _FarmDataState extends State<FarmData> {
                                             return EditFarm();
                                           }));
                                         },
-                                        color: Colors.blueGrey[50],
+                                        color: Colors.brown,
                                         shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(39))),
-                                        child: Text(
-                                          'แก้ไขข้อมูลฟาร์ม',
-                                          style: TextStyle(
-                                              color: Colors.brown,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 14),
-                                        ),
+                                        child: Row(children: [
+                                          Icon(
+                                            Icons.edit,
+                                            color: Colors.white,
+                                          ),
+                                          Text(
+                                            'แก้ไขข้อมูลฟาร์ม',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 14),
+                                          )
+                                        ]),
                                         padding: const EdgeInsets.fromLTRB(
                                             30, 10, 30, 10),
                                       ),
