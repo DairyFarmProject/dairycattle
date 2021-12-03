@@ -25,8 +25,8 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
   }
 
   var num1 = 0, num2 = 0, sum = 0;
-  DateTime? now = new DateTime.now();
-  var formatter = new DateFormat.yMMMMd("th_TH");
+  DateTime? now = DateTime.now();
+  var formatter = DateFormat.yMMMMd("th_TH");
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -34,13 +34,24 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
     _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text(value)));
   }
 
-  final TextEditingController t1 = new TextEditingController(text: "0");
-  final TextEditingController t2 = new TextEditingController(text: "0");
+  final TextEditingController t1 = TextEditingController(text: "0");
+  final TextEditingController t2 = TextEditingController(text: "0");
 
   Color color = Colors.grey;
   String title = 'บันทึกแล้ว';
 
   void doAddition() {
+    if (t1.text.isEmpty) {
+      _scaffoldKey.currentState?.showSnackBar(
+          const SnackBar(content: Text("กรุณากรอกปริมาณน้ำนมช่วงเช้า")));
+      return;
+    }
+    if (t2.text.isEmpty) {
+      _scaffoldKey.currentState?.showSnackBar(
+          const SnackBar(content: Text("กรุณากรอกปริมาณน้ำนมช่วงเย็น")));
+      return;
+    }
+
     setState(() {
       num1 = int.parse(t1.text);
       num2 = int.parse(t2.text);
@@ -60,30 +71,31 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
   Widget build(BuildContext context) {
     User? user = Provider.of<UserProvider>(context).user;
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
-          title: Text("แก้ไขการบันทึกน้ำนมวัว",
+          title: const Text("แก้ไขการบันทึกน้ำนมวัว",
               style: TextStyle(fontWeight: FontWeight.bold)),
           leading: GestureDetector(
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back,
               color: Colors.white,
             ),
           ),
-          backgroundColor: Colors.amber[600],
+          backgroundColor: const Color.fromRGBO(234, 177, 93, 5),
         ),
         body: Form(
             key: _formKey,
             child: Container(
-              margin: EdgeInsets.fromLTRB(20, 15, 20, 5),
+              margin: const EdgeInsets.fromLTRB(20, 15, 20, 5),
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
                     Center(
                       child: Container(
-                        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                        margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -92,8 +104,9 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
                                     const Icon(Icons.navigate_before, size: 28),
                                 onPressed: () {}),
                             Text(
-                              '${DateFormat.yMMMMd("th_TH").format(DateTime.parse(widget.milk.milk_date.toString()))}',
-                              style: TextStyle(
+                              DateFormat.yMMMMd("th_TH").format(DateTime.parse(
+                                  widget.milk.milk_date.toString())),
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ),
@@ -111,8 +124,8 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
                     ),
                     Container(
                       alignment: Alignment.center,
-                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                      child: Text(
+                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                      child: const Text(
                         'ช่วงเช้า',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -124,35 +137,36 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
-                          padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                          child: Text('จำนวนน้ำนมวัว'),
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                          child: const Text('จำนวนน้ำนมวัว'),
                         ),
                         SizedBox(
                           width: 100,
                           child: Container(
-                            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                             child: TextField(
                               keyboardType: TextInputType.number,
-                              decoration: new InputDecoration(
-                                  hintText: '${widget.milk.milk_liter_morn}'),
+                              decoration: InputDecoration(
+                                  hintText:
+                                      widget.milk.milk_liter_morn.toString()),
                               controller: t1,
                             ),
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
-                          child: Text(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 15, 0),
+                          child: const Text(
                             'ลิตร',
                             style: TextStyle(fontSize: 14),
                           ),
                         ),
                         TextButton(
-                          child: Text('บันทึก',
+                          child: const Text('บันทึก',
                               style:
                                   TextStyle(fontSize: 14, color: Colors.white)),
                           style: ButtonStyle(
                               padding: MaterialStateProperty.all<EdgeInsets>(
-                                  EdgeInsets.all(10)),
+                                  const EdgeInsets.all(10)),
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   Colors.brown),
                               shape: MaterialStateProperty.all<
@@ -163,13 +177,13 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
                           onPressed: doAddition,
                           onLongPress: () {
                             TextButton(
-                              child: Text('แก้ไข',
+                              child: const Text('แก้ไข',
                                   style: TextStyle(
                                       fontSize: 14, color: Colors.white)),
                               style: ButtonStyle(
                                   padding:
                                       MaterialStateProperty.all<EdgeInsets>(
-                                          EdgeInsets.all(10)),
+                                          const EdgeInsets.all(10)),
                                   backgroundColor:
                                       MaterialStateProperty.all<Color>(
                                           (Colors.grey[400])!),
@@ -186,8 +200,8 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
                     ),
                     Container(
                       alignment: Alignment.center,
-                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                      child: Text(
+                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                      child: const Text(
                         'ช่วงเย็น',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -199,36 +213,36 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
-                          padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                          child: Text('จำนวนน้ำนมวัว'),
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                          child: const Text('จำนวนน้ำนมวัว'),
                         ),
                         SizedBox(
                           width: 100,
                           child: Container(
-                            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                             child: TextField(
                               keyboardType: TextInputType.number,
-                              decoration: new InputDecoration(
+                              decoration: InputDecoration(
                                 hintText: '${widget.milk.milk_liter_even}',
                               ),
-                              controller: t2,
+                              controller: t2 == 0 ? null : t2,
                             ),
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
-                          child: Text(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 15, 0),
+                          child: const Text(
                             'ลิตร',
                             style: TextStyle(fontSize: 14),
                           ),
                         ),
                         TextButton(
-                          child: Text('บันทึก',
+                          child: const Text('บันทึก',
                               style:
                                   TextStyle(fontSize: 14, color: Colors.white)),
                           style: ButtonStyle(
                               padding: MaterialStateProperty.all<EdgeInsets>(
-                                  EdgeInsets.all(10)),
+                                  const EdgeInsets.all(10)),
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   Colors.brown),
                               shape: MaterialStateProperty.all<
@@ -239,13 +253,13 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
                           onPressed: doAddition,
                           onLongPress: () {
                             TextButton(
-                              child: Text('แก้ไข',
+                              child: const Text('แก้ไข',
                                   style: TextStyle(
                                       fontSize: 14, color: Colors.white)),
                               style: ButtonStyle(
                                   padding:
                                       MaterialStateProperty.all<EdgeInsets>(
-                                          EdgeInsets.all(10)),
+                                          const EdgeInsets.all(10)),
                                   backgroundColor:
                                       MaterialStateProperty.all<Color>(
                                           (Colors.grey[400])!),
@@ -261,14 +275,14 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
                       ],
                     ),
                     Container(
-                      padding: EdgeInsets.all(20),
-                      margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                      decoration: BoxDecoration(
+                      padding: const EdgeInsets.all(20),
+                      margin: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                      decoration: const BoxDecoration(
                           color: Color(0xffd6786e),
                           shape: BoxShape.rectangle,
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       child: Text('จำนวนน้ำนมทั้งหมด $sum ลิตร',
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 16)),
@@ -278,7 +292,7 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                            margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                            margin: const EdgeInsets.fromLTRB(0, 40, 0, 0),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -288,10 +302,10 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
                                     Navigator.pop(context);
                                   },
                                   color: Colors.blueGrey[50],
-                                  shape: RoundedRectangleBorder(
+                                  shape: const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(39))),
-                                  child: Text(
+                                  child: const Text(
                                     'ยกเลิก',
                                     style: TextStyle(
                                         color: Colors.brown,
@@ -304,25 +318,41 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
                               ],
                             )),
                         Container(
-                            margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                            margin: const EdgeInsets.fromLTRB(0, 40, 0, 0),
                             child: Column(
                               children: [
-                                // ignore: deprecated_member_use
                                 RaisedButton(
                                   onPressed: () {
-                                    editMilk(
-                                        widget.milk.milk_id,
-                                        t1.text,
-                                        t2.text,
-                                        user?.farm_id,
-                                        user?.user_id,
-                                        widget.milk.milk_date);
+                                    if (t1.text.isEmpty) {
+                                      _scaffoldKey.currentState?.showSnackBar(
+                                          const SnackBar(
+                                              content: Text(
+                                                  "กรุณากรอกปริมาณน้ำนมช่วงเช้า")));
+                                      return;
+                                    }
+                                    if (t2.text.isEmpty) {
+                                      _scaffoldKey.currentState?.showSnackBar(
+                                          const SnackBar(
+                                              content: Text(
+                                                  "กรุณากรอกปริมาณน้ำนมช่วงเย็น")));
+                                      return;
+                                    }
+                                    if (t1.text.isNotEmpty &&
+                                        t2.text.isNotEmpty) {
+                                      editMilk(
+                                          widget.milk.milk_id,
+                                          t1.text,
+                                          t2.text,
+                                          user?.farm_id,
+                                          user?.user_id,
+                                          widget.milk.milk_date);
+                                    }
                                   },
                                   color: Colors.brown,
-                                  shape: RoundedRectangleBorder(
+                                  shape: const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(39))),
-                                  child: Text(
+                                  child: const Text(
                                     'บันทึกการแก้ไข',
                                     style: TextStyle(
                                         color: Colors.white,
@@ -340,6 +370,30 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
                 ),
               ),
             )));
+  }
+
+  void _showerrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text(
+          'กรุณาตรวจสอบความถูกต้อง',
+          style: TextStyle(fontSize: 17),
+        ),
+        content: Text(
+          message,
+          style: TextStyle(fontSize: 15),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
+    );
   }
 
   editMilk(milk_id, milk_litermorn, milkliter_even, farm_id, user_id,
@@ -376,6 +430,12 @@ class _EditRecordMilkState extends State<EditRecordMilk> {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return SuccessRecord();
       }));
+    }
+    if (response.statusCode == 500) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      Map<String, dynamic> user = resposne['data'];
+      String mess = user['message'];
+      _showerrorDialog(mess);
     } else {
       _scaffoldKey.currentState
           ?.showSnackBar(SnackBar(content: Text("Please try again!")));

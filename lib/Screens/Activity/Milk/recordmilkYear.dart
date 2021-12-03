@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:dairycattle/models/User.dart';
 import 'package:dairycattle/providers/user_provider.dart';
-
 import '/Screens/Activity/Milk/editrecordmilk.dart';
 import '/models/MilkYear.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +8,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
-
 import 'recordmilk.dart';
 import 'recordmilkDay.dart';
 import 'recordmilkYear.dart';
@@ -95,7 +92,7 @@ class _RecordMilkYearState extends State<RecordMilkYear> {
           child: Column(
             children: <Widget>[
               Text(
-                "จำนวนน้ำนมรวมภายในปีนี้",
+                "จำนวนน้ำนมรวมภายในปี ${DateFormat.y("th_TH").format(DateTime.parse(now.toString()))} ",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
               ),
               Text('${milks}',
@@ -103,7 +100,7 @@ class _RecordMilkYearState extends State<RecordMilkYear> {
               Container(
                   margin: EdgeInsets.only(bottom: 20),
                   child: Text(
-                    'กิโลกรัม',
+                    'ลิตร',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
                   )),
               Container(
@@ -116,8 +113,9 @@ class _RecordMilkYearState extends State<RecordMilkYear> {
                               child: Text('Loading...'),
                             ),
                           );
-                        } else
-                          return ListView.builder(
+                        }
+                        return Column(children: [
+                          ListView.builder(
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               itemCount: snapshot.data!.length,
@@ -132,7 +130,7 @@ class _RecordMilkYearState extends State<RecordMilkYear> {
                                     tilePadding:
                                         const EdgeInsets.fromLTRB(20, 0, 20, 0),
                                     title: Text(
-                                      '${snapshot.data?[i].month} 2564',
+                                      '${snapshot.data?[i].month}  ${DateFormat.y("th_TH").format(DateTime.parse(now.toString()))}',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.w400,
@@ -157,7 +155,11 @@ class _RecordMilkYearState extends State<RecordMilkYear> {
                                     ],
                                   ),
                                 ]))));
-                              });
+                              }),
+                          Container(
+                            height: 400,
+                          )
+                        ]);
                       }))
             ],
           ),

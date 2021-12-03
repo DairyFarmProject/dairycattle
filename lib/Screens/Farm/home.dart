@@ -49,10 +49,15 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text(
+                        const Text(
                           "ยินดีต้อนรับเข้าสู่ Dairy Cattle 4.0",
                           style: TextStyle(
                               fontWeight: FontWeight.w500, fontSize: 18),
+                        ),
+                        SizedBox(height: size.height * 0.05),
+                        Image.asset(
+                          "assets/images/Logo.png",
+                          height: size.height * 0.30,
                         ),
                         SizedBox(height: size.height * 0.05),
                         RoundedButton(

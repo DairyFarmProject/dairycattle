@@ -24,11 +24,12 @@ class _AddCowState extends State<AddCow> {
   int selectSpecie = 0;
   int selectDadSpecie = 0;
   int selectMomSpecie = 0;
-  int? type;
-  int? specie;
-  int? dad;
-  int? mom;
+  int type = 0;
+  int specie = 0;
+  int dad = 0;
+  int mom = 0;
   String? sex;
+  int sexes = 0;
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -255,7 +256,7 @@ class _AddCowState extends State<AddCow> {
                     child: const Text('ประเภทวัว',
                         style: TextStyle(fontWeight: FontWeight.w500))),
                 Container(
-                  padding: const EdgeInsets.fromLTRB(30, 0, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(30, 0, 20, 30),
                   alignment: Alignment.topLeft,
                   child: DropdownButton<Type>(
                     isExpanded: true,
@@ -284,7 +285,7 @@ class _AddCowState extends State<AddCow> {
                     child: const Text('ชื่อสายพันธุ์',
                         style: TextStyle(fontWeight: FontWeight.w500))),
                 Container(
-                  padding: const EdgeInsets.fromLTRB(30, 0, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(30, 0, 20, 40),
                   alignment: Alignment.topLeft,
                   child: DropdownButton<Specie>(
                     isExpanded: true,
@@ -321,13 +322,14 @@ class _AddCowState extends State<AddCow> {
                           fontSize: 18)),
                 ),
                 Container(
-                    padding: const EdgeInsets.fromLTRB(25, 10, 20, 10),
+                    padding: const EdgeInsets.fromLTRB(25, 10, 20, 0),
                     alignment: Alignment.topLeft,
                     child: const Text('เพศ',
                         style: TextStyle(fontWeight: FontWeight.w500))),
                 Container(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.fromLTRB(25, 15, 30, 25),
                   child: DropdownButton<Sex>(
+                      value: sex == null ? null : sexs[sexes],
                       isExpanded: true,
                       items: sexs.map((Sex status) {
                         return DropdownMenuItem<Sex>(
@@ -365,14 +367,15 @@ class _AddCowState extends State<AddCow> {
                     ),
                     hintText: "หมายเลขพ่อพันธุ์"),
                 Container(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
                     alignment: Alignment.topLeft,
-                    child: const Text('ชื่อสายพันธ์',
+                    child: const Text('ชื่อสายพันธุ์',
                         style: TextStyle(fontWeight: FontWeight.w500))),
                 Container(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                   alignment: Alignment.topLeft,
                   child: DropdownButton<DadSpecie>(
+                    isExpanded: true,
                     hint: const Text("Select a specie"),
                     value: selectDadSpecie == null
                         ? null
@@ -408,14 +411,15 @@ class _AddCowState extends State<AddCow> {
                     ),
                     hintText: "หมายเลขแม่พันธุ์"),
                 Container(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
                     alignment: Alignment.topLeft,
-                    child: const Text('ชื่อสายพันธ์',
+                    child: const Text('ชื่อสายพันธุ์',
                         style: TextStyle(fontWeight: FontWeight.w500))),
                 Container(
-                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                   alignment: Alignment.topLeft,
                   child: DropdownButton<MomSpecie>(
+                    isExpanded: true,
                     hint: const Text("Select a specie"),
                     value: selectMomSpecie == null
                         ? null
@@ -498,27 +502,19 @@ class _AddCowState extends State<AddCow> {
                                           content: Text("กรุณาเพิ่มรูปวัว")));
                                   return;
                                 }
-                                if (url == null || _image != null) {
+                                if (_image != null) {
                                   uploadFile(_image!);
                                 }
-                                if (selectType != 0) {
+                                if (selectType != null) {
                                   setState(() {
-                                    type = selectType + 1;
+                                    type = selectType;
+                                    type = type + 1;
                                   });
                                 }
-                                if (selectType == 0) {
+                                if (selectSpecie != null) {
                                   setState(() {
-                                    type = 1;
-                                  });
-                                }
-                                if (selectSpecie != 0) {
-                                  setState(() {
-                                    specie = selectSpecie + 1;
-                                  });
-                                }
-                                if (selectSpecie == 0) {
-                                  setState(() {
-                                    specie = 1;
+                                    specie = selectSpecie;
+                                    specie = specie + 1;
                                   });
                                 }
                                 if (sex == null) {
@@ -540,41 +536,40 @@ class _AddCowState extends State<AddCow> {
                                               "กรุณากรอกหมายเลขแม่พันธุ์")));
                                   return;
                                 }
-                                if (selectDadSpecie != 0) {
+                                if (selectDadSpecie != null) {
                                   setState(() {
-                                    dad = selectDadSpecie + 1;
+                                    dad = selectDadSpecie;
+                                    dad = dad + 1;
                                   });
                                 }
-                                if (selectDadSpecie == 0) {
+                                if (selectMomSpecie != null) {
                                   setState(() {
-                                    dad = 1;
+                                    mom = selectMomSpecie;
+                                    mom = mom + 1;
                                   });
                                 }
-                                if (selectMomSpecie != 0) {
-                                  setState(() {
-                                    mom = selectMomSpecie + 1;
-                                  });
+                                if (nameCowController.text.isNotEmpty &&
+                                    tagCowController.text.isNotEmpty &&
+                                    _dateTime != null &&
+                                    url != null &&
+                                    idSemenController.text.isNotEmpty &&
+                                    idMomController.text.isNotEmpty) {
+                                  userAddCow(
+                                      user?.user_id,
+                                      user?.farm_id,
+                                      nameCowController.text,
+                                      tagCowController.text,
+                                      _dateTime,
+                                      url,
+                                      noteCowController.text,
+                                      type,
+                                      specie,
+                                      sex,
+                                      idSemenController.text,
+                                      idMomController.text,
+                                      dad,
+                                      mom);
                                 }
-                                if (selectMomSpecie == 0) {
-                                  setState(() {
-                                    mom = 1;
-                                  });
-                                }
-                                userAddCow(
-                                    user?.user_id,
-                                    user?.farm_id,
-                                    nameCowController.text,
-                                    tagCowController.text,
-                                    _dateTime,
-                                    url,
-                                    noteCowController.text,
-                                    type,
-                                    specie,
-                                    sex,
-                                    idSemenController.text,
-                                    idMomController.text,
-                                    dad,
-                                    mom);
                               },
                               color: Colors.brown,
                               shape: const RoundedRectangleBorder(

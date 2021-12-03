@@ -114,7 +114,7 @@ class _UpdateBreedingState extends State<UpdateBreeding> {
             child: Column(
               children: <Widget>[
                 ExpansionTile(
-                  collapsedBackgroundColor: Color(0xff59aca9),
+                  collapsedBackgroundColor: Colors.brown,
                   tilePadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   title: Text(
                     'บุญมี - A122 กับ บุญรี - A123',

@@ -61,7 +61,7 @@ class _SuccessCreateFarmState extends State<SuccessCreateFarm> {
                     child: Text(
                       'กลับหน้าแรก',
                       style: TextStyle(
-                          color: Color(0xff59aca9),
+                          color: Colors.brown,
                           fontWeight: FontWeight.w600,
                           fontSize: 14),
                     ),

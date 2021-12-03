@@ -62,7 +62,7 @@ class _SuccessAddCowState extends State<SuccessAddCow> {
                     child: Text(
                       'เพิ่มวัวเพิ่ม',
                       style: TextStyle(
-                          color: Color(0xff59aca9),
+                          color: Colors.brown,
                           fontWeight: FontWeight.w600,
                           fontSize: 14),
                     ),
@@ -70,31 +70,28 @@ class _SuccessAddCowState extends State<SuccessAddCow> {
                   )
                 ],
               )),
-              Container(
-                  child: Column(
-                children: [
-                  // ignore: deprecated_member_use
-                  RaisedButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return Cow();
-                      }));
-                    },
-                    color: Color(0xff59aca9),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(39))),
-                    child: Text(
-                      'ดูวัวทั้งหมด',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14),
-                    ),
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  )
-                ],
-              )),
+              // Container(
+              //     child: Column(
+              //   children: [
+              //     // ignore: deprecated_member_use
+              //     RaisedButton(
+              //       onPressed: () {
+              //         Navigator.of(context).popUntil((route) => route.isFirst);
+              //       },
+              //       color: Colors.brown,
+              //       shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.all(Radius.circular(39))),
+              //       child: Text(
+              //         'ดูวัวทั้งหมด',
+              //         style: TextStyle(
+              //             color: Colors.white,
+              //             fontWeight: FontWeight.w600,
+              //             fontSize: 14),
+              //       ),
+              //       padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+              //     )
+              //   ],
+              // )),
             ],
           ),
         ]));

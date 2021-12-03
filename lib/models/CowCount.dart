@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class CowCount {
   String type_name;
-  String count;
+  int count;
   CowCount({
     required this.type_name,
     required this.count,
@@ -10,7 +10,7 @@ class CowCount {
 
   CowCount copyWith({
     String? type_name,
-    String? count,
+    int? count,
   }) {
     return CowCount(
       type_name: type_name ?? this.type_name,
@@ -34,7 +34,8 @@ class CowCount {
 
   String toJson() => json.encode(toMap());
 
-  factory CowCount.fromJson(String source) => CowCount.fromMap(json.decode(source));
+  factory CowCount.fromJson(String source) =>
+      CowCount.fromMap(json.decode(source));
 
   @override
   String toString() => 'CowCount(type_name: $type_name, count: $count)';
@@ -42,10 +43,10 @@ class CowCount {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is CowCount &&
-      other.type_name == type_name &&
-      other.count == count;
+        other.type_name == type_name &&
+        other.count == count;
   }
 
   @override

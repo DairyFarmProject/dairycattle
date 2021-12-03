@@ -23,9 +23,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  GlobalKey<ScaffoldState> _scaffoldKey =
-      GlobalKey<ScaffoldState>(debugLabel: '_Loginkey');
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: '_Loginkey');
+  final _scaffoldKey = GlobalKey<ScaffoldState>(debugLabel: '_Loginkey');
+  final _formKey = GlobalKey<FormState>(debugLabel: '_Loginkey');
   TextEditingController passwordController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   String? _email, _password;
@@ -48,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(
+                const Text(
                   "เข้าสู่ระบบ",
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25),
                 ),
@@ -66,10 +65,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     _email = email;
                   },
                   validator: (value) {
-                    if (value == null || !value.contains('@'))
+                    if (value == null || !value.contains('@')) {
                       return 'รูปแบบอีเมลไม่ถูกต้อง';
-                    if (!reg.hasMatch(emailController.text))
+                    }
+                    if (!reg.hasMatch(emailController.text)) {
                       return 'รูปแบบอีเมลไม่ถูกต้อง';
+                    }
                     return null;
                   },
                 ),
@@ -78,8 +79,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value!.isEmpty) return 'กรุณากรอกรหัสผ่าน';
-                      if (value.length < 6)
+                      if (value.length < 6) {
                         return 'รหัสผ่านควรมีอย่าง 6 ตัวอักษร';
+                      }
                       return null;
                     },
                     obscureText: obscureText,
@@ -91,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     cursorColor: kPrimaryColor,
                     decoration: InputDecoration(
                       hintText: "รหัสผ่าน",
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.lock,
                         color: kPrimaryColor,
                       ),
@@ -113,13 +115,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
                   width: size.width * 0.8,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(29),
                     child: FlatButton(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 40),
                       color: kPrimaryColor,
                       onPressed: () {
                         if (isLoading) {
@@ -127,13 +129,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                         if (!reg.hasMatch(emailController.text)) {
                           _scaffoldKey.currentState?.showSnackBar(
-                              SnackBar(content: Text("รูปแบบอีเมลไม่ถูกต้อง")));
+                              const SnackBar(
+                                  content: Text("รูปแบบอีเมลไม่ถูกต้อง")));
                           return;
                         }
                         if (passwordController.text.isEmpty ||
                             passwordController.text.length < 6) {
-                          _scaffoldKey.currentState?.showSnackBar(SnackBar(
-                              content: Text("รหัสผ่านควรมีอย่าง 6 ตัวอักษร")));
+                          _scaffoldKey.currentState?.showSnackBar(
+                              const SnackBar(
+                                  content:
+                                      Text("รหัสผ่านควรมีอย่าง 6 ตัวอักษร")));
                           return;
                         }
                         login(emailController.text, passwordController.text);
@@ -141,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           isLoading = true;
                         });
                       },
-                      child: Text(
+                      child: const Text(
                         'เข้าสู่ระบบ',
                         style: TextStyle(color: Colors.white),
                       ),
@@ -173,17 +178,17 @@ class _LoginScreenState extends State<LoginScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(
+        title: const Text(
           'กรุณาตรวจสอบความถูกต้อง',
           style: TextStyle(fontSize: 17),
         ),
         content: Text(
           message,
-          style: TextStyle(fontSize: 15),
+          style: const TextStyle(fontSize: 15),
         ),
         actions: <Widget>[
           FlatButton(
-            child: Text('OK'),
+            child: const Text('OK'),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -219,9 +224,6 @@ class _LoginScreenState extends State<LoginScreen> {
       Map<String, dynamic> user = resposne['data'];
       String mess = user['message'];
       _showerrorDialog(mess);
-    } else {
-      _scaffoldKey.currentState
-          ?.showSnackBar(SnackBar(content: Text("Please try again!")));
     }
   }
 
@@ -242,7 +244,7 @@ class _LoginScreenState extends State<LoginScreen> {
           print(user);
           Provider.of<UserProvider>(context, listen: false).setUser(user);
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return SplashPage();
+            return const SplashPage();
           }));
         } else {
           UserDairys user = response["user"];
@@ -254,7 +256,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       } else {
         _scaffoldKey.currentState
-            ?.showSnackBar(SnackBar(content: Text("Failed Login!")));
+            ?.showSnackBar(const SnackBar(content: Text("Failed Login!")));
       }
     });
   }

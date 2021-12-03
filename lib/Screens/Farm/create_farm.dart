@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:form_field_validator/form_field_validator.dart';
+import 'confirm_create_farm.dart';
 import 'home.dart';
-import '../../models/ScreenArguments.dart';
+import '/models/ScreenArguments.dart';
 import 'text_field_container.dart';
 
 class CreateFarm extends StatefulWidget {
@@ -19,6 +17,7 @@ class CreateFarm extends StatefulWidget {
 
 class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final nameFarmController = TextEditingController();
   final numberFarmController = TextEditingController();
   final codeFarmController = TextEditingController();
@@ -30,10 +29,8 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
   final districtFarmController = TextEditingController();
   final provinceFarmController = TextEditingController();
   final postcodeFarmController = TextEditingController();
-  final value_validator = RequiredValidator(errorText: "X Invalid");
 
   File? _image;
-  List<File> _images = [];
   String url = '';
   String imageURL = '';
   String downloadURL = '';
@@ -80,6 +77,7 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Row(
@@ -89,22 +87,22 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Align(
+                    child: const Align(
                         alignment: Alignment.centerLeft,
                         child: Icon(
                           Icons.arrow_back_ios_outlined,
                           color: Colors.white,
                         ))),
               ),
-              Center(
+              const Center(
                 child: Text('สร้างฟาร์ม'),
               ),
               Expanded(
                   child: Align(
                 alignment: Alignment.centerRight,
                 child: IconButton(
-                  icon:
-                      Icon(Icons.account_circle, color: Colors.white, size: 30),
+                  icon: const Icon(Icons.account_circle,
+                      color: Colors.brown, size: 30),
                   onPressed: () {},
                 ),
               )),
@@ -123,7 +121,7 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                     children: [
                       Container(
                         alignment: Alignment.center,
-                        margin: EdgeInsets.all(0),
+                        margin: const EdgeInsets.all(0),
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                         child: _image == null
                             ? Container(
@@ -133,11 +131,10 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                                     shape: BoxShape.circle,
                                     color: Colors.brown[50]),
                                 child: Padding(
-                                    padding: EdgeInsets.all(4.0),
+                                    padding: const EdgeInsets.all(4.0),
                                     child: Center(
-                                        child: Container(
-                                            child: IconButton(
-                                      icon: Icon(
+                                        child: IconButton(
+                                      icon: const Icon(
                                         Icons.add_a_photo_outlined,
                                         size: 30,
                                         color: Colors.brown,
@@ -145,7 +142,7 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                                       onPressed: () {
                                         getImage(true);
                                       },
-                                    )))))
+                                    ))))
                             : CircleAvatar(
                                 backgroundImage: FileImage(_image!),
                                 radius: 100.0),
@@ -156,8 +153,11 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                       controller: nameFarmController,
                       keyboardType: TextInputType.text,
                       onChanged: (value) {},
-                      validator: value_validator,
-                      child: Text(
+                      validator: (value) {
+                        if (value!.isEmpty) return 'กรุณากรอกชื่อฟาร์ม';
+                        return null;
+                      },
+                      child: const Text(
                         'ชื่อฟาร์ม',
                         style: TextStyle(fontSize: 15),
                       ),
@@ -166,8 +166,11 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                       controller: numberFarmController,
                       keyboardType: TextInputType.text,
                       onChanged: (value) {},
-                      validator: value_validator,
-                      child: Text(
+                      validator: (value) {
+                        if (value!.isEmpty) return 'กรุณากรอกเลขทะเบียนฟาร์ม';
+                        return null;
+                      },
+                      child: const Text(
                         'เลขทะเบียนฟาร์ม',
                         style: TextStyle(fontSize: 15),
                       ),
@@ -176,8 +179,11 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                       controller: codeFarmController,
                       keyboardType: TextInputType.text,
                       onChanged: (value) {},
-                      validator: value_validator,
-                      child: Text(
+                      validator: (value) {
+                        if (value!.isEmpty) return 'กรุณากรอกไอดีฟาร์ม';
+                        return null;
+                      },
+                      child: const Text(
                         'ไอดีฟาร์ม',
                         style: TextStyle(fontSize: 15),
                       ),
@@ -186,8 +192,11 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                       controller: addressFarmController,
                       keyboardType: TextInputType.text,
                       onChanged: (value) {},
-                      validator: value_validator,
-                      child: Text(
+                      validator: (value) {
+                        if (value!.isEmpty) return 'กรุณากรอกบ้านเลขที่';
+                        return null;
+                      },
+                      child: const Text(
                         'บ้านเลขที่',
                         style: TextStyle(fontSize: 15),
                       ),
@@ -196,8 +205,13 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                       controller: mooFarmController,
                       keyboardType: TextInputType.number,
                       onChanged: (value) {},
-                      validator: value_validator,
-                      child: Text(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'กรุณากรอกหมู่ หากไม่มีให้ -';
+                        }
+                        return null;
+                      },
+                      child: const Text(
                         'หมู่',
                         style: TextStyle(fontSize: 15),
                       ),
@@ -206,8 +220,13 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                       controller: soiFarmController,
                       keyboardType: TextInputType.text,
                       onChanged: (value) {},
-                      validator: value_validator,
-                      child: Text(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'กรุณากรอกซอย หากไม่มีให้กรอก -';
+                        }
+                        return null;
+                      },
+                      child: const Text(
                         'ซอย',
                         style: TextStyle(fontSize: 15),
                       ),
@@ -216,8 +235,11 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                       controller: roadFarmController,
                       keyboardType: TextInputType.text,
                       onChanged: (value) {},
-                      validator: value_validator,
-                      child: Text(
+                      validator: (value) {
+                        if (value!.isEmpty) return 'กรุณากรอกถนน';
+                        return null;
+                      },
+                      child: const Text(
                         'ถนน',
                         style: TextStyle(fontSize: 15),
                       ),
@@ -226,8 +248,11 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                       controller: sub_districtFarmController,
                       keyboardType: TextInputType.text,
                       onChanged: (value) {},
-                      validator: value_validator,
-                      child: Text(
+                      validator: (value) {
+                        if (value!.isEmpty) return 'กรุณากรอกตำบล';
+                        return null;
+                      },
+                      child: const Text(
                         'ตำบล',
                         style: TextStyle(fontSize: 15),
                       ),
@@ -236,8 +261,11 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                       controller: districtFarmController,
                       keyboardType: TextInputType.text,
                       onChanged: (value) {},
-                      validator: value_validator,
-                      child: Text(
+                      validator: (value) {
+                        if (value!.isEmpty) return 'กรุณากรอกอำเภอ';
+                        return null;
+                      },
+                      child: const Text(
                         'อำเภอ',
                         style: TextStyle(fontSize: 15),
                       ),
@@ -246,8 +274,11 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                       controller: provinceFarmController,
                       keyboardType: TextInputType.text,
                       onChanged: (value) {},
-                      validator: value_validator,
-                      child: Text(
+                      validator: (value) {
+                        if (value!.isEmpty) return 'กรุณากรอกจังหวัด';
+                        return null;
+                      },
+                      child: const Text(
                         'จังหวัด',
                         style: TextStyle(fontSize: 15),
                       ),
@@ -256,8 +287,13 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                       controller: postcodeFarmController,
                       keyboardType: TextInputType.number,
                       onChanged: (value) {},
-                      validator: value_validator,
-                      child: Text(
+                      validator: (value) {
+                        if (value!.isEmpty) return 'กรุณากรอกรหัสไปรษณีย์';
+                        if (value.length != 5)
+                          return 'รหัสไปรษณีย์มี 5 ตำแหน่ง';
+                        return null;
+                      },
+                      child: const Text(
                         'รหัสไปรษณีย์',
                         style: TextStyle(fontSize: 15),
                       ),
@@ -267,23 +303,22 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                          margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                          margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              // ignore: deprecated_member_use
                               RaisedButton(
                                 onPressed: () {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
-                                    return Home();
+                                    return const Home();
                                   }));
                                 },
                                 color: Colors.blueGrey[50],
-                                shape: RoundedRectangleBorder(
+                                shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(39))),
-                                child: Text(
+                                child: const Text(
                                   'ยกเลิก',
                                   style: TextStyle(
                                       color: Colors.brown,
@@ -296,16 +331,95 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                             ],
                           )),
                       Container(
-                          margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                          margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                           child: Column(
                             children: [
-                              // ignore: deprecated_member_use
                               RaisedButton(
                                 onPressed: () {
+                                  if (_image == null) {
+                                    _scaffoldKey.currentState?.showSnackBar(
+                                        const SnackBar(
+                                            content:
+                                                Text("กรุณาเพิ่มรูปฟาร์ม")));
+                                    return;
+                                  }
+                                  if (nameFarmController.text.isEmpty) {
+                                    _scaffoldKey.currentState?.showSnackBar(
+                                        const SnackBar(
+                                            content:
+                                                Text("กรุณากรอกชื่อฟาร์ม")));
+                                    return;
+                                  }
+                                  if (numberFarmController.text.isEmpty) {
+                                    _scaffoldKey.currentState?.showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                "กรุณากรอกเลขทะเบียนฟาร์ม")));
+                                    return;
+                                  }
+                                  if (codeFarmController.text.isEmpty) {
+                                    _scaffoldKey.currentState?.showSnackBar(
+                                        const SnackBar(
+                                            content:
+                                                Text("กรุณากรอกไอดีฟาร์ม")));
+                                    return;
+                                  }
+                                  if (addressFarmController.text.isEmpty) {
+                                    _scaffoldKey.currentState?.showSnackBar(
+                                        const SnackBar(
+                                            content:
+                                                Text("กรุณากรอกบ้านเลขที่")));
+                                    return;
+                                  }
+                                  if (mooFarmController.text.isEmpty) {
+                                    _scaffoldKey.currentState?.showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                "กรุณากรอกหมู่ หากไม่มีให้กรอก -")));
+                                    return;
+                                  }
+                                  if (soiFarmController.text.isEmpty) {
+                                    _scaffoldKey.currentState?.showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                "กรุณากรอกซอย หากไม่มีให้กรอก -")));
+                                    return;
+                                  }
+                                  if (roadFarmController.text.isEmpty) {
+                                    _scaffoldKey.currentState?.showSnackBar(
+                                        const SnackBar(
+                                            content: Text("กรุณากรอกถนน")));
+                                    return;
+                                  }
+                                  if (sub_districtFarmController.text.isEmpty) {
+                                    _scaffoldKey.currentState?.showSnackBar(
+                                        const SnackBar(
+                                            content: Text("กรุณากรอกตำบล")));
+                                    return;
+                                  }
+                                  if (districtFarmController.text.isEmpty) {
+                                    _scaffoldKey.currentState?.showSnackBar(
+                                        const SnackBar(
+                                            content: Text("กรุณากรอกอำเภอ")));
+                                    return;
+                                  }
+                                  if (provinceFarmController.text.isEmpty) {
+                                    _scaffoldKey.currentState?.showSnackBar(
+                                        const SnackBar(
+                                            content: Text("กรุณากรอกจังหวัด")));
+                                    return;
+                                  }
+                                  if (postcodeFarmController.text.isEmpty) {
+                                    _scaffoldKey.currentState?.showSnackBar(
+                                        const SnackBar(
+                                            content:
+                                                Text("กรุณากรอกรหัสไปรษณีย์")));
+                                    return;
+                                  }
                                   if (_formKey.currentState!.validate()) {
                                     uploadFile(_image!);
                                     Navigator.pushNamed(
-                                        context, "/confirmCreateFarm",
+                                        context, ConfirmCreateFarm.routeName,
                                         arguments: ScreenArguments(
                                           farm_name: nameFarmController.text,
                                           farm_no: numberFarmController.text,
@@ -324,10 +438,10 @@ class _CreateFarmState extends State<CreateFarm> with TickerProviderStateMixin {
                                   }
                                 },
                                 color: Colors.brown,
-                                shape: RoundedRectangleBorder(
+                                shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(39))),
-                                child: Text(
+                                child: const Text(
                                   'บันทึกข้อมูล',
                                   style: TextStyle(
                                       color: Colors.white,

@@ -82,21 +82,21 @@ class _OTPState extends State<OTP> with TickerProviderStateMixin {
                               onTap: () {
                                 Navigator.pop(context);
                               },
-                              child: Align(
+                              child: const Align(
                                   alignment: Alignment.centerLeft,
                                   child: Icon(
                                     Icons.arrow_back_ios_outlined,
                                     color: Colors.white,
                                   ))),
                         ),
-                        Center(
+                        const Center(
                           child: Text('DairyCattle'),
                         ),
                         Expanded(
                             child: Align(
                           alignment: Alignment.centerRight,
                           child: IconButton(
-                            icon: Icon(Icons.account_circle,
+                            icon: const Icon(Icons.account_circle,
                                 color: Colors.brown, size: 30),
                             onPressed: () {},
                           ),
@@ -108,8 +108,8 @@ class _OTPState extends State<OTP> with TickerProviderStateMixin {
                 body: Column(
                   children: <Widget>[
                     Container(
-                        margin: EdgeInsets.only(top: 50, bottom: 50),
-                        child: Text('กรอกรหัสเข้าร่วมฟาร์ม')),
+                        margin: const EdgeInsets.only(top: 50, bottom: 50),
+                        child: const Text('กรอกรหัสเข้าร่วมฟาร์ม')),
                     PinCodeTextField(
                       length: 6,
                       obscureText: false,
@@ -128,11 +128,11 @@ class _OTPState extends State<OTP> with TickerProviderStateMixin {
                           fieldWidth: 30,
                           activeFillColor: Colors.white,
                           fieldOuterPadding:
-                              EdgeInsets.only(left: 10, right: 10)),
+                              const EdgeInsets.only(left: 10, right: 10)),
 
                       mainAxisAlignment: MainAxisAlignment.center,
 
-                      animationDuration: Duration(milliseconds: 300),
+                      animationDuration: const Duration(milliseconds: 300),
                       //backgroundColor: Colors.blue.shade50,
                       enableActiveFill: true,
                       //xerrorAnimationController: errorController,
@@ -156,7 +156,7 @@ class _OTPState extends State<OTP> with TickerProviderStateMixin {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 30),
+                      margin: const EdgeInsets.only(top: 30),
                       child: RaisedButton(
                         onPressed: () async {
                           loginStore.validateOtpAndLogin(
@@ -172,10 +172,10 @@ class _OTPState extends State<OTP> with TickerProviderStateMixin {
                               user_image);
                         },
                         color: Colors.brown,
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(39))),
-                        child: Text(
+                        child: const Text(
                           'ส่ง',
                           style: TextStyle(
                               color: Colors.white,

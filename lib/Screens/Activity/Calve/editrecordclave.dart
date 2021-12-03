@@ -1,16 +1,13 @@
-import 'package:dairycattle/models/Cows.dart';
-import 'package:dairycattle/models/Parturitions.dart';
-import 'package:dairycattle/models/User.dart';
-import 'package:dairycattle/providers/user_provider.dart';
+import '/models/Parturitions.dart';
+import '/models/User.dart';
+import '/providers/user_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '/Screens/Cow/successrecord.dart';
 import 'package:flutter/material.dart';
-import '../../../models/AllChoose.dart';
 
 import 'dart:convert';
-import '../../../models/Abdominal.dart';
 import 'package:http/http.dart' as http;
 
 class EditRecordCalve extends StatefulWidget {
@@ -40,31 +37,31 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
   Widget build(BuildContext context) {
     User? user = Provider.of<UserProvider>(context).user;
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
-          title: Text('แก้ไขบันทึกการคลอด'),
+          title: const Text('แก้ไขบันทึกการคลอด'),
           leading: GestureDetector(
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back,
               color: Colors.white,
             ),
           ),
-          backgroundColor: Color(0xff5a82de),
+          backgroundColor: const Color(0xff5a82de),
         ),
         body: Form(
             key: _formKey,
-            child: Container(
-                child: SingleChildScrollView(
+            child: SingleChildScrollView(
               child: Column(
                 children: [
                   Column(children: [
                     Container(
                       alignment: Alignment.topLeft,
-                      margin: EdgeInsets.all(0),
+                      margin: const EdgeInsets.all(0),
                       padding: const EdgeInsets.all(20),
-                      child: Text('ชื่อลูกวัว',
+                      child: const Text('ชื่อลูกวัว',
                           style: TextStyle(fontWeight: FontWeight.w500)),
                     ),
                     Padding(
@@ -72,7 +69,7 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                       child: TextField(
                         controller: calfNameController,
                         decoration: InputDecoration(
-                          hintText: '${widget.par.calf_name}',
+                          hintText: widget.par.calf_name,
                           fillColor: Colors.blueGrey,
                         ),
                         onChanged: (String name) {},
@@ -82,16 +79,16 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                   Column(children: [
                     Container(
                       alignment: Alignment.topLeft,
-                      margin: EdgeInsets.all(20),
+                      margin: const EdgeInsets.all(20),
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      child: Text('เพศลูกวัว',
+                      child: const Text('เพศลูกวัว',
                           style: TextStyle(fontWeight: FontWeight.w500)),
                     ),
                     Container(
                       child: DropdownSearch<String>(
                           mode: Mode.MENU,
                           showSelectedItems: true,
-                          items: ["", "เพศผู้", "เพศเมีย"],
+                          items: const ["", "เพศผู้", "เพศเมีย"],
                           label: "เพศ",
                           hint: "เพศลูกวัว",
                           popupItemDisabled: (String s) => s.startsWith('I'),
@@ -106,7 +103,6 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                                 sex = "F";
                               });
                             }
-                            ;
                           }),
                       padding: const EdgeInsets.all(20.0),
                     ),
@@ -114,9 +110,9 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                   Column(children: [
                     Container(
                       alignment: Alignment.topLeft,
-                      margin: EdgeInsets.all(20),
+                      margin: const EdgeInsets.all(20),
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      child: Text('ผู้ดูแล',
+                      child: const Text('ผู้ดูแล',
                           style: TextStyle(fontWeight: FontWeight.w500)),
                     ),
                     Padding(
@@ -124,7 +120,7 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                       child: TextField(
                         controller: caretakerController,
                         decoration: InputDecoration(
-                          hintText: '${widget.par.par_caretaker}',
+                          hintText: widget.par.par_caretaker,
                           fillColor: Colors.blueGrey,
                         ),
                         onChanged: (String name) {},
@@ -136,21 +132,27 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                       alignment: Alignment.topLeft,
                       margin: EdgeInsets.all(20),
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      child: Text('สถานะ',
+                      child: const Text('สถานะ',
                           style: TextStyle(fontWeight: FontWeight.w500)),
                     ),
                     Container(
                       child: DropdownSearch<String>(
                         mode: Mode.MENU,
                         showSelectedItems: true,
-                        items: ["", "ปกติ", "แท้ง"],
+                        items: const ["", "ปกติ", "แท้ง"],
                         label: "สถานะ",
                         hint: "สถานะ",
                         popupItemDisabled: (String s) => s.startsWith('I'),
                         onChanged: (newValue) {
-                          setState(() {
-                            status = newValue;
-                          });
+                          if (newValue == "แท้ง") {
+                            setState(() {
+                              status = "แท้ง";
+                            });
+                          } else {
+                            setState(() {
+                              status = "ปกติ";
+                            });
+                          }
                         },
                       ),
                       padding: const EdgeInsets.all(20.0),
@@ -160,9 +162,9 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                     children: [
                       Container(
                         alignment: Alignment.topLeft,
-                        margin: EdgeInsets.all(0),
+                        margin: const EdgeInsets.all(0),
                         padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
-                        child: Text('วันที่คลอด',
+                        child: const Text('วันที่คลอด',
                             style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                       Row(
@@ -171,14 +173,17 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                             padding: const EdgeInsets.fromLTRB(30, 20, 0, 20),
                             child: Text(
                               _dateTime == null
-                                  ? '${DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.par.par_date.toString()))}'
-                                  : '${DateFormat('dd-MM-yyyy').format(DateTime.parse(_dateTime.toString()))}',
+                                  ? DateFormat('dd-MM-yyyy').format(
+                                      DateTime.parse(
+                                          widget.par.par_date.toString()))
+                                  : DateFormat('dd-MM-yyyy').format(
+                                      DateTime.parse(_dateTime.toString())),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
                             child: IconButton(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.calendar_today_sharp,
                                 color: Colors.brown,
                               ),
@@ -214,9 +219,9 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                       Column(children: [
                         Container(
                           alignment: Alignment.topLeft,
-                          margin: EdgeInsets.all(20),
+                          margin: const EdgeInsets.all(20),
                           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          child: Text('รายละเอียดอื่นๆ',
+                          child: const Text('รายละเอียดอื่นๆ',
                               style: TextStyle(fontWeight: FontWeight.w500)),
                         ),
                         Padding(
@@ -224,7 +229,7 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                           child: TextField(
                             controller: noteController,
                             decoration: InputDecoration(
-                              hintText: '${widget.par.note}',
+                              hintText: widget.par.note,
                               fillColor: Colors.blueGrey,
                             ),
                             onChanged: (String name) {},
@@ -236,7 +241,7 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                              margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                              margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -246,10 +251,10 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                                       Navigator.pop(context);
                                     },
                                     color: Colors.blueGrey[50],
-                                    shape: RoundedRectangleBorder(
+                                    shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(39))),
-                                    child: Text(
+                                    child: const Text(
                                       'ยกเลิก',
                                       style: TextStyle(
                                           color: Color(0xffd6786e),
@@ -262,29 +267,66 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                                 ],
                               )),
                           Container(
-                              margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                              margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                               child: Column(
                                 children: [
-                                  // ignore: deprecated_member_use
                                   RaisedButton(
                                     onPressed: () {
-                                      userEditAb(
-                                          widget.par.parturition_id,
-                                          widget.par.ab_id,
-                                          _dateTime.toString(),
-                                          calfNameController.text,
-                                          sex,
-                                          caretakerController.text,
-                                          status,
-                                          noteController.text,
-                                          user?.user_id,
-                                          user?.farm_id);
+                                      if (calfNameController.text.isEmpty) {
+                                        setState(() {
+                                          calfNameController.text =
+                                              widget.par.calf_name;
+                                        });
+                                      }
+                                      if (_dateTime == null) {
+                                        _dateTime = DateTime.parse(
+                                            widget.par.par_date.toString());
+                                      }
+                                      if (caretakerController.text.isEmpty) {
+                                        setState(() {
+                                          caretakerController.text =
+                                              widget.par.par_caretaker;
+                                        });
+                                      }
+                                      if (noteController.text.isEmpty) {
+                                        setState(() {
+                                          noteController.text = '-';
+                                        });
+                                      }
+                                      if (status == null) {
+                                        setState(() {
+                                          status = 'ปกติ';
+                                        });
+                                      }
+                                      if (sex == null) {
+                                        setState(() {
+                                          sex = 'F';
+                                        });
+                                      }
+                                      if (_dateTime != null &&
+                                          calfNameController.text != null &&
+                                          sex != null &&
+                                          caretakerController.text != null &&
+                                          status != null &&
+                                          noteController.text != null) {
+                                        userEditAb(
+                                            widget.par.parturition_id,
+                                            widget.par.ab_id,
+                                            _dateTime.toString(),
+                                            calfNameController.text,
+                                            sex,
+                                            caretakerController.text,
+                                            status,
+                                            noteController.text,
+                                            user?.user_id,
+                                            user?.farm_id);
+                                      }
                                     },
                                     color: Colors.brown,
-                                    shape: RoundedRectangleBorder(
+                                    shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(39))),
-                                    child: Text(
+                                    child: const Text(
                                       'บันทึกข้อมูล',
                                       style: TextStyle(
                                           color: Colors.white,
@@ -302,7 +344,31 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
                   ),
                 ],
               ),
-            ))));
+            )));
+  }
+
+  void _showerrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text(
+          'กรุณาตรวจสอบความถูกต้อง',
+          style: TextStyle(fontSize: 17),
+        ),
+        content: Text(
+          message,
+          style: const TextStyle(fontSize: 15),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
+    );
   }
 
   userEditAb(par_id, ab_id, date, name, sex, caretaker, status, note, user,
@@ -337,13 +403,19 @@ class _EditRecordCalveState extends State<EditRecordCalve> {
       print(user['message']);
       Navigator.push(
         context,
-        new MaterialPageRoute(
-          builder: (context) => new SuccessRecord(),
+        MaterialPageRoute(
+          builder: (context) => SuccessRecord(),
         ),
       );
+    }
+    if (response.statusCode == 500) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      Map<String, dynamic> user = resposne['data'];
+      String mess = user['message'];
+      _showerrorDialog(mess);
     } else {
       _scaffoldKey.currentState
-          ?.showSnackBar(SnackBar(content: Text("Please Try again")));
+          ?.showSnackBar(const SnackBar(content: Text("Please Try again")));
     }
   }
 }

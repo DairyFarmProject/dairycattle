@@ -40,13 +40,12 @@ class _WelcomeState extends State<Welcome> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        body: Container(
-            child: Background(
+        body: Background(
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
+            const Text(
               "Dairy Cattle 4.0",
               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25),
             ),
@@ -87,6 +86,6 @@ class _WelcomeState extends State<Welcome> {
           ],
         ),
       ),
-    )));
+    ));
   }
 }
